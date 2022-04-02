@@ -191,7 +191,7 @@
 </template>
 
 <script>
-import router from "../../../router";
+import router from "../../../routes";
 
 export default {
   name: "Register",

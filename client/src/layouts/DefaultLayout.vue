@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import route from "../router";
+import route from "../routes";
 
 export default {
   name: "DefaultLayout",
