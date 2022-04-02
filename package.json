@@ -1,0 +1,9 @@
+{
+  "dependencies": {
+    "@vue/cli": "^5.0.4",
+    "g": "^2.0.1"
+  },
+  "devDependencies": {
+    "prettier": "2.6.1"
+  }
+}
