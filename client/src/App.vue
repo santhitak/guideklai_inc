@@ -36,6 +36,7 @@ section {
   width: 100vw;
   height: 100vh;
   padding: 3rem 10rem;
+  overflow: hidden;
 }
 
 ::-webkit-scrollbar {

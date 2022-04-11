@@ -1,7 +1,7 @@
 <template>
   <section>
-    <div v-for="blog in blogs" v-bind:key="blog.id">
-     <p>{{blog.id + ". " + blog.title}}</p>
+    <div v-for="item in province" v-bind:key="item.province_id">
+     <p>{{item.province_name}}</p>
     </div>
   </section>
 </template>
@@ -13,19 +13,19 @@ export default {
   name: "Services",
   data() {
     return {
-      blogs: [],
-    };
+      province: [],
+    }
   },
 
   created() {
-    this.getBlogs();
+    this.getProvince();
   },
 
   methods: {
-    async getBlogs() {
+    async getProvince() {
       try {
         const response = await axios.get("http://localhost:4000/");
-        this.blogs = response.data;
+        this.province = response.data;
       } catch (err) {
         console.log(err);
       }

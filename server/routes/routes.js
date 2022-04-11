@@ -1,10 +1,11 @@
 import express from "express";
-import { blogs } from "../controllers/index.js";
+import {province, createAccount} from "../controllers/index.js";
 
 const router = express.Router();
 
-router.get('/', blogs);
-router.get('/auth/login', blogs);
-router.get('/auth/register', blogs);
+router.get('/', province);
+router.get('/auth/login', province);
+router.get('/auth/register', createAccount);
+router.post('/auth/register', createAccount);
 
 export default router;

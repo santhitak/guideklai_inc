@@ -41,7 +41,7 @@
                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option value="member">Member</option>
-                      <option value="ent">Entrepreneur</option>
+                      <option value="entrepreneur">Entrepreneur</option>
                     </select>
                   </div>
                   <div class="flex">
@@ -81,30 +81,30 @@
                   <div class="flex">
                     <div class="mb-6 mr-3 w-1/2">
                       <label
-                        for="email"
+                        for="emailAddress"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         Email
                       </label>
                       <input
                         type="email"
-                        id="email"
-                        v-model="email"
+                        id="emailAddress"
+                        v-model="emailAddress"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Enter your email"
                       />
                     </div>
                     <div class="mb-6 w-1/2">
                       <label
-                        for="phone_number"
+                        for="phone"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
                         Phone number
                       </label>
                       <input
                         type="tel"
-                        id="phone_number"
-                        v-model="phone_number"
+                        id="phone"
+                        v-model="phone"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Enter your phone number"
                         required=""
@@ -166,7 +166,7 @@
                   </div>
                   <button
                     type="submit"
-                    @click="complete"
+                    @click="register"
                     class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     Sign Up
@@ -192,39 +192,49 @@
 
 <script>
 import router from "../../../routes";
+import axios from "axios";
 
 export default {
   name: "Register",
   data() {
     return {
-      users: [],
       role: "member",
       first_name: null,
       last_name: null,
-      email: null,
-      phone_number: null,
+      emailAddress: null,
+      phone: null,
       password: null,
       password_confirm: null,
-
       checkedPass: false,
     };
   },
-  computed: {},
+  computed: {
+    computedUsername(){
+      return this.first_name.toLowerCase().substring(0, 3) + 'x' + Math.floor(Math.random()*100)
+    }
+  },
   methods: {
     login() {
       router.push("/auth/login");
     },
-    complete() {
-      this.users.push({
-        role: this.role,
-        first_name: this.first_name,
-        last_name: this.last_name,
-        email: this.email,
-        phone_number: this.phone_number,
-        password: this.password,
-      });
-      console.log(this.users);
-      router.push("/");
+    async register() {
+      try {
+        await axios.post("http://localhost:4000/auth/register", {
+          firstname: this.first_name,
+          lastname: this.last_name,
+          username: this.computedUsername,
+          password: this.password,
+          email: this.emailAddress,
+          phone_number: this.phone,
+          type_member: this.role,
+        });
+        console.log(this.computedUsername + ' ' + this.emailAddress + ' is now a/an ' + this.role )
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log('DONE!')
+      }
+      await router.push("/");
     },
   },
 };
