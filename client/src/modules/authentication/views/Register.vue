@@ -209,14 +209,19 @@ export default {
     };
   },
   computed: {
-    computedUsername(){
-      return this.first_name.toLowerCase().substring(0, 3) + 'x' + Math.floor(Math.random()*100)
-    }
+    computedUsername() {
+      return (
+        this.first_name.toLowerCase().substring(0, 3) +
+        "x" +
+        Math.floor(Math.random() * 100)
+      );
+    },
   },
   methods: {
     login() {
       router.push("/auth/login");
     },
+    validPhone() {},
     async register() {
       try {
         await axios.post("http://localhost:4000/auth/register", {
@@ -228,11 +233,17 @@ export default {
           phone_number: this.phone,
           type_member: this.role,
         });
-        console.log(this.computedUsername + ' ' + this.emailAddress + ' is now a/an ' + this.role )
+        console.log(
+          this.computedUsername +
+            " " +
+            this.emailAddress +
+            " is now a/an " +
+            this.role
+        );
       } catch (err) {
         console.log(err);
       } finally {
-        console.log('DONE!')
+        console.log("DONE!");
       }
       await router.push("/");
     },

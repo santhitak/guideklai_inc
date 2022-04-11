@@ -1,7 +1,7 @@
 <template>
   <section>
     <div v-for="item in province" v-bind:key="item.province_id">
-     <p>{{item.province_name}}</p>
+      <p>{{ item.province_name }}</p>
     </div>
   </section>
 </template>
@@ -14,7 +14,7 @@ export default {
   data() {
     return {
       province: [],
-    }
+    };
   },
 
   created() {
@@ -34,5 +34,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

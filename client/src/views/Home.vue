@@ -8,9 +8,8 @@ export default {
   name: "Home",
   components: {
     Services,
-  }
-}
+  },
+};
 </script>
 
-<style scoped>
-</style>
+<style scoped></style>

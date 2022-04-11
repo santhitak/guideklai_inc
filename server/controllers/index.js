@@ -1,22 +1,33 @@
-import {getProvince, postAccount} from "../models/main.js"
+import { getProvince, postAccount, getAccount } from "../models/main.js";
 
 export const province = (req, res) => {
-    getProvince((err, results) => {
-        if (err) {
-            res.send(err)
-        } else {
-            res.json(results)
-        }
-    })
-}
+  getProvince((err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
+
+export const memberData = (req, res) => {
+  const data = req.body;
+  getAccount(data, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};
 
 export const createAccount = (req, res) => {
-    const data = req.body;
-    postAccount(data, (err, results) => {
-        if (err){
-            res.send(err);
-        }else{
-            res.json(results);
-        }
-    });
-}
+  const data = req.body;
+  postAccount(data, (err, results) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.json(results);
+    }
+  });
+};

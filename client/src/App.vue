@@ -7,18 +7,17 @@
 </template>
 
 <script>
-
 export default {
-  name: 'App',
-  components: {  },
+  name: "App",
+  components: {},
   computed: {
     layout() {
       return this.$route.meta.layout
-          ? `layout-${this.$route.meta.layout}`
-          : null;
+        ? `layout-${this.$route.meta.layout}`
+        : null;
     },
   },
-}
+};
 </script>
 
 <style>
