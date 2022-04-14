@@ -3,14 +3,17 @@
     <h1 style="font-size: 48px; font-weight: bolder">
       Hi, this is a review page
     </h1>
+    <RedBtn>HELLO RED</RedBtn>
   </section>
 </template>
 
 <script>
 import axios from "axios";
+import RedBtn from "@/components/shared/RedBtn";
 
 export default {
   name: "Review",
+  components: { RedBtn },
   data() {
     return {
       provinces: [],
