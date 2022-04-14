@@ -1,7 +1,9 @@
 <template>
   <section>
-    <div v-for="item in province" v-bind:key="item.province_id">
-      <p>{{ item.province_name }}</p>
+    <div v-for="province in provinces" v-bind:key="province.province_id">
+      <p class="text-base text-stone-900">
+        {{ province.province_name }}
+      </p>
     </div>
   </section>
 </template>
@@ -13,7 +15,7 @@ export default {
   name: "Services",
   data() {
     return {
-      province: [],
+      provinces: [],
     };
   },
 
@@ -25,7 +27,7 @@ export default {
     async getProvince() {
       try {
         const response = await axios.get("http://localhost:4000/");
-        this.province = response.data;
+        this.provinces = response.data;
       } catch (err) {
         console.log(err);
       }

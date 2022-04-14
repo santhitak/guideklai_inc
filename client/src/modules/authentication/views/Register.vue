@@ -92,6 +92,7 @@
                         v-model="emailAddress"
                         class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                         placeholder="Enter your email"
+                        required=""
                       />
                     </div>
                     <div class="mb-6 w-1/2">
@@ -210,19 +211,31 @@ export default {
   },
   computed: {
     computedUsername() {
-      return (
-        this.first_name.toLowerCase().substring(0, 3) +
-        "x" +
-        Math.floor(Math.random() * 100)
-      );
+      return Math.random()
+        .toString(36)
+        .substring(2, this.first_name.length + 4);
     },
   },
   methods: {
     login() {
       router.push("/auth/login");
     },
-    validPhone() {},
+    validPhone() {
+      return this.phone.length !== 10
+        ? alert("please input the correct phone number")
+        : null;
+    },
+    validPass() {
+      if (this.password < 6) {
+        alert("password must be longer than 6");
+      }
+      return this.password !== this.password_confirm
+        ? alert("password do not match")
+        : null;
+    },
     async register() {
+      this.validPhone();
+      this.validPass();
       try {
         await axios.post("http://localhost:4000/auth/register", {
           firstname: this.first_name,
@@ -244,8 +257,8 @@ export default {
         console.log(err);
       } finally {
         console.log("DONE!");
+        await router.push("/");
       }
-      await router.push("/");
     },
   },
 };

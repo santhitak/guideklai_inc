@@ -1,4 +1,5 @@
-import { getProvince, postAccount, getAccount } from "../models/main.js";
+import { getProvince } from "../models/modules/services.js";
+import { postAccount, getAccount } from "../models/modules/authorizations.js";
 
 export const province = (req, res) => {
   getProvince((err, results) => {
