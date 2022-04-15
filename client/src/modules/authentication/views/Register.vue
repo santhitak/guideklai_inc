@@ -149,6 +149,7 @@
                       id="checkbox-1"
                       aria-describedby="checkbox-1"
                       type="checkbox"
+                      v-model="checkedTerm"
                       class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                       
                     />
@@ -207,6 +208,7 @@ export default {
       password: null,
       password_confirm: null,
       checkedPass: false,
+      checkedTerm: false
     };
   },
   computed: {
@@ -220,11 +222,22 @@ export default {
     login() {
       router.push("/auth/login");
     },
-    validPhone() {
-      return this.phone.length !== 10
-        ? alert("please input the correct phone number")
-        : null;
+    validName(){
+      return this.first_name.match(/^[A-Za-z]+$/) && this.last_name.match(/^[A-Za-z]+$/)
+      ? null
+      :alert("Please input alphabet characters only");
     },
+    validEmail(){
+      return this.emailAddress.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
+      ? null
+      :alert("Invalid email");
+    },
+    validPhone() {
+      return this.phone.length == 10 && this.phone.match(/^[0-9]+$/)
+        ? null
+        : alert("please input the correct phone number");
+    },
+    // /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     validPass() {
       if (this.password.length < 8) {
         alert("password must be longer than 8");
@@ -242,9 +255,18 @@ export default {
         ? alert("password do not match")
         : null;
     },
+    validTerm(){
+      return this.checkedTerm
+        ? null
+        : alert("You must agree to the terms and conditions");
+    },
     async register() {
+      this.validName();
+      this.validEmail();
       this.validPhone();
       this.validPass();
+      this.validTerm();
+      
       try {
         await axios.post("http://localhost:4000/auth/register", {
           firstname: this.first_name,
