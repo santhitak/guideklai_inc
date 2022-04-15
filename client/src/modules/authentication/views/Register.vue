@@ -235,6 +235,9 @@ export default {
       else if(this.password.search(/[A-Z]/) < 0){
         alert("Your password must contain at least 1 uppercase character");
       }
+      else if(this.password.search(/[0-9]/) < 0){
+        alert("Your password must contain at least 1 number");
+      }
       return this.password !== this.password_confirm
         ? alert("password do not match")
         : null;
