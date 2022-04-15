@@ -226,8 +226,14 @@ export default {
         : null;
     },
     validPass() {
-      if (this.password < 6) {
-        alert("password must be longer than 6");
+      if (this.password.length < 8) {
+        alert("password must be longer than 8");
+      }
+      else if(this.password.search(/[a-z]/) < 0){
+        alert("Your password must contain at least 1 lowercase character");
+      }
+      else if(this.password.search(/[A-Z]/) < 0){
+        alert("Your password must contain at least 1 uppercase character");
       }
       return this.password !== this.password_confirm
         ? alert("password do not match")
@@ -257,7 +263,6 @@ export default {
         console.log(err);
       } finally {
         console.log("DONE!");
-        await router.push("/");
       }
     },
   },
