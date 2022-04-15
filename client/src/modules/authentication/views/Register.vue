@@ -208,8 +208,12 @@ export default {
       password: null,
       password_confirm: null,
       checkedPass: false,
-      checkedTerm: false
+      checkedTerm: false,
+      memberDatas: []
     };
+  },
+  created() {
+    this.memberData();
   },
   computed: {
     computedUsername() {
@@ -231,6 +235,19 @@ export default {
       return this.emailAddress.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
       ? null
       :alert("Invalid email");
+    },
+    validUsedEmail() {
+      let count = 0;
+      for (var i = 0; i < this.memberDatas.length; i++){
+          this.emailAddress == this.memberDatas[i].email ? count += 1 : count += 0
+          // console.log("🚀 ~ file: Register.vue ~ line 243 ~ validEmail ~ this.memberDatas[i].email", this.memberDatas[i].email)
+          
+      }
+      // alert(this.memberDatas.length)
+      return  count > 0 ? alert("this email used by other") : null;
+        
+         
+          
     },
     validPhone() {
       return this.phone.length == 10 && this.phone.match(/^[0-9]+$/)
@@ -260,9 +277,11 @@ export default {
         ? null
         : alert("You must agree to the terms and conditions");
     },
+    
     async register() {
       this.validName();
       this.validEmail();
+      this.validUsedEmail();
       this.validPhone();
       this.validPass();
       this.validTerm();
@@ -288,6 +307,15 @@ export default {
         console.log(err);
       } finally {
         console.log("DONE!");
+      }
+    },
+    async memberData() {
+      try {
+        const response = await axios.get("http://localhost:4000/auth/get/register");
+        this.memberDatas = response.data;
+        // console.log("🚀 ~ file: Register.vue ~ line 275 ~ memberData ~ this.memberDatas", this.memberDatas.Target)
+      } catch (err) {
+        console.log(err);
       }
     },
   },

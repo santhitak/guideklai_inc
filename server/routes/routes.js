@@ -6,5 +6,5 @@ router.get("/", province);
 router.get("/auth/login", memberData);
 router.get("/auth/register", createAccount);
 router.post("/auth/register", createAccount);
-
+router.get("/auth/get/register", memberData);
 export default router;
