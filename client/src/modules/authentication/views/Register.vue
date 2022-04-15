@@ -21,6 +21,9 @@
             class="max-w-md bg-white rounded-md border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-8"
             style="min-width: 40vw"
           >
+            <RedAlert v-for="item in alert" v-bind:key="item.id">
+              {{ item.status }}
+            </RedAlert>
             <form class="p-8 space-y-6">
               <div class="divide-y">
                 <div class="pb-6">
@@ -33,8 +36,9 @@
                     <label
                       for="role"
                       class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400"
-                      >What do you use this account for?</label
                     >
+                      What do you use this account for?
+                    </label>
                     <select
                       id="role"
                       v-model="role"
@@ -151,7 +155,6 @@
                       type="checkbox"
                       v-model="checkedTerm"
                       class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                      
                     />
                     <label
                       for="checkbox-1"
@@ -163,8 +166,8 @@
                         class="text-blue-600 hover:underline dark:text-blue-500"
                       >
                         terms and conditions
-                      </a></label
-                    >
+                      </a>
+                    </label>
                   </div>
                   <button
                     type="submit"
@@ -184,7 +187,7 @@
         </div>
         <div style="width: 100%">
           <div class="text-left text-white p-8">
-            <h3 class="font-medium text-5xl">Travel<br />With<br />Us :)</h3>
+            <h3 class="font-medium text-5xl">Travel<br />With<br />Us</h3>
           </div>
         </div>
       </div>
@@ -195,9 +198,11 @@
 <script>
 import router from "../../../routes";
 import axios from "axios";
+import RedAlert from "@/components/shared/RedAlert";
 
 export default {
   name: "Register",
+  components: { RedAlert },
   data() {
     return {
       role: "member",
@@ -209,7 +214,9 @@ export default {
       password_confirm: null,
       checkedPass: false,
       checkedTerm: false,
-      memberDatas: []
+
+      user: [],
+      alert: [],
     };
   },
   created() {
@@ -226,58 +233,88 @@ export default {
     login() {
       router.push("/auth/login");
     },
-    validName(){
-      return this.first_name.match(/^[A-Za-z]+$/) && this.last_name.match(/^[A-Za-z]+$/)
-      ? null
-      :alert("Please input alphabet characters only");
+    flush() {
+      this.alert.splice(0);
     },
-    validEmail(){
-      return this.emailAddress.toLowerCase().match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)
-      ? null
-      :alert("Invalid email");
+    validName() {
+      return this.first_name.match(/^[A-Za-z]+$/) &&
+        this.last_name.match(/^[A-Za-z]+$/)
+        ? null
+        : this.alert.push({
+            id: this.activeAlert + 1,
+            status: "Please input alphabet characters only",
+          });
+    },
+    validEmail() {
+      return this.emailAddress
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+        )
+        ? null
+        : this.alert.push({
+            id: this.activeAlert + 1,
+            status: "Invalid email",
+          });
     },
     validUsedEmail() {
       let count = 0;
-      for (var i = 0; i < this.memberDatas.length; i++){
-          this.emailAddress == this.memberDatas[i].email ? count += 1 : count += 0
-          // console.log("🚀 ~ file: Register.vue ~ line 243 ~ validEmail ~ this.memberDatas[i].email", this.memberDatas[i].email)
-          
+      for (let i = 0; i < this.user.length; i++) {
+        this.emailAddress === this.user[i].email ? (count += 1) : (count += 0);
       }
-      // alert(this.memberDatas.length)
-      return  count > 0 ? alert("this email used by other") : null;
-        
-         
-          
-    },
-    validPhone() {
-      return this.phone.length == 10 && this.phone.match(/^[0-9]+$/)
-        ? null
-        : alert("please input the correct phone number");
-    },
-    // /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    validPass() {
-      if (this.password.length < 8) {
-        alert("password must be longer than 8");
-      }
-      else if(this.password.search(/[a-z]/) < 0){
-        alert("Your password must contain at least 1 lowercase character");
-      }
-      else if(this.password.search(/[A-Z]/) < 0){
-        alert("Your password must contain at least 1 uppercase character");
-      }
-      else if(this.password.search(/[0-9]/) < 0){
-        alert("Your password must contain at least 1 number");
-      }
-      return this.password !== this.password_confirm
-        ? alert("password do not match")
+      return count > 0
+        ? this.alert.push({
+            id: this.activeAlert + 1,
+            status: "this email used by other",
+          })
         : null;
     },
-    validTerm(){
+    validPhone() {
+      return this.phone.length === 10 && this.phone.match(/^[0-9]+$/)
+        ? null
+        : this.alert.push({
+            id: this.activeAlert + 1,
+            status: "Please input the correct phone number",
+          });
+    },
+    validPass() {
+      if (this.password.length < 8) {
+        this.alert.push({
+          id: this.activeAlert + 1,
+          status: "Password must be longer than 8 character",
+        });
+      } else if (this.password.search(/[a-z]/) < 0) {
+        this.alert.push({
+          id: this.activeAlert + 1,
+          status: "Password must contain at least 1 lowercase character",
+        });
+      } else if (this.password.search(/[A-Z]/) < 0) {
+        this.alert.push({
+          id: this.activeAlert + 1,
+          status: "Password must contain at least 1 uppercase character",
+        });
+      } else if (this.password.search(/[0-9]/) < 0) {
+        this.alert.push({
+          id: this.activeAlert + 1,
+          status: "Password must contain at least 1 number",
+        });
+      }
+      return this.password !== this.password_confirm
+        ? this.alert.push({
+            id: this.activeAlert + 1,
+            status: "Password do not match",
+          })
+        : null;
+    },
+    validTerm() {
       return this.checkedTerm
         ? null
-        : alert("You must agree to the terms and conditions");
+        : this.alert.push({
+            id: this.activeAlert + 1,
+            status: "Please agree to the terms and conditions",
+          });
     },
-    
+
     async register() {
       this.validName();
       this.validEmail();
@@ -285,7 +322,7 @@ export default {
       this.validPhone();
       this.validPass();
       this.validTerm();
-      
+
       try {
         await axios.post("http://localhost:4000/auth/register", {
           firstname: this.first_name,
@@ -296,13 +333,6 @@ export default {
           phone_number: this.phone,
           type_member: this.role,
         });
-        console.log(
-          this.computedUsername +
-            " " +
-            this.emailAddress +
-            " is now a/an " +
-            this.role
-        );
       } catch (err) {
         console.log(err);
       } finally {
@@ -311,9 +341,10 @@ export default {
     },
     async memberData() {
       try {
-        const response = await axios.get("http://localhost:4000/auth/get/register");
-        this.memberDatas = response.data;
-        // console.log("🚀 ~ file: Register.vue ~ line 275 ~ memberData ~ this.memberDatas", this.memberDatas.Target)
+        const response = await axios.get(
+          "http://localhost:4000/auth/get/register"
+        );
+        this.user = response.data;
       } catch (err) {
         console.log(err);
       }
@@ -321,5 +352,3 @@ export default {
   },
 };
 </script>
-
-<style scoped></style>

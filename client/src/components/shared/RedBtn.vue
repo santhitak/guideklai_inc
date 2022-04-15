@@ -12,5 +12,3 @@ export default {
   name: "RedBtn",
 };
 </script>
-
-<style scoped></style>
