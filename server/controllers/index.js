@@ -12,8 +12,8 @@ export const province = (req, res) => {
 };
 
 export const memberData = (req, res) => {
-  const data = req.body;
-  getAccount(data, (err, results) => {
+  
+  getAccount((err, results) => {
     if (err) {
       res.send(err);
     } else {
