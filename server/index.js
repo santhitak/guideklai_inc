@@ -1,10 +1,14 @@
-import express from "express";
-import cors from "cors";
-import Router from "./routes/routes.js";
+const express = require("express");
+const cors = require("cors");
+const Router = () => require("./routes/routes.js");
+const { logger } = require("./middleware");
 
 const app = express();
-app.use(express.json());
+
+app.use(logger);
 app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(Router);
 
 app.listen(4000, () => {

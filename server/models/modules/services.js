@@ -1,7 +1,7 @@
-import db from "../../config/db.server.js";
+const db = require("../../config/db.server.js");
 
-export const getProvince = (result) => {
-  db.query("SELECT * FROM province", (err, results) => {
+const getProvince = (result) => {
+  db.query("SELECT `province.id` FROM PROVINCE", (err, results) => {
     if (err) {
       console.log(err);
       result(err, null);
@@ -10,3 +10,5 @@ export const getProvince = (result) => {
     }
   });
 };
+
+module.exports = { getProvince };

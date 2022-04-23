@@ -2,17 +2,45 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "npx kill-port 3000 && nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.20.0",
+    "cookie-session": "^2.0.0",
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "mysql2": "^2.3.3"
+    "express-joi-validation": "^5.0.0",
+    "mysql2": "^2.3.3",
+    "sequelize": "^6.19.0",
+    "joi": "^17.4.0",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "nodemonConfig": {
+    "restartable": "rs",
+    "ignore": [
+      ".git",
+      "node_modules/**/node_modules"
+    ],
+    "verbose": true,
+    "execMap": {
+      "js": "node --harmony"
+    },
+    "events": {
+      "restart": "osascript -e 'display notification \"App restarted due to:\n'$FILENAME'\" with title \"nodemon\"'",
+      "crash": "sh -c 'lsof -i :${PORT:-3000} -t | xargs kill'"
+    },
+    "env": {
+      "NODE_ENV": "development"
+    },
+    "ext": "js,json"
   }
 }

@@ -1,7 +1,7 @@
-import db from "../../config/db.server.js";
+const db = require("../../config/db.server.js");
 
-export const getAccount = (result) => {
-  db.query("SELECT * FROM member", (err, results) => {
+const getAccount = (result) => {
+  db.query("SELECT * FROM MEMBER", (err, results) => {
     if (err) {
       console.log(err);
       result(err, null);
@@ -11,13 +11,15 @@ export const getAccount = (result) => {
   });
 };
 
-export const postAccount = (data, result) => {
-  db.query("INSERT INTO member SET ?", [data], (err, results) => {
+const postAccount = (data, result) => {
+  db.query("INSERT INTO MEMBER SET ?", [data], (err, results) => {
     if (err) {
       console.log(err);
-      result(err, null);
+      result(err);
     } else {
       result(null, results);
     }
   });
 };
+
+module.exports = { getAccount, postAccount };

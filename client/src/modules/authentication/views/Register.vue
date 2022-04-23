@@ -216,7 +216,9 @@ export default {
       checkedTerm: false,
 
       user: [],
-      alert: [],
+
+      activeAlert: 0,
+      alert: []
     };
   },
   created() {
@@ -227,7 +229,7 @@ export default {
       return Math.random()
         .toString(36)
         .substring(2, this.first_name.length + 4);
-    },
+    }
   },
   methods: {
     login() {
@@ -238,12 +240,12 @@ export default {
     },
     validName() {
       return this.first_name.match(/^[A-Za-z]+$/) &&
-        this.last_name.match(/^[A-Za-z]+$/)
+      this.last_name.match(/^[A-Za-z]+$/)
         ? null
         : this.alert.push({
-            id: this.activeAlert + 1,
-            status: "Please input alphabet characters only",
-          });
+          id: this.activeAlert + 1,
+          status: "Please input alphabet characters only"
+        });
     },
     validEmail() {
       return this.emailAddress
@@ -253,9 +255,9 @@ export default {
         )
         ? null
         : this.alert.push({
-            id: this.activeAlert + 1,
-            status: "Invalid email",
-          });
+          id: this.activeAlert + 1,
+          status: "Invalid email"
+        });
     },
     validUsedEmail() {
       let count = 0;
@@ -264,55 +266,55 @@ export default {
       }
       return count > 0
         ? this.alert.push({
-            id: this.activeAlert + 1,
-            status: "this email used by other",
-          })
+          id: this.activeAlert + 1,
+          status: "this email used by other"
+        })
         : null;
     },
     validPhone() {
       return this.phone.length === 10 && this.phone.match(/^[0-9]+$/)
         ? null
         : this.alert.push({
-            id: this.activeAlert + 1,
-            status: "Please input the correct phone number",
-          });
+          id: this.activeAlert + 1,
+          status: "Please input the correct phone number"
+        });
     },
     validPass() {
       if (this.password.length < 8) {
         this.alert.push({
           id: this.activeAlert + 1,
-          status: "Password must be longer than 8 character",
+          status: "Password must be longer than 8 character"
         });
       } else if (this.password.search(/[a-z]/) < 0) {
         this.alert.push({
           id: this.activeAlert + 1,
-          status: "Password must contain at least 1 lowercase character",
+          status: "Password must contain at least 1 lowercase character"
         });
       } else if (this.password.search(/[A-Z]/) < 0) {
         this.alert.push({
           id: this.activeAlert + 1,
-          status: "Password must contain at least 1 uppercase character",
+          status: "Password must contain at least 1 uppercase character"
         });
       } else if (this.password.search(/[0-9]/) < 0) {
         this.alert.push({
           id: this.activeAlert + 1,
-          status: "Password must contain at least 1 number",
+          status: "Password must contain at least 1 number"
         });
       }
       return this.password !== this.password_confirm
         ? this.alert.push({
-            id: this.activeAlert + 1,
-            status: "Password do not match",
-          })
+          id: this.activeAlert + 1,
+          status: "Password do not match"
+        })
         : null;
     },
     validTerm() {
       return this.checkedTerm
         ? null
         : this.alert.push({
-            id: this.activeAlert + 1,
-            status: "Please agree to the terms and conditions",
-          });
+          id: this.activeAlert + 1,
+          status: "Please agree to the terms and conditions"
+        });
     },
 
     async register() {
@@ -331,7 +333,7 @@ export default {
           password: this.password,
           email: this.emailAddress,
           phone_number: this.phone,
-          type_member: this.role,
+          type_member: this.role
         });
       } catch (err) {
         console.log(err);
@@ -348,7 +350,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
-  },
+    }
+  }
 };
 </script>
