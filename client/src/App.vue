@@ -15,8 +15,8 @@ export default {
       return this.$route.meta.layout
         ? `layout-${this.$route.meta.layout}`
         : null;
-    },
-  },
+    }
+  }
 };
 </script>
 
