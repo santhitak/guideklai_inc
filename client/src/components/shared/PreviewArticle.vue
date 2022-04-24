@@ -2,11 +2,11 @@
   <div class="w-full">
     <a
       href="#"
-      style="min-height: 10rem"
-      class="min-w-full mb-3 flex flex-col items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+      style="min-height: 10rem; justify-content: space-evenly"
+      class="min-w-full mb-3 flex justify-evenly items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100"
     >
       <img
-        class="object-cover w-full mx-4 h-96 rounded-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
+        class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
         src="https://i.kym-cdn.com/entries/icons/original/000/039/679/fishscreamingwar.jpg"
         alt=""
       />
@@ -21,7 +21,7 @@
             8.7
           </p>
         </div>
-        <p class="mb-3 font-normal text-gray-700">
+        <p class="mb-3 font-normal text-gray-600">
           Here are the biggest enterprise technology acquisitions of 2021 so
           far, in reverse chronological order.
         </p>
