@@ -1,5 +1,7 @@
 import { createApp } from "vue";
 import routes from "./routes";
+import "./App.css";
+import "flowbite";
 import App from "./App.vue";
 import DefaultLayout from "./layouts/DefaultLayout.vue";
 import { registerModules } from "@/register-modules";
