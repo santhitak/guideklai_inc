@@ -15,6 +15,6 @@ const authRoute = require("./routes/authentication");
 app.use(indexRoute.router);
 app.use(authRoute.router);
 
-app.listen(4000, () => {
-  console.log(`Example app listening at http://localhost:4000`);
+app.listen(3000, () => {
+  console.log(`Example app listening at http://localhost:3000`);
 });
