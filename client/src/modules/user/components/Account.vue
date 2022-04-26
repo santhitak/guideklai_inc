@@ -1,8 +1,17 @@
-<template><h1>Hi I'm Account</h1></template>
+<template>
+  <div>
+    <div class="flex flex-row">
+      <div class="basis-1/2">
+        
+      </div>
+      <div class="basis-1/4">02</div>
+    </div>
+  </div>
+</template>
 
 <script>
 export default {
-  name: "Account",
+  name: "Account"
 };
 </script>
 

@@ -8,7 +8,20 @@ const moduleRoute = {
       path: "manage_account",
       component: Manage,
       meta: {
-        requiresAuth: true,
+        layout: "nav",
+      },
+    },
+    {
+      path: "security",
+      component: Manage,
+      meta: {
+        layout: "nav",
+      },
+    },
+    {
+      path: "account",
+      component: Manage,
+      meta: {
         layout: "nav",
       },
     },
