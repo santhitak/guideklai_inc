@@ -8,6 +8,7 @@ npm install
 
 node index
 ```
+
 ### client
 
 ```
@@ -18,4 +19,5 @@ npm run serve
 ```
 
 ### BOTH SIDES MUST RUN TO GET THE DATA
+
 #### also, open up your mySQL
