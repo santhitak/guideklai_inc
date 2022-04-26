@@ -11,6 +11,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(Router);
 
-app.listen(4000, () => {
-  console.log(`Example app listening at http://localhost:4000`);
+app.listen(3000, () => {
+  console.log(`Example app listening at http://localhost:3000`);
 });
