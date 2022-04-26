@@ -6,7 +6,6 @@
       </div>
       <div class="flex-auto grow">
         <PreviewArticle></PreviewArticle>
-        <PreviewArticle></PreviewArticle>
       </div>
     </div>
 

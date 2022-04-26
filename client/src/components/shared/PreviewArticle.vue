@@ -1,5 +1,6 @@
 <template>
-  <div class="w-full">
+<div>
+  <div v-for="articles in Article" class="w-full" v-bind:key="articles.article_id">
     <a
       href="#"
       style="min-height: 10rem; justify-content: space-evenly"
@@ -7,31 +8,51 @@
     >
       <img
         class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
-        src="https://i.kym-cdn.com/entries/icons/original/000/039/679/fishscreamingwar.jpg"
+        :src="articles.image"
         alt=""
       />
       <div class="flex flex-col p-4 leading-normal">
         <div class="flex justify-between">
           <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-            Noteworthy technology acquisitions 2021
+            {{articles.title}}
           </h5>
-          <p
+          <p v-if="articles.rating != null"
             class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
           >
-            8.7
+            {{articles.rating}}
           </p>
         </div>
-        <p class="mb-3 font-normal text-gray-600">
-          Here are the biggest enterprise technology acquisitions of 2021 so
-          far, in reverse chronological order.
+        <p style="white-space: nowrap; width: 600px; overflow: hidden; text-overflow: ellipsis;" class="mb-3 font-normal text-gray-600">
+          {{articles.information}}
         </p>
       </div>
     </a>
   </div>
+</div>
 </template>
 
 <script>
+import axios from "axios";
 export default {
-  name: "PreviewArticle"
+  name: "PreviewArticle",
+  data() {
+    return {
+      Article: [],
+    };
+  },
+  created() {
+    this.getArticle();
+  },
+  methods: {
+    async getArticle() {
+      try {
+        const response = await axios.get("http://localhost:4000/article");
+        this.Article = response.data;
+        console.log(this.Article)
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
 };
 </script>
