@@ -28,8 +28,7 @@ async function isLoggedIn(req, res, next) {
   }
 
   const [users] = await db.query(
-    "SELECT member_id, username, firstname, lastname, email, profile_pic, phone_number, type_member " +
-      "FROM member WHERE member_id = ?",
+    "SELECT member_id, firstname, lastname, username, password, email, phone_number, type_member, profile_pic FROM member WHERE member_id = ?",
     [token.member_id]
   );
   req.user = users[0];
