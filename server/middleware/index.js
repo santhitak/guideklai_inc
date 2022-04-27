@@ -1,4 +1,4 @@
-const db = require("../config/db.server.js");
+const db = require("../config/db.server");
 
 async function logger(req, res, next) {
   const timestamp = new Date().toISOString().substring(0, 19);
@@ -19,7 +19,7 @@ async function isLoggedIn(req, res, next) {
   }
 
   // Check token
-  const [tokens] = await db.query("SELECT * FROM TOKEN WHERE `token` = ?", [
+  const [tokens] = await db.query("SELECT * FROM tokens WHERE token = ?", [
     part2,
   ]);
   const token = tokens[0];
@@ -29,8 +29,8 @@ async function isLoggedIn(req, res, next) {
 
   const [users] = await db.query(
     "SELECT member_id, username, firstname, lastname, email, profile_pic, phone_number, type_member " +
-      "FROM MEMBER WHERE member_id = ?",
-    [token.user_id]
+      "FROM member WHERE member_id = ?",
+    [token.member_id]
   );
   req.user = users[0];
 
