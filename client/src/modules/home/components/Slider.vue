@@ -1,36 +1,41 @@
 <template>
-  <a-carousel arrows>
-    <template #prevArrow>
-      <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
-        <left-circle-outlined />
-      </div>
-    </template>
-    <template #nextArrow>
-      <div class="custom-slick-arrow" style="right: 10px">
-        <right-circle-outlined />
-      </div>
-    </template>
-    <div><h3>1</h3></div>
-    <div><h3>2</h3></div>
-    <div><h3>3</h3></div>
-    <div><h3>4</h3></div>
-  </a-carousel>
+  <Container>
+    <a-carousel arrows>
+      <template #prevArrow>
+        <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
+          <left-circle-outlined />
+        </div>
+      </template>
+      <template #nextArrow>
+        <div class="custom-slick-arrow" style="right: 10px">
+          <right-circle-outlined />
+        </div>
+      </template>
+      <div><h3>1</h3></div>
+      <div><h3>2</h3></div>
+      <div><h3>3</h3></div>
+      <div><h3>4</h3></div>
+    </a-carousel>
+  </Container>
 </template>
 <script>
-import { LeftCircleOutlined, RightCircleOutlined } from '@ant-design/icons-vue';
-export default ({
-    name:"Slider",
+import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons-vue";
+import Container from "@/components/containers/Container";
+
+export default {
+  name: "Slider",
   components: {
+    Container,
     LeftCircleOutlined,
-    RightCircleOutlined,
-  },
-});
+    RightCircleOutlined
+  }
+};
 </script>
+
 <style scoped>
-/* For demo */
 .ant-carousel :deep(.slick-slide) {
   text-align: center;
-  height: 160px;
+  height: 20rem;
   line-height: 160px;
   background: #364d79;
   overflow: hidden;
@@ -45,9 +50,11 @@ export default ({
   opacity: 0.3;
   z-index: 1;
 }
+
 .ant-carousel :deep(.custom-slick-arrow:before) {
   display: none;
 }
+
 .ant-carousel :deep(.custom-slick-arrow:hover) {
   opacity: 0.5;
 }
