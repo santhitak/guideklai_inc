@@ -18,22 +18,22 @@
               <h5 class="text-xl font-medium text-gray-900 dark:text-white">
                 Sign in<br />
                 <span class="text-sm"
-                  >For security, please sign in to access information</span
+                >For security, please sign in to access information</span
                 >
               </h5>
             </div>
             <div class="pt-6 flex flex-col justify-center">
               <div class="mb-6">
                 <label
-                  for="email"
+                  for="username"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                 >
-                  Email
+                  Username
                 </label>
                 <input
-                  type="email"
-                  id="email"
-                  v-model="email"
+                  type="text"
+                  id="username"
+                  v-model="username"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Enter your email"
                   required=""
@@ -93,59 +93,44 @@
 </template>
 
 <script>
-import router from "../../../routes";
-import axios from "axios";
+import router from "@/routes";
+import axios from "@/plugins/axios";
+
 export default {
   name: "Login.vue",
-  data(){
-    return{
-      email: null,
-      password: null,
-      memberDatas:[]
-    }
+  data() {
+    return {
+      username: "",
+      password: ""
+    };
   },
-  created() {
-    this.memberData();
-  },
-  // components: {
-    
-  // },
   methods: {
     register() {
       router.push({ path: "/auth/register" });
     },
-    Logincheck() {
-      let count = -1;
-      let text = "";
-      for (var i = 0; i < this.memberDatas.length; i++){
-          this.email == this.memberDatas[i].email ? count = i : null
-          console.log("🚀 ~ file: Register.vue ~ line 243 ~ validEmail ~ this.memberDatas[i].email", this.memberDatas[i].email)
-      }
-      // alert(this.memberDatas[count].password)
-      if(count !== -1){
-        this.password == this.memberDatas[count].password ? text = "success" : text = "Wrong password"
-      }
-      else{
-        text = "please check your email"
-      }
-      // console.log(this.memberDatas)
-      return alert(text)
-    },
-    async Login(){
-      this.Logincheck();
-    },
-    async memberData() {
+    async login() {
+      let data = {
+        username: this.username,
+        password: this.password
+      };
       try {
-        const response = await axios.get("http://localhost:4000/auth/login");
-        this.memberDatas = response.data;
-        // console.log("🚀 ~ file: Register.vue ~ line 275 ~ memberData ~ this.memberDatas", this.memberDatas)
-      } catch (err) {
-        console.log(err);
+        axios.post("http://localhost:4000/auth/login/", data)
+          .then(res => {
+            const token = res.data.token;
+            localStorage.setItem("token", token);
+            this.$emit("auth-change");
+            this.$router.push({ path: "/" });
+          })
+          .catch(error => {
+            this.error = error.response.data;
+            console.log(error.response.data);
+          });
+      } finally {
+        console.log("DONE!");
       }
-    },
-  },
-  
-};
-</script>
+    }
 
-<style scoped></style>
+  }
+};
+
+</script>

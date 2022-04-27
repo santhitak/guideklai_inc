@@ -85,6 +85,22 @@
                   <div class="flex">
                     <div class="mb-6 mr-3 w-1/2">
                       <label
+                        for="username"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                      >
+                        Username
+                      </label>
+                      <input
+                        type="text"
+                        id="username"
+                        v-model="username"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        placeholder="Enter your username"
+                        required=""
+                      />
+                    </div>
+                    <div class="mb-6 mr-3 w-1/2">
+                      <label
                         for="emailAddress"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       >
@@ -196,8 +212,8 @@
 </template>
 
 <script>
-import router from "../../../routes";
-import axios from "axios";
+import router from "@/routes";
+import axios from "@/plugins/axios.js";
 import RedAlert from "@/components/shared/RedAlert";
 
 export default {
@@ -206,12 +222,13 @@ export default {
   data() {
     return {
       role: "member",
-      first_name: null,
-      last_name: null,
-      emailAddress: null,
-      phone: null,
-      password: null,
-      password_confirm: null,
+      first_name: "",
+      last_name: "",
+      emailAddress: "",
+      username: "",
+      phone: "",
+      password: "",
+      password_confirm: "",
       checkedPass: false,
       checkedTerm: false,
 
@@ -221,134 +238,31 @@ export default {
       alert: []
     };
   },
-  created() {
-    this.memberData();
-  },
-  computed: {
-    computedUsername() {
-      return Math.random()
-        .toString(36)
-        .substring(2, this.first_name.length + 4);
-    }
-  },
   methods: {
     login() {
       router.push("/auth/login");
     },
-    flush() {
-      this.alert.splice(0);
-    },
-    validName() {
-      return this.first_name.match(/^[A-Za-z]+$/) &&
-      this.last_name.match(/^[A-Za-z]+$/)
-        ? null
-        : this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Please input alphabet characters only"
-        });
-    },
-    validEmail() {
-      return this.emailAddress
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        )
-        ? null
-        : this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Invalid email"
-        });
-    },
-    validUsedEmail() {
-      let count = 0;
-      for (let i = 0; i < this.user.length; i++) {
-        this.emailAddress === this.user[i].email ? (count += 1) : (count += 0);
-      }
-      return count > 0
-        ? this.alert.push({
-          id: this.activeAlert + 1,
-          status: "this email used by other"
-        })
-        : null;
-    },
-    validPhone() {
-      return this.phone.length === 10 && this.phone.match(/^[0-9]+$/)
-        ? null
-        : this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Please input the correct phone number"
-        });
-    },
-    validPass() {
-      if (this.password.length < 8) {
-        this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Password must be longer than 8 character"
-        });
-      } else if (this.password.search(/[a-z]/) < 0) {
-        this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Password must contain at least 1 lowercase character"
-        });
-      } else if (this.password.search(/[A-Z]/) < 0) {
-        this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Password must contain at least 1 uppercase character"
-        });
-      } else if (this.password.search(/[0-9]/) < 0) {
-        this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Password must contain at least 1 number"
-        });
-      }
-      return this.password !== this.password_confirm
-        ? this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Password do not match"
-        })
-        : null;
-    },
-    validTerm() {
-      return this.checkedTerm
-        ? null
-        : this.alert.push({
-          id: this.activeAlert + 1,
-          status: "Please agree to the terms and conditions"
-        });
-    },
 
     async register() {
-      this.validName();
-      this.validEmail();
-      this.validUsedEmail();
-      this.validPhone();
-      this.validPass();
-      this.validTerm();
-
+      let data = {
+        firstname: this.first_name,
+        lastname: this.last_name,
+        username: this.username,
+        password: this.password,
+        email: this.emailAddress,
+        phone_number: this.phone,
+        type_member: this.role,
+        confirm_password: this.confirm_password
+      };
       try {
-        await axios.post("http://localhost:4000/auth/register", {
-          firstname: this.first_name,
-          lastname: this.last_name,
-          username: this.computedUsername,
-          password: this.password,
-          email: this.emailAddress,
-          phone_number: this.phone,
-          type_member: this.role
-        });
+        await axios.post("http://localhost:4000/auth/register", data)
+          .then(() => {
+            alert("Sign up Success");
+          });
       } catch (err) {
         console.log(err);
       } finally {
         console.log("DONE!");
-      }
-    },
-    async memberData() {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/auth/get/register"
-        );
-        this.user = response.data;
-      } catch (err) {
-        console.log(err);
       }
     }
   }
