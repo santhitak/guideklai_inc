@@ -18,6 +18,7 @@
     "tailwindcss": "^3.0.23",
     "vue": "^3.0.0",
     "vue-router": "^4.0.14",
+    "vuelidate": "^0.7.7",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
