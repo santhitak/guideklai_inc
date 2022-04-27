@@ -21,9 +21,6 @@
             class="max-w-md bg-white rounded-md border border-gray-200 dark:bg-gray-800 dark:border-gray-700 p-8"
             style="min-width: 40vw"
           >
-            <RedAlert v-for="item in alert" v-bind:key="item.id">
-              {{ item.status }}
-            </RedAlert>
             <form class="p-8 space-y-6">
               <div class="divide-y">
                 <div class="pb-6">
@@ -213,12 +210,27 @@
 
 <script>
 import router from "@/routes";
-import axios from "@/plugins/axios.js";
-import RedAlert from "@/components/shared/RedAlert";
+import axios from "axios";
+import {
+  required,
+  email,
+  helpers,
+  minLength,
+  maxLength,
+  sameAs
+} from "vuelidate/lib/validators";
+
+function phone_number(value) {
+  return !helpers.req(value) || !!value.match(/0[0-9]{9}/);
+}
+
+function complexPassword(value) {
+  return value.match(/[a-z]/) && value.match(/[A-Z]/) && value.match(/[0-9]/);
+}
 
 export default {
   name: "Register",
-  components: { RedAlert },
+  components: {},
   data() {
     return {
       role: "member",
@@ -230,12 +242,7 @@ export default {
       password: "",
       password_confirm: "",
       checkedPass: false,
-      checkedTerm: false,
-
-      user: [],
-
-      activeAlert: 0,
-      alert: []
+      checkedTerm: false
     };
   },
   methods: {
@@ -255,7 +262,8 @@ export default {
         confirm_password: this.confirm_password
       };
       try {
-        await axios.post("http://localhost:4000/auth/register", data)
+        await axios
+          .post("http://localhost:4000/auth/register", data)
           .then(() => {
             alert("Sign up Success");
           });
@@ -263,6 +271,35 @@ export default {
         console.log(err);
       } finally {
         console.log("DONE!");
+      }
+    },
+    validations: {
+      email: {
+        required: required,
+        email: email
+      },
+      mobile: {
+        required: required,
+        phone_number: phone_number
+      },
+      password: {
+        required: required,
+        minLength: minLength(8),
+        complex: complexPassword
+      },
+      confirm_password: {
+        sameAs: sameAs("password")
+      },
+      username: {
+        required: required,
+        minLength: minLength(5),
+        maxLength: maxLength(20)
+      },
+      first_name: {
+        required: required
+      },
+      last_name: {
+        required: required
       }
     }
   }

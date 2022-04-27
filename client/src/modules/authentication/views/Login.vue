@@ -101,7 +101,8 @@ export default {
   data() {
     return {
       username: "",
-      password: ""
+      password: "",
+      user: null
     };
   },
   methods: {
