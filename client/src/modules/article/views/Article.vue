@@ -1,5 +1,5 @@
 <template>
-  <section style="height: auto; min-height: 100vh;">
+  <section style="height: auto; min-height: 100vh">
     <div class="flex justify-between">
       <div class="flex-1">
         <Filterbar></Filterbar>
@@ -8,13 +8,10 @@
         <PreviewArticle></PreviewArticle>
       </div>
     </div>
-
-
   </section>
 </template>
 
 <script>
-
 import Filterbar from "@/components/shared/Filter/Filterbar";
 import PreviewArticle from "@/components/shared/PreviewArticle";
 
@@ -23,7 +20,7 @@ export default {
   components: { Filterbar, PreviewArticle },
   data() {
     return {};
-  }
+  },
 };
 </script>
 

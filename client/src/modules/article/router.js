@@ -1,6 +1,7 @@
 const Module = () => import("./Module.vue");
-const Article = () => import("./views/article.vue");
-const Articledetail = () => import("./views/articledetail.vue");
+const Article = () => import("./views/Article.vue");
+const ArticleDetail = () => import("./views/ArticleDetail.vue");
+
 const moduleRoute = {
   path: "/",
   component: Module,
@@ -14,7 +15,7 @@ const moduleRoute = {
     },
     {
       path: "article/:id",
-      component: Articledetail,
+      component: ArticleDetail,
       meta: {
         layout: "nav",
       },
