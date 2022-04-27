@@ -1,20 +1,45 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <router-view />
+      <router-view :key="$route.fullPath" @auth-change="onAuthChange" />
     </component>
   </div>
 </template>
 
 <script>
+import axios from "@/plugins/axios";
+
 export default {
   name: "App",
   components: {},
+  data() {
+    return {
+      user: null
+    };
+  },
+  mounted() {
+    this.onAuthChange();
+  },
   computed: {
     layout() {
       return this.$route.meta.layout
         ? `layout-${this.$route.meta.layout}`
         : null;
+    }
+  },
+  methods: {
+    onAuthChange() {
+      const token = localStorage.getItem("token");
+      if (token) {
+        this.getUser();
+      }
+    },
+    getUser() {
+      const token = localStorage.getItem("token");
+      axios.get("http://localhost:4000/auth/member", { headers: { Authorization: "Bearer " + token } }).then(res => {
+        this.user = res.data;
+        console.log(this.user);
+      });
     }
   }
 };

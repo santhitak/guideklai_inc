@@ -2,7 +2,7 @@
 <div>
   <div v-for="articles in Article" class="w-full" v-bind:key="articles.article_id">
     <a
-      href="#"
+      :href="`/article/${articles.article_id}/`"
       style="min-height: 10rem; justify-content: space-evenly"
       class="min-w-full mb-3 flex justify-evenly items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100"
     >
