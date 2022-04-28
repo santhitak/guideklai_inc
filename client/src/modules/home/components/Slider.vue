@@ -11,10 +11,11 @@
           <right-circle-outlined />
         </div>
       </template>
-      <div><h3>1</h3></div>
+      <!-- <div><h3>1</h3></div>
       <div><h3>2</h3></div>
       <div><h3>3</h3></div>
-      <div><h3>4</h3></div>
+      <div><h3>4</h3></div> -->
+      <slot></slot>
     </a-carousel>
   </Container>
 </template>
