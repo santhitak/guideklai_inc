@@ -95,7 +95,6 @@
 </template>
 
 <script>
-import router from "@/routes";
 import axios from "@/plugins/axios";
 
 export default {
