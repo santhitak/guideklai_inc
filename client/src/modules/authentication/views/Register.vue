@@ -193,14 +193,18 @@
               </div>
               <div class="text-sm my-6">
                 Already have an account?
-                <a href="#" @click="login" class="text-blue-600">Sign In</a>
+                <router-link to="/auth/login">
+                  <p class="text-blue-600" style="display: inline">Sign In</p>
+                </router-link>
               </div>
             </form>
           </div>
         </div>
         <div style="width: 100%">
-          <div class="text-left text-white p-8">
-            <h3 class="font-medium text-5xl">Travel<br />With<br />Us</h3>
+          <div class="text-left p-8">
+            <h3 class="font-medium text-white text-5xl">
+              Travel<br />With<br />Us
+            </h3>
           </div>
         </div>
       </div>
@@ -246,10 +250,6 @@ export default {
     };
   },
   methods: {
-    login() {
-      router.push("/auth/login");
-    },
-
     async register() {
       let data = {
         firstname: this.first_name,

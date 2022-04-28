@@ -75,7 +75,7 @@
               </div>
               <button
                 type="submit"
-                @click="Login"
+                @click="login"
                 class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Sign In
@@ -84,7 +84,9 @@
           </div>
           <div class="text-sm my-6">
             Don't have an account?
-            <a href="#" @click="register" class="text-blue-600">Sign Up</a>
+            <router-link to="/auth/register">
+              <p class="text-blue-600" style="display: inline">Register</p>
+            </router-link>
           </div>
         </form>
       </div>
@@ -101,28 +103,26 @@ export default {
   data() {
     return {
       username: "",
-      password: "",
-      user: null
+      password: ""
     };
   },
   methods: {
-    register() {
-      router.push({ path: "/auth/register" });
-    },
     async login() {
       let data = {
         username: this.username,
         password: this.password
       };
       try {
-        axios.post("http://localhost:4000/auth/login/", data)
-          .then(res => {
-            const token = res.data.token;
-            localStorage.setItem("token", token);
-            this.$emit("auth-change");
-            this.$router.push({ path: "/" });
+        axios
+          .post("http://localhost:4000/auth/login/", data)
+          .then((res) => {
+            if (res.data.status) {
+              localStorage.setItem("token", res.data.token);
+              this.$emit("auth-change");
+              this.$router.push({ path: "/" });
+            }
           })
-          .catch(error => {
+          .catch((error) => {
             this.error = error.response.data;
             console.log(error.response.data);
           });
@@ -130,8 +130,6 @@ export default {
         console.log("DONE!");
       }
     }
-
   }
 };
-
 </script>
