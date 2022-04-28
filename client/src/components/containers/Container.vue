@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 100vw; height: auto; padding: 3rem 10rem">
+  <div style="width: 100vw; height: auto;">
     <slot></slot>
   </div>
 </template>
