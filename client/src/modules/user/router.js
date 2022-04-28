@@ -1,5 +1,8 @@
 const Module = () => import("./Module.vue");
 const Manage = () => import("./views/Manage.vue");
+const Security = () => import("./components/Security.vue");
+const Account = () => import("./components/Account.vue");
+
 const moduleRoute = {
   path: "/id",
   component: Module,
@@ -12,15 +15,15 @@ const moduleRoute = {
       },
     },
     {
-      path: "security",
-      component: Manage,
+      path: "manage_account/security",
+      component: Security,
       meta: {
         layout: "nav",
       },
     },
     {
-      path: "account",
-      component: Manage,
+      path: "manage_account/account",
+      component: Account,
       meta: {
         layout: "nav",
       },
