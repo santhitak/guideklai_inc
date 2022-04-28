@@ -13,14 +13,42 @@
         <LinkBtn>Store</LinkBtn>
       </div>
     </Container>
-
     <Container>
-      <div v-for="article in articles" :key="article.article_id">
-        <h5>{{ article.article_id + ". " + article.title }}</h5>
-      </div>
+      TOP 5 View in review
+      <Slider>
+        <div
+          v-for="article in reviewAllShow.slice(0, 5)"
+          :key="article.article_id"
+        >
+          <h5>{{ article.view }} {{ article.title_review }}</h5>
+        </div>
+      </Slider>
     </Container>
 
-    <Slider />
+    <Container>
+      TOP 5 reviewTour
+      <Slider>
+        <div
+          v-for="article in reviewTour.slice(0, 5)"
+          :key="article.article_id"
+        >
+          <h5>{{ article.view }} {{ article.title_review }}</h5>
+        </div>
+      </Slider>
+    </Container>
+
+    <Container>
+      TOP 5 View in Promote
+      <Slider>
+        <div
+          v-for="article in promoteAllShow.slice(0, 5)"
+          :key="article.article_id"
+        >
+          <h5>{{ article.view }} {{ article.title_promote }}</h5>
+        </div>
+      </Slider>
+    </Container>
+
     <MostViewed />
     <MostRating />
   </div>
@@ -41,11 +69,59 @@ export default {
     return {
       email: null,
       password: null,
-      articles: []
+      articles: [],
+      articleTopFives: [],
+      articleTopFiveReviews: [],
     };
   },
   created() {
     this.articleData();
+    this.articleTopFive();
+    this.articleTopFiveReview();
+  },
+  computed: {
+    promoteAllShow: function () {
+      return this.articleTopFives.filter((u) => {
+        return u.type_article == "Promote";
+      });
+    },
+    reviewAllShow: function () {
+      return this.articleTopFives.filter((u) => {
+        return u.type_article == "Review";
+      });
+    },
+    
+    reviewRestaurant: function () {
+      return this.articleTopFiveReviews.filter((u) => {
+        return u.category == "review_restaurant";
+      });
+    },
+     reviewTour: function () {
+      return this.articleTopFiveReviews.filter((u) => {
+        return u.category == "review_tour";
+      });
+    },
+    reviewGuide: function () {
+      return this.articleTopFiveReviews.filter((u) => {
+        return u.category == "review_guide";
+      });
+    },
+    reviewRest: function () {
+      return this.articleTopFiveReviews.filter((u) => {
+        return u.category == "review_rest";
+      });
+    },
+    reviewAttraction: function () {
+      return this.articleTopFiveReviews.filter((u) => {
+        return u.category == "review_attraction";
+      });
+    },
+     reviewStore: function () {
+      return this.articleTopFiveReviews.filter((u) => {
+        return u.category == "review_store";
+      });
+    },
+    
   },
   methods: {
     async articleData() {
@@ -55,7 +131,27 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
-  }
+    },
+    async articleTopFive() {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/article/show/topFiveViewAll"
+        );
+        this.articleTopFives = response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async articleTopFiveReview() {
+      try {
+        const response = await axios.get(
+          "http://localhost:4000/article/show/topFiveViewAllReview"
+        );
+        this.articleTopFiveReviews = response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
 };
 </script>
