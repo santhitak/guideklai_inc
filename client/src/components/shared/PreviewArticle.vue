@@ -17,9 +17,13 @@
         />
         <div class="flex flex-col p-4 leading-normal">
           <div class="flex justify-between">
-            <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
-              {{ articles.title }}
+            <h5 v-if="articles.type_article == 'Review'" class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+              {{ articles.title_review }}
             </h5>
+            <h5 v-else class="mb-2 text-2xl font-bold tracking-tight text-gray-900">
+              {{ articles.title_promote }}
+            </h5>
+
             <p
               v-if="articles.rating != null"
               class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
