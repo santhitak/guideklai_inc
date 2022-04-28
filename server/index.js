@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { logger } = require("./middleware");
+require("dotenv").config();
 
 const app = express();
 
@@ -16,6 +17,8 @@ app.use(indexRoute.router);
 app.use(authRoute.router);
 app.use(articleRoute.router);
 
-app.listen(4000, () => {
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
   console.log(`Example app listening at http://localhost:4000`);
 });
