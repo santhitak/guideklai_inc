@@ -1,7 +1,7 @@
 <template>
   <div>
     <nav
-      class="fixed top-0 right-0 left-0 bg-white border-gray-200 px-2 sm:px-4 py-2.5 rounded shadow-md"
+      class="fixed top-0 right-0 left-0 bg-white border-gray-200 px-2 sm:px-4 py-2.5 shadow-md"
     >
       <div
         class="container flex flex-wrap justify-between items-center mx-auto"
@@ -13,25 +13,27 @@
         </a>
         <div class="flex md:order-2">
           <div v-if="!user">
-            <router-link to="/auth/login" class="text-gray-900 hover:text-gray border border-gray-800 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+            <router-link
+              to="/auth/login"
+              class="text-gray-900 hover:text-gray border border-gray-800 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
+            >
               Sign In
             </router-link>
-            <router-link to="/auth/register" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+            <router-link
+              to="/auth/register"
+              class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
+            >
               Sign Up
             </router-link>
           </div>
           <div v-else>
-            <button
-              type="button"
-              class="text-gray-900 hover:text-gray border border-gray-800 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-            >
+            <a-avatar>{{ user.username.substring(0, 1) }}</a-avatar>
+            <p class="text-gray-900 font-semibold inline mx-4">
               {{ user.username }}
-            </button>
+            </p>
           </div>
         </div>
-        <div
-          class="justify-between items-center flex md:w-auto md:order-1"
-        >
+        <div class="justify-between items-center flex md:w-auto md:order-1">
           <ul
             class="flex flex-col m-0 p-0 md:flex-row md:space-x-8 md:text-sm md:font-medium mb-0"
           >
@@ -61,9 +63,7 @@
         </div>
       </div>
     </nav>
-    <div class="pt-16">
-      <slot></slot>
-    </div>
+    <slot></slot>
     <footer
       class="p-4 bg-white rounded-lg shadow md:px-6 md:py-8 dark:bg-gray-800"
     >

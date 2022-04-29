@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="bar-panel">
-      <LinkedBar />
+      <LinkedBar style="padding-top: 4.5rem" />
     </div>
     <section style="height: auto">
       <div style="margin: 2rem 0 5rem 0">
@@ -148,7 +148,6 @@ export default {
   background-position: 0 -700px;
   background-size: cover;
   height: 30vh;
-  padding-top: 2rem;
   display: flex;
   align-items: center;
   justify-content: center;
