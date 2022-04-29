@@ -5,8 +5,18 @@ const router = express.Router();
 router.get("/article", async function (req, res, next) {
   try {
     let sql =
-      "SELECT * FROM article left join promote using(article_id) left join review using(article_id)";
+      "SELECT * FROM article left join promote using(article_id) left join review using(article_id) left join review_category using(article_id)";
 
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+router.get("/article/filter/:type", async function (req, res, next) {
+  try {
+    let sql = `SELECT * FROM article left join promote using(article_id) left join review using(article_id) left join review_category using(article_id) where type_Promote = "${req.params.type}" or category = "${req.params.type}"`;
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
