@@ -1,5 +1,5 @@
 <template>
-  <Container>
+  <div>
     <a-carousel arrows>
       <template #prevArrow>
         <div class="custom-slick-arrow" style="left: 10px; z-index: 1">
@@ -11,22 +11,16 @@
           <right-circle-outlined />
         </div>
       </template>
-      <!-- <div><h3>1</h3></div>
-      <div><h3>2</h3></div>
-      <div><h3>3</h3></div>
-      <div><h3>4</h3></div> -->
       <slot></slot>
     </a-carousel>
-  </Container>
+  </div>
 </template>
 <script>
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons-vue";
-import Container from "@/components/containers/Container";
 
 export default {
   name: "Slider",
   components: {
-    Container,
     LeftCircleOutlined,
     RightCircleOutlined
   }
@@ -55,6 +49,7 @@ export default {
 .ant-carousel :deep(.custom-slick-arrow:before) {
   display: none;
 }
+
 
 .ant-carousel :deep(.custom-slick-arrow:hover) {
   opacity: 0.5;
