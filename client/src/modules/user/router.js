@@ -12,6 +12,7 @@ const moduleRoute = {
       component: Manage,
       meta: {
         layout: "nav",
+        auth: true,
       },
     },
     {

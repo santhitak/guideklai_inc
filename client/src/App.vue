@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <component :is="layout">
-      <router-view :key="$route.fullPath" @auth-change="onAuthChange" />
+      <router-view :key="$route.fullPath" @auth-change="onAuthChange" :user="user" />
     </component>
   </div>
 </template>
@@ -17,7 +17,7 @@ export default {
       user: null
     };
   },
-  mounted() {
+  created() {
     this.onAuthChange();
   },
   computed: {
@@ -36,10 +36,14 @@ export default {
     },
     getUser() {
       const token = localStorage.getItem("token");
-      axios.get("http://localhost:4000/auth/member", { headers: { Authorization: "Bearer " + token } }).then(res => {
-        this.user = res.data;
-        console.log(this.user);
-      });
+      axios
+        .get("http://localhost:4000/auth/member", {
+          headers: { Authorization: "Bearer " + token }
+        })
+        .then((res) => {
+          this.user = res.data;
+          console.log(this.user);
+        });
     }
   }
 };

@@ -236,7 +236,7 @@ export default {
   components: {},
   data() {
     return {
-      role: "member",
+      role: "",
       first_name: "",
       last_name: "",
       emailAddress: "",

@@ -12,7 +12,7 @@
         class="max-w-md bg-white rounded-lg border border-gray-200 shadow-md dark:bg-gray-800 dark:border-gray-700 p-8"
         style="min-width: 25vw"
       >
-        <form class="p-8 space-y-6">
+        <div class="p-8 space-y-6">
           <div class="divide-y">
             <div class="pb-6">
               <h5 class="text-xl font-medium text-gray-900 dark:text-white">
@@ -74,7 +74,6 @@
                 </div>
               </div>
               <button
-                type="submit"
                 @click="login"
                 class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
@@ -88,7 +87,7 @@
               <p class="text-blue-600" style="display: inline">Register</p>
             </router-link>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   </section>
@@ -111,23 +110,20 @@ export default {
         username: this.username,
         password: this.password
       };
-      try {
-        axios
-          .post("http://localhost:4000/auth/login/", data)
-          .then((res) => {
-            if (res.data.status) {
-              localStorage.setItem("token", res.data.token);
-              this.$emit("auth-change");
-              this.$router.push({ path: "/" });
-            }
-          })
-          .catch((error) => {
-            this.error = error.response.data;
-            console.log(error.response.data);
-          });
-      } finally {
-        console.log("DONE!");
-      }
+
+      axios
+        .post("http://localhost:4000/auth/login/", data)
+        .then((res) => {
+          if (res.data) {
+            localStorage.setItem("token", res.data.token);
+            this.$emit("auth-change");
+            this.$router.push({ path: "/" });
+          }
+        })
+        .catch((error) => {
+          this.error = error.response.data;
+          console.log(error);
+        });
     }
   }
 };
