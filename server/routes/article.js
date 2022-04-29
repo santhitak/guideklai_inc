@@ -54,4 +54,60 @@ router.get("/article/show/review/all", async function (req, res, next) {
   }
 });
 
+router.get("/article/show/review/tour/rating", async function (req, res, next) {
+  try {
+    let sql = `SELECT  * FROM article left join review using(article_id) left join review_category using(article_id) left join tour using(article_id) where category = 'Tour' order by rating DESC`;
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+router.get("/article/show/review/rest/view", async function (req, res, next) {
+  try {
+    let sql = `SELECT * FROM article left join review using(article_id) left join review_category using(article_id) left join rest using(article_id) where category = 'Rest' AND lower_price IS NOT null AND higher_price IS NOT null order by view DESC, rating DESC`;
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+router.get("/article/show/promote/rest/view", async function (req, res, next) {
+  try {
+    let sql = `SELECT * FROM article left join promote using(article_id) left join rest using(article_id) where type_promote = 'Rest' AND lower_price IS NOT null AND higher_price IS NOT null order by view DESC`;
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+router.get(
+  "/article/show/promote/attraction/province/view",
+  async function (req, res, next) {
+    try {
+      let sql = `SELECT province_name, COUNT(article_id) promote FROM article left join attraction using(article_id) left join province using(province_id) where type_article = 'Promote' AND province_name IS NOT null GROUP BY province_id`;
+      const [rows, fields] = await db.query(sql);
+      return res.json(rows);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+);
+
+router.get(
+  "/article/show/promote/rest/province/view",
+  async function (req, res, next) {
+    try {
+      let sql = `SELECT province_name, COUNT(article_id) promote FROM article left join rest using(article_id) left join province using(province_id) where type_article = 'Promote' AND province_name IS NOT null GROUP BY province_id`;
+      const [rows, fields] = await db.query(sql);
+      return res.json(rows);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+);
+
 exports.router = router;
