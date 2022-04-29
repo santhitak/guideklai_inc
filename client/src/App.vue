@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <component :is="layout">
-      <router-view :key="$route.fullPath" @auth-change="onAuthChange" :user="user" />
-    </component>
+    <router-view :key="$route.fullPath" @auth-change="onAuthChange" :user="user" />
   </div>
 </template>
 
@@ -11,7 +9,6 @@ import axios from "@/plugins/axios";
 
 export default {
   name: "App",
-  components: {},
   data() {
     return {
       user: null
