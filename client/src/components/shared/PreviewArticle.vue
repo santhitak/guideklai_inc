@@ -5,9 +5,13 @@
 
 </style>
 <template>
-
+  
   <div class="flex justify-between">
-    
+    <div class="search-wrapper">
+    <input type="text" v-model="search" placeholder="Search title.."/>
+        <label>Search title:</label>
+  </div>
+
     <div class="flex-1">
       <div class="p-10">
 
@@ -237,7 +241,7 @@
     </div>
     <div class="flex-auto">
       <div
-      v-for="articles in Article"
+      v-for="articles in filteredList"
       class="w-full"
       v-bind:key="articles.article_id"
     >
@@ -297,11 +301,21 @@ export default {
   components: { EmptyStar, FullStar },
   data() {
     return {
+      search: '',
+      postList : [],
       Article: [],
     };
   },
   created() {
     this.getArticle();
+  },
+  
+  computed: {
+    filteredList() {
+      return this.Article.filter(post => {
+        return post.title_promote?.toLowerCase().includes(this.search?.toLowerCase()) || post.title_review?.toLowerCase().includes(this.search?.toLowerCase())
+      })
+    }
   },
   methods: {
     async getArticle() {
