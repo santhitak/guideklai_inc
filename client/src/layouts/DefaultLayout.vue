@@ -13,21 +13,11 @@
         </a>
         <div class="flex md:order-2">
           <div v-if="!user">
-            <router-link to="/auth/login">
-              <button
-                type="button"
-                class="text-gray-900 hover:text-gray border border-gray-800 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800"
-              >
-                Sign In
-              </button>
+            <router-link to="/auth/login" class="text-gray-900 hover:text-gray border border-gray-800 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-gray-600 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-800">
+              Sign In
             </router-link>
-            <router-link to="/auth/register">
-              <button
-                type="button"
-                class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800"
-              >
-                Sign Up
-              </button>
+            <router-link to="/auth/register" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-600 dark:focus:ring-blue-800">
+              Sign Up
             </router-link>
           </div>
           <div v-else>
@@ -40,10 +30,10 @@
           </div>
         </div>
         <div
-          class="justify-between items-center w-full h-full flex md:w-auto md:order-1"
+          class="justify-between items-center flex md:w-auto md:order-1"
         >
           <ul
-            class="flex flex-col m-0 p-0 md:flex-row md:space-x-8 md:text-sm md:font-medium"
+            class="flex flex-col m-0 p-0 md:flex-row md:space-x-8 md:text-sm md:font-medium mb-0"
           >
             <li>
               <a
