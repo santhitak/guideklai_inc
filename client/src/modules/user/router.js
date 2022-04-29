@@ -11,16 +11,12 @@ const moduleRoute = {
       path: "manage_account",
       component: Manage,
       meta: {
-        layout: "nav",
         auth: true,
       },
     },
     {
       path: "manage_account/security",
       component: Security,
-      meta: {
-        layout: "nav",
-      },
     },
     {
       path: "manage_account/account",

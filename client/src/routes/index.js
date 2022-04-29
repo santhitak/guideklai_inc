@@ -8,7 +8,6 @@ const routes = [
     name: "Home",
     component: HomePage,
     meta: {
-      layout: "nav",
       auth: false,
     },
   },

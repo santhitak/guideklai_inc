@@ -1,14 +1,18 @@
 <template>
   <div id="app">
-    <router-view :key="$route.fullPath" @auth-change="onAuthChange" :user="user" />
+    <DefaultLayout :user="user">
+      <router-view :key="$route.fullPath" @auth-change="onAuthChange" />
+    </DefaultLayout>
   </div>
 </template>
 
 <script>
 import axios from "@/plugins/axios";
+import DefaultLayout from "@/layouts/DefaultLayout";
 
 export default {
   name: "App",
+  components: { DefaultLayout },
   data() {
     return {
       user: null

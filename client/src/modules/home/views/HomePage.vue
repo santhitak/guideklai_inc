@@ -1,6 +1,5 @@
 <template>
   <div>
-    <DefaultLayout :user="user" />
     <div class="bar-panel">
       <LinkedBar />
     </div>
@@ -96,7 +95,6 @@
 </template>
 
 <script>
-import DefaultLayout from "../../../layouts/DefaultLayout.vue";
 import Slider from "@/modules/home/components/Slider";
 import axios from "@/plugins/axios";
 import MainPreview from "@/components/shared/MainPreview";
@@ -105,7 +103,7 @@ import LinkedBar from "@/modules/home/components/LinkedBar";
 export default {
   name: "HomePage",
   props: ["user"],
-  components: { LinkedBar, MainPreview, Slider, DefaultLayout },
+  components: { LinkedBar, MainPreview, Slider },
   data() {
     return {
       topRating: [],

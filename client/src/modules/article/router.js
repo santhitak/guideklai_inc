@@ -9,16 +9,10 @@ const moduleRoute = {
     {
       path: "article",
       component: Article,
-      meta: {
-        layout: "nav",
-      },
     },
     {
       path: "article/:id",
       component: ArticleDetail,
-      meta: {
-        layout: "nav",
-      },
     },
   ],
 };

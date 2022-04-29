@@ -9,16 +9,10 @@ const moduleRoute = {
     {
       path: "login",
       component: Login,
-      meta: {
-        layout: "nav",
-      },
     },
     {
       path: "register",
       component: Register,
-      meta: {
-        layout: "nav",
-      },
     },
   ],
 };

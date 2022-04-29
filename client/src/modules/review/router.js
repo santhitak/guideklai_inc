@@ -8,9 +8,6 @@ const moduleRoute = {
     {
       path: "review",
       component: Review,
-      meta: {
-        layout: "nav",
-      },
     },
   ],
 };
