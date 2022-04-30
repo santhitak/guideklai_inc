@@ -38,7 +38,7 @@
                   @click="FilterArticle('Tour')"
                   class="flex items-center p-2 text-md text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span class="ml-3 font-medium">Tour</span>
+                  <span class="ml-3 font-medium">Tours</span>
                 </a>
               </li>
               <li>
@@ -46,7 +46,7 @@
                   @click="FilterArticle('Guide')"
                   class="flex items-center p-2 text-md text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span class="ml-3 font-medium">Guide</span>
+                  <span class="ml-3 font-medium">Guides</span>
                 </a>
               </li>
               <li>
@@ -54,7 +54,7 @@
                   @click="FilterArticle('Rest')"
                   class="flex items-center p-2 text-md text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span class="ml-3 font-medium">Rest</span>
+                  <span class="ml-3 font-medium">Hotels</span>
                 </a>
               </li>
               <li>
@@ -62,7 +62,7 @@
                   @click="FilterArticle('Attraction')"
                   class="flex items-center p-2 text-md text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
-                  <span class="ml-3 font-medium">Attraction</span>
+                  <span class="ml-3 font-medium">Attractions</span>
                 </a>
               </li>
             </ul>
@@ -309,7 +309,7 @@
                     "
                     style="width: fit-content"
                   >
-                    {{ articles.type_promote }}
+                    {{ articles.type_promote === "Rest" ? "Hotel" : articles.type_promote }}
                   </a-tag>
                 </div>
                 <div v-else>
@@ -326,7 +326,7 @@
                     "
                     style="width: fit-content"
                   >
-                    {{ articles.category }}
+                    {{ articles.category === "Rest" ? "Hotel" : articles.category }}
                   </a-tag>
                 </div>
               </a-space>
