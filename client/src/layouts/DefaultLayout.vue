@@ -7,7 +7,8 @@
         class="container flex flex-wrap justify-between items-center mx-auto"
       >
         <a href="/" class="flex items-center">
-          <span class="self-center text-xl font-semibold whitespace-nowrap"
+          <span
+            class="self-center text-xl font-semibold whitespace-nowrap text-blue-600"
           >Guide Klai</span
           >
         </a>
@@ -38,18 +39,21 @@
             class="flex flex-col m-0 p-0 md:flex-row md:space-x-8 md:text-sm md:font-medium mb-0"
           >
             <li>
-              <a
-                href="/"
-                class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0"
-                aria-current="page"
-              >Home
-              </a>
+              <router-link to="/">
+                <a
+                  href="/"
+                  class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0"
+                  aria-current="page"
+                >Home
+                </a></router-link>
             </li>
             <li>
-              <a
-                href="/article"
-                class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-              >Article</a
+              <router-link to="/article">
+                <a
+                  class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
+                >
+                  Article
+                </a></router-link
               >
             </li>
             <li>
@@ -69,7 +73,9 @@
     >
       <div class="sm:flex sm:items-center sm:justify-between">
         <a href="/" class="flex items-center mb-4 sm:mb-0">
-          <span class="self-center text-2xl font-semibold whitespace-nowrap">
+          <span
+            class="self-center text-2xl font-semibold whitespace-nowrap text-blue-600"
+          >
             Guide Klai
           </span>
         </a>
@@ -77,10 +83,12 @@
           class="flex flex-wrap items-center mb-6 text-sm text-gray-500 sm:mb-0 dark:text-gray-400"
         >
           <li>
-            <a href="#" class="mr-4 hover:underline md:mr-6">Privacy Policy</a>
+            <a href="#" class="mr-4 hover:underline md:mr-6 text-blue-600">
+              Privacy Policy
+            </a>
           </li>
           <li>
-            <a href="#" class="hover:underline">Contact</a>
+            <a href="#" class="hover:underline text-blue-600">Contact</a>
           </li>
         </ul>
       </div>
@@ -91,7 +99,9 @@
         class="block text-sm text-gray-500 sm:text-center dark:text-gray-400"
       >
         © 2022
-        <a href="https://flowbite.com" class="hover:underline">Guide Klai™</a>
+        <a href="https://flowbite.com" class="hover:underline text-blue-600"
+        >Guide Klai™</a
+        >
         All Rights Reserved.
       </span>
     </footer>

@@ -71,8 +71,8 @@
               style="
                 height: 100vh;
                 background-repeat: no-repeat;
-                background-position: -20rem -30rem;
-                background-image: url('https://www.marriott.com/content/dam/marriott-leisure/destinations/hero/asia/thailand/bangkok/bangkok_hero_destinations.jpg.transform/mcom-leisure-transform-2880/image.jpg');
+                background-position: -20rem 0;
+                background-image: url('https://wallpaperaccess.com/full/2752980.jpg');
               "
             >
               <p
