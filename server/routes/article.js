@@ -26,7 +26,7 @@ router.get("/article/filter/:type", async function (req, res, next) {
 
 router.get("/article/:id", async function (req, res, next) {
   try {
-    let sql = `SELECT * FROM article left join promote using(article_id) left join review using(article_id) where article_id = ${req.params.id}`;
+    let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review using(article_id) where article_id = ${req.params.id}`;
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
