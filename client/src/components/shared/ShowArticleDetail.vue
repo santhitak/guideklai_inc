@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 2rem 0;">
+  <div style="margin: 2rem 0">
     <div
       v-for="article in articles"
       class="w-full"
@@ -36,7 +36,10 @@
         </a-space>
       </div>
       <a-divider />
-      <div style="display: flex; align-items: center" class="flex-col">
+      <div
+        style="display: flex; align-items: center; "
+        class="flex-col"
+      >
         <img
           style="width: 50%"
           class="my-4 rounded-xl"
@@ -44,7 +47,7 @@
           alt=""
         />
         <div class="my-12" style="width: 60%">
-          <p class="text-left">{{ article.information }}</p>
+          <p class="text-center">{{ article.information }}</p>
         </div>
       </div>
     </div>
