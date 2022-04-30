@@ -1,9 +1,7 @@
 <template>
   <section style="height: auto; min-height: 100vh">
     <div>
-
-        <PreviewArticle></PreviewArticle>
-
+      <PreviewArticle></PreviewArticle>
     </div>
   </section>
 </template>
@@ -16,7 +14,7 @@ export default {
   components: { PreviewArticle },
   data() {
     return {};
-  },
+  }
 };
 </script>
 

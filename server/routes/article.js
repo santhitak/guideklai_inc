@@ -5,7 +5,7 @@ const router = express.Router();
 router.get("/article", async function (req, res, next) {
   try {
     let sql =
-      "SELECT * FROM article left join promote using(article_id) left join review using(article_id) left join review_category using(article_id)";
+      "SELECT * FROM article join member using(member_id) left join promote using(article_id) left join review using(article_id) left join review_category using(article_id)";
 
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
