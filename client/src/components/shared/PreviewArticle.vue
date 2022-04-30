@@ -252,7 +252,7 @@
             class="min-w-full mb-3 flex justify-evenly items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100"
           >
             <img
-              class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
+              class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48"
               :src="articles.image"
               alt=""
             />
