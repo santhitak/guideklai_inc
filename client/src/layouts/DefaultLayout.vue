@@ -28,10 +28,29 @@
             </router-link>
           </div>
           <div v-else>
-            <a-avatar>{{ user.username.substring(0, 1) }}</a-avatar>
-            <p class="text-gray-900 font-semibold inline mx-4">
-              {{ user.username }}
-            </p>
+            <a-dropdown :trigger="['click']">
+              <button
+                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2 mr-2">
+                <a class="ant-dropdown-link" @click.prevent>
+                  <a-avatar>{{ user.username.substring(0, 1) }}</a-avatar>
+                  <p class="text-gray-600 font-semibold inline mx-4">
+                    {{ user.username }}
+                  </p>
+                </a>
+              </button>
+              <template #overlay>
+                <a-menu style="border-radius: 10px;">
+                  <a-menu-item key="0">
+                    <a href="#">Profile</a>
+                  </a-menu-item>
+                  <a-menu-item key="1">
+                    <a href="#">Manage Account</a>
+                  </a-menu-item>
+                  <a-menu-divider />
+                  <a-menu-item key="3">Sign out</a-menu-item>
+                </a-menu>
+              </template>
+            </a-dropdown>
           </div>
         </div>
         <div class="justify-between items-center flex md:w-auto md:order-1">
@@ -45,7 +64,8 @@
                   class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0"
                   aria-current="page"
                 >Home
-                </a></router-link>
+                </a></router-link
+              >
             </li>
             <li>
               <router-link to="/article">
@@ -112,6 +132,7 @@
 export default {
   name: "DefaultLayout",
   props: ["user"],
+  components: {},
   data() {
     return {};
   },
