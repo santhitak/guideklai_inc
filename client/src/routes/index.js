@@ -21,7 +21,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isLoggedIn = !!localStorage.getItem("token");
 
-  if (!to.meta.auth && !isLoggedIn) {
+  if (to.meta.auth && !isLoggedIn) {
     alert("Please login first!");
     next({ path: "/auth/login" });
   }
