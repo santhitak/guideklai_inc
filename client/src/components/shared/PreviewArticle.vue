@@ -13,6 +13,7 @@
             type="text"
             v-model="search"
             placeholder="Search title"
+            @click="this.star = 0"
           />
         </div>
         <aside aria-label="Sidebar">
@@ -74,9 +75,9 @@
               Rating
             </span>
             <div class="my-3">
-              <a
-                href="#"
-                class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+              <button
+                @click="this.star = 4"
+                :class="[star === 4 ? starActive : starNormal]"
               >
                 <FullStar />
                 <FullStar />
@@ -89,10 +90,10 @@
                 >
                   & up
                 </p>
-              </a>
-              <a
-                href=" #"
-                class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg hover:bg-gray-100"
+              </button>
+              <button
+                @click="this.star = 3"
+                :class="[star === 3 ? starActive : starNormal]"
               >
                 <FullStar />
                 <FullStar />
@@ -105,10 +106,10 @@
                 >
                   & up
                 </p>
-              </a>
-              <a
-                href="#"
-                class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              </button>
+              <button
+                @click="this.star = 2"
+                :class="[star === 2 ? starActive : starNormal]"
               >
                 <FullStar />
                 <FullStar />
@@ -121,10 +122,11 @@
                 >
                   & up
                 </p>
-              </a>
-              <a
-                href="#"
-                class="flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700"
+              </button>
+              <button
+                type="button"
+                @click="this.star = 1"
+                :class="[star === 1 ? starActive : starNormal]"
               >
                 <FullStar />
                 <EmptyStar />
@@ -137,107 +139,10 @@
                 >
                   & up
                 </p>
-              </a>
+              </button>
             </div>
           </div>
-          <div
-            class="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800"
-          >
-            <span
-              class="self-center text-lg font-semibold whitespace-nowrap dark:text-white"
-            >Suitability</span
-            >
-            <fieldset class="my-4">
-              <legend class="sr-only">age</legend>
-              <div class="flex items-center mb-4">
-                <input
-                  checked
-                  id="suitable_all"
-                  type="radio"
-                  name="suitable"
-                  value="everyone"
-                  class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring:blue-300 dark:focus-ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                  aria-labelledby="suitable_all"
-                  aria-describedby="suitable_all"
-                />
-                <label
-                  for="suitable_all"
-                  class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Everyone
-                </label>
-              </div>
-              <div class="flex items-center mb-4">
-                <input
-                  id="suitable_elder"
-                  type="radio"
-                  name="suitable"
-                  value="elder"
-                  class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                  aria-labelledby="suitable_elder"
-                  aria-describedby="suitable_elder"
-                />
-                <label
-                  for="suitable_elder"
-                  class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Elder
-                </label>
-              </div>
-              <div class="flex items-center mb-4">
-                <input
-                  id="suitable_adult"
-                  type="radio"
-                  name="suitable"
-                  value="adult"
-                  class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                  aria-labelledby="suitable_adult"
-                  aria-describedby="suitable_adult"
-                />
-                <label
-                  for="suitable_adult"
-                  class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Adult
-                </label>
-              </div>
-              <div class="flex items-center mb-4">
-                <input
-                  id="suitable_teen"
-                  type="radio"
-                  name="suitable"
-                  value="teen"
-                  class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 dark:focus:ring-blue-600 dark:focus:bg-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                  aria-labelledby="suitable_teen"
-                  aria-describedby="suitable_teen"
-                />
-                <label
-                  for="suitable_teen"
-                  class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Teen
-                </label>
-              </div>
-
-              <div class="flex items-center mb-4">
-                <input
-                  id="suitable_kid"
-                  type="radio"
-                  name="suitable"
-                  value="kid"
-                  class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring:blue-300 dark:focus-ring-blue-600 dark:bg-gray-700 dark:border-gray-600"
-                  aria-labelledby="suitable_kid"
-                  aria-describedby="suitable_kid"
-                />
-                <label
-                  for="suitable_kid"
-                  class="block ml-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Kid
-                </label>
-              </div>
-            </fieldset>
-          </div>
+         
         </aside>
       </div>
       <a-space class="flex-1" direction="vertical" style="margin: auto 8rem">
@@ -271,10 +176,16 @@
                   {{ articles.title_promote }}
                 </h5>
                 <p
-                  v-if="articles.rating != null"
+                  v-if="articles.rating_review != null"
                   class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
                 >
-                  {{ articles.rating }}
+                  {{ articles.rating_review }}
+                </p>
+                <p
+                  v-else
+                  class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
+                >
+                  {{ articles.rating_promote }}
                 </p>
               </div>
               <p class="text-gray-600 font-semibold text-sm">
@@ -400,15 +311,25 @@ export default {
     return {
       search: "",
       postList: [],
-      Article: []
+      Article: [],
+      star:0,
+      starNormal: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700",
+      starActive: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700"
     };
   },
   created() {
     this.getArticle();
   },
   computed: {
-    filteredList() {
+    filteredList1() {
       return this.Article.filter((post) => {
+        return ( post.rating_promote >= this.star || post.rating_review >= this.star
+          
+        );
+      });
+    },
+    filteredList() {
+      return this.filteredList1.filter((post) => {
         return (
           post.title_promote
             ?.toLowerCase()
@@ -420,14 +341,17 @@ export default {
   },
   methods: {
     async getArticle() {
+      this.star = 0
       try {
         const response = await axios.get("http://localhost:4000/article");
         this.Article = response.data;
+
       } catch (err) {
         console.log(err);
       }
     },
     async FilterArticle(type) {
+      this.star = 0
       try {
         const response = await axios.get(
           `http://localhost:4000/article/filter/${type}`
