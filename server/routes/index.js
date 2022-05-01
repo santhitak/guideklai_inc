@@ -1,11 +1,13 @@
-const db = require("../config/db.server");
 const express = require("express");
 const router = express.Router();
 
 router.get("/", async function (req, res) {
   try {
-    let results = await db.query("SELECT * FROM province");
-    res.send(results);
+    res.send({
+      message: "Hello",
+      activity: "listening at port 4000",
+      status: "running",
+    });
   } catch (err) {
     return res.status(400).json(err);
   }

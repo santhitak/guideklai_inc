@@ -13,9 +13,12 @@ app.use(express.urlencoded({ extended: true }));
 const indexRoute = require("./routes/index");
 const authRoute = require("./routes/authentication");
 const articleRoute = require("./routes/article");
+const userRoute = require("./routes/user");
+
 app.use(indexRoute.router);
 app.use(authRoute.router);
 app.use(articleRoute.router);
+app.use(userRoute.router);
 
 const port = process.env.PORT || 4000;
 
