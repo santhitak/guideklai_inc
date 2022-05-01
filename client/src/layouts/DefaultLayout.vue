@@ -2,6 +2,7 @@
   <div>
     <nav
       class="fixed top-0 right-0 left-0 bg-white border-gray-200 px-2 sm:px-4 py-2.5 shadow-md"
+      style="z-index: 99"
     >
       <div
         class="container flex flex-wrap justify-between items-center mx-auto"
@@ -30,7 +31,8 @@
           <div v-else>
             <a-dropdown :trigger="['click']">
               <button
-                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2 mr-2">
+                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2 mr-2"
+              >
                 <a class="ant-dropdown-link" @click.prevent>
                   <a-avatar>{{ user.username.substring(0, 1) }}</a-avatar>
                   <p class="text-gray-600 font-semibold inline mx-4">
@@ -39,15 +41,17 @@
                 </a>
               </button>
               <template #overlay>
-                <a-menu style="border-radius: 10px;">
+                <a-menu style="border-radius: 10px">
                   <a-menu-item key="0">
-                    <a href="#">Profile</a>
+                    <a :href="`/profile/${user.username}`">Profile</a>
                   </a-menu-item>
                   <a-menu-item key="1">
-                    <a href="#">Manage Account</a>
+                    <a :href="`/manage_account/${user.username}`"
+                    >Manage Account</a
+                    >
                   </a-menu-item>
                   <a-menu-divider />
-                  <a-menu-item key="3">Sign out</a-menu-item>
+                  <a-menu-item key="3" @click="logout">Sign out</a-menu-item>
                 </a-menu>
               </template>
             </a-dropdown>
@@ -129,6 +133,7 @@
 </template>
 
 <script>
+
 export default {
   name: "DefaultLayout",
   props: ["user"],
@@ -136,6 +141,15 @@ export default {
   data() {
     return {};
   },
-  methods: {}
+  methods: {
+    async logout() {
+      try {
+        localStorage.clear();
+        await this.$router.push("/");
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  }
 };
 </script>
