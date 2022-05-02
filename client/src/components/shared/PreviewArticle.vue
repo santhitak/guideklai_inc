@@ -244,7 +244,10 @@
             </div>
           </a>
         </div>
-        <div class="flex flex-col items-center">
+         <!-- <div class="flex flex-col items-center">
+            <jw-pagination :items="exampleItems" @changePage="onChangePage"></jw-pagination>
+        </div> -->
+        <!-- <div class="flex flex-col items-center">
           <span class="text-sm text-gray-700 dark:text-gray-400">
             Showing
             <span class="font-semibold text-gray-900 dark:text-white">1</span>
@@ -291,8 +294,8 @@
                 ></path>
               </svg>
             </button>
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
       </a-space>
     </div>
   </div>
@@ -303,15 +306,18 @@ import axios from "@/plugins/axios";
 import FullStar from "@/components/shared/Filter/components/FullStar";
 import EmptyStar from "@/components/shared/Filter/components/EmptyStar";
 import { SearchOutlined } from "@ant-design/icons-vue";
-
+// import JwPagination from 'jw-vue-pagination';
+// const 
 export default {
   name: "PreviewArticle",
   components: { EmptyStar, FullStar, SearchOutlined },
   data() {
     return {
       search: "",
+      pageOfItems:[],
       postList: [],
       Article: [],
+      FilterList:[],
       star:0,
       starNormal: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700",
       starActive: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700"
@@ -323,13 +329,16 @@ export default {
   computed: {
     filteredList1() {
       return this.Article.filter((post) => {
-        return ( post.rating_promote >= this.star || post.rating_review >= this.star
-          
+        return ( post.rating_promote >= this.star || post.rating_review >= this.star         
         );
       });
     },
     filteredList() {
       return this.filteredList1.filter((post) => {
+        this.FilterList = post.title_promote
+            ?.toLowerCase()
+            .includes(this.search?.toLowerCase()) ||
+          post.title_review?.toLowerCase().includes(this.search?.toLowerCase())
         return (
           post.title_promote
             ?.toLowerCase()
@@ -340,6 +349,10 @@ export default {
     }
   },
   methods: {
+    onChangePage(pageOfItems) {
+            // update page of items
+            this.pageOfItems = pageOfItems;
+        },
     async getArticle() {
       this.star = 0
       try {

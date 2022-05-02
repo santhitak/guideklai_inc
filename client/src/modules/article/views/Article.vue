@@ -1,7 +1,7 @@
 <template>
   <section style="height: auto; min-height: 100vh">
     <div>
-      <PreviewArticle></PreviewArticle>
+      <PreviewArticle :user="user" />
     </div>
   </section>
 </template>
@@ -11,6 +11,7 @@ import PreviewArticle from "@/components/shared/PreviewArticle";
 
 export default {
   name: "Article",
+  props: ['user'],
   components: { PreviewArticle },
   data() {
     return {};

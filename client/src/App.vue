@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <DefaultLayout :user="user">
-      <router-view :key="$route.fullPath" @auth-change="onAuthChange" />
+    <DefaultLayout :user="user" >
+      <router-view  :key="$route.fullPath" @auth-change="onAuthChange" :user="user" />
     </DefaultLayout>
   </div>
 </template>

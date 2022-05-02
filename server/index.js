@@ -14,11 +14,13 @@ const indexRoute = require("./routes/index");
 const authRoute = require("./routes/authentication");
 const articleRoute = require("./routes/article");
 const userRoute = require("./routes/user");
+const commentRoute = require("./routes/comment");
 
 app.use(indexRoute.router);
 app.use(authRoute.router);
 app.use(articleRoute.router);
 app.use(userRoute.router);
+app.use(commentRoute.router);
 
 const port = process.env.PORT || 4000;
 

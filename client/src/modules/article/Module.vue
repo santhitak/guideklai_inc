@@ -1,5 +1,11 @@
 <template>
   <div>
-    <router-view></router-view>
+    <router-view :user="user" />
   </div>
 </template>
+
+<script>
+export default {
+    props: ["user"]
+}
+</script>

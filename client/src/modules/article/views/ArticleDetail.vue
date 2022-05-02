@@ -2,7 +2,7 @@
   <section style="height: auto; min-height: 100vh">
     <div class="flex justify-between">
       <div class="flex-auto grow">
-        <ShowArticleDetail></ShowArticleDetail>
+        <ShowArticleDetail :user="user" />
       </div>
     </div>
   </section>
@@ -13,6 +13,7 @@ import ShowArticleDetail from "@/components/shared/ShowArticleDetail";
 
 export default {
   name: "ArticleDetail",
+  props: ["user"],
   components: { ShowArticleDetail },
   data() {
     return {};

@@ -7,5 +7,5 @@ export default {
   authentication: authenticationModule,
   user: userModule,
   review: reviewModule,
-  article: articleModule
+  article: articleModule,
 };

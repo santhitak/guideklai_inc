@@ -7,11 +7,11 @@ const moduleRoute = {
   component: Module,
   children: [
     {
-      path: "article",
+      path: "/article",
       component: Article,
     },
     {
-      path: "article/:id",
+      path: "/article/:id",
       component: ArticleDetail,
     },
   ],
