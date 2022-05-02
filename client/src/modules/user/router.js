@@ -1,28 +1,23 @@
 const Module = () => import("./Module.vue");
 const Manage = () => import("./views/Manage.vue");
-const Security = () => import("./components/Security.vue");
-const Account = () => import("./components/Account.vue");
+const Profile = () => import("./views/Profile.vue");
 
 const moduleRoute = {
-  path: "/id",
+  path: "/:username",
   component: Module,
   children: [
     {
-      path: "manage_account",
+      path: "setting",
       component: Manage,
       meta: {
         auth: true,
       },
     },
     {
-      path: "manage_account/security",
-      component: Security,
-    },
-    {
-      path: "manage_account/account",
-      component: Account,
+      path: "profile",
+      component: Profile,
       meta: {
-        layout: "nav",
+        auth: true,
       },
     },
   ],

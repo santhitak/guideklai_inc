@@ -1,6 +1,7 @@
 <template>
   <div style="margin: 0 5rem">
     <p class="font-bold text-2xl">Profile update</p>
+    {{ user }}
     <FlexColCenter>
       <a-space :size="size / 2" direction="vertical">
         <a-space :size="size">
@@ -35,7 +36,7 @@
                 for="username"
                 class="block mb-2 text-sm font-medium text-gray-900"
               >
-                Username
+                {{ user.username }}
               </label>
               <div class="flex">
                 <span
@@ -102,6 +103,7 @@ import FlexColCenter from "@/components/containers/FlexColCenter";
 import { UploadOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import { ref } from "vue";
+import axios from "@/plugins/axios";
 
 function getBase64(img, callback) {
   const reader = new FileReader();
@@ -111,9 +113,30 @@ function getBase64(img, callback) {
 
 export default {
   name: "Account",
+  props: ["user"],
   components: {
     FlexColCenter,
     UploadOutlined
+  },
+  data() {
+    return {
+      user_log: []
+    };
+  },
+  created() {
+    this.getUser();
+  },
+  methods: {
+    async getUser() {
+      try {
+        const user = await axios.get(
+          `http://localhost:4000/manage_account/${this.user.username}`
+        );
+        this.user_log = user.data;
+      } catch (err) {
+        console.log(err);
+      }
+    }
   },
   setup() {
     const fileList = ref([]);

@@ -43,10 +43,10 @@
               <template #overlay>
                 <a-menu style="border-radius: 10px">
                   <a-menu-item key="0">
-                    <a :href="`/profile/${user.username}`">Profile</a>
+                    <a :href="`/${user.username}/profile/`">Profile</a>
                   </a-menu-item>
                   <a-menu-item key="1">
-                    <a :href="`/manage_account/${user.username}`"
+                    <a :href="`/${user.username}/setting/`"
                     >Manage Account</a
                     >
                   </a-menu-item>
