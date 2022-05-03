@@ -23,7 +23,12 @@
             <span
               class="self-center text-lg font-semibold whitespace-nowrap dark:text-white"
             >
-              Post
+              Article  
+            </span>
+             <span
+              class="self-center text-sm font-semibold whitespace-nowrap dark:text-white"
+            >
+                {{filteredList.length}}  of {{count}}
             </span>
             <ul class="space-y-1 my-3">
               <li>
@@ -67,6 +72,18 @@
                 </a>
               </li>
             </ul>
+          </div>
+          <div class="overflow-y-auto px-3 bg-gray-50 rounded">
+             <div
+              class="self-center text-lg font-semibold whitespace-nowrap dark:text-white"
+            >
+              Article Type
+            </div>
+            <a-radio-group v-model:value="value" name="radioGroup">
+              <a-radio  @click="filteredList1();" value="">ฺAll</a-radio><br>
+              <a-radio   @click="filteredList1();" value="Promote">Post</a-radio><br>
+              <a-radio  @click="filteredList1();" value="Review">Review</a-radio>
+            </a-radio-group>
           </div>
           <div class="overflow-y-auto px-3 bg-gray-50 rounded">
             <span
@@ -129,6 +146,22 @@
                 :class="[star === 1 ? starActive : starNormal]"
               >
                 <FullStar />
+                <EmptyStar />
+                <EmptyStar />
+                <EmptyStar />
+                <EmptyStar />
+                <p
+                  class="text-sm font-medium text-gray-500"
+                  style="margin: 0 0.5rem"
+                >
+                  & up
+                </p>
+              </button>
+              <button
+                @click="this.star = 0"
+                :class="[star === 0 ? starActive : starNormal]"
+              >
+                <EmptyStar />
                 <EmptyStar />
                 <EmptyStar />
                 <EmptyStar />
@@ -206,7 +239,7 @@
                 <p class="text-gray-400 mt-2.5">Categories:</p>
                 <div v-if="articles.type_promote">
                   <a-tag color="cyan" style="width: fit-content">
-                    Review
+                    Post
                   </a-tag>
                   <a-tag
                     :color="
@@ -224,7 +257,7 @@
                   </a-tag>
                 </div>
                 <div v-else>
-                  <a-tag color="green" style="width: fit-content"> Post</a-tag>
+                  <a-tag color="green" style="width: fit-content"> Review</a-tag>
                   <a-tag
                     :color="
                       articles.category === 'Tour'
@@ -244,58 +277,7 @@
             </div>
           </a>
         </div>
-         <!-- <div class="flex flex-col items-center">
-            <jw-pagination :items="exampleItems" @changePage="onChangePage"></jw-pagination>
-        </div> -->
-        <!-- <div class="flex flex-col items-center">
-          <span class="text-sm text-gray-700 dark:text-gray-400">
-            Showing
-            <span class="font-semibold text-gray-900 dark:text-white">1</span>
-            to
-            <span class="font-semibold text-gray-900 dark:text-white">10</span>
-            of
-            <span class="font-semibold text-gray-900 dark:text-white">{{
-                articles
-              }}</span>
-            Entries
-          </span>
-          <div class="inline-flex mt-2 xs:mt-0">
-            <button
-              class="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              <svg
-                class="mr-2 w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-              Prev
-            </button>
-            <button
-              class="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-r border-0 border-l border-gray-700 hover:bg-gray-900 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-            >
-              Next
-              <svg
-                class="ml-2 w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div> -->
-        <!-- </div> -->
+        
       </a-space>
     </div>
   </div>
@@ -306,6 +288,7 @@ import axios from "@/plugins/axios";
 import FullStar from "@/components/shared/Filter/components/FullStar";
 import EmptyStar from "@/components/shared/Filter/components/EmptyStar";
 import { SearchOutlined } from "@ant-design/icons-vue";
+import { ref } from 'vue';
 // import JwPagination from 'jw-vue-pagination';
 // const 
 export default {
@@ -319,6 +302,7 @@ export default {
       Article: [],
       FilterList:[],
       star:0,
+      count:0,
       starNormal: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700",
       starActive: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700"
     };
@@ -326,13 +310,20 @@ export default {
   created() {
     this.getArticle();
   },
+  setup() {
+    const value = ref('');
+    return {
+      value,
+    }},
   computed: {
     filteredList1() {
+      // alert(e)
       return this.Article.filter((post) => {
-        return ( post.rating_avg >= this.star        
+        return ( post.rating_avg >= this.star && post.type_article.includes(this.value)  
         );
       });
     },
+   
     filteredList() {
       return this.filteredList1.filter((post) => {
         this.FilterList = post.title_promote
@@ -349,6 +340,7 @@ export default {
     }
   },
   methods: {
+    
     onChangePage(pageOfItems) {
             // update page of items
             this.pageOfItems = pageOfItems;
@@ -358,6 +350,7 @@ export default {
       try {
         const response = await axios.get("http://localhost:4000/article");
         this.Article = response.data;
+        this.count = response.data.length;
 
       } catch (err) {
         console.log(err);
