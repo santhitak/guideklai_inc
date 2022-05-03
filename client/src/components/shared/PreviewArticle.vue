@@ -17,18 +17,18 @@
           />
         </div>
         <aside aria-label="Sidebar">
+          <span
+            class="self-center text-sm font-semibold whitespace-nowrap text-gray-500"
+          >
+            {{ filteredList.length }} of {{ count }} results
+          </span>
           <div
             class="overflow-y-auto py-4 px-3 bg-gray-50 rounded dark:bg-gray-800"
           >
             <span
               class="self-center text-lg font-semibold whitespace-nowrap dark:text-white"
             >
-              Article  
-            </span>
-             <span
-              class="self-center text-sm font-semibold whitespace-nowrap dark:text-white"
-            >
-                {{filteredList.length}}  of {{count}}
+              Article
             </span>
             <ul class="space-y-1 my-3">
               <li>
@@ -74,16 +74,26 @@
             </ul>
           </div>
           <div class="overflow-y-auto px-3 bg-gray-50 rounded">
-             <div
+            <div
               class="self-center text-lg font-semibold whitespace-nowrap dark:text-white"
             >
               Article Type
             </div>
-            <a-radio-group v-model:value="value" name="radioGroup">
-              <a-radio  @click="filteredList1();" value="">ฺAll</a-radio><br>
-              <a-radio   @click="filteredList1();" value="Promote">Post</a-radio><br>
-              <a-radio  @click="filteredList1();" value="Review">Review</a-radio>
-            </a-radio-group>
+            <div class="my-3">
+              <a-radio-group v-model:value="value" name="radioGroup">
+                <a-radio @click="filteredList1()" value="">
+                  <p class="ml-2 text-sm font-medium text-gray-900">All</p>
+                </a-radio>
+                <br />
+                <a-radio @click="filteredList1()" value="Promote">
+                  <p class="ml-2 text-sm font-medium text-gray-900">Post</p>
+                </a-radio>
+                <br />
+                <a-radio @click="filteredList1()" value="Review">
+                  <p class="ml-2 text-sm font-medium text-gray-900">Review</p>
+                </a-radio>
+              </a-radio-group>
+            </div>
           </div>
           <div class="overflow-y-auto px-3 bg-gray-50 rounded">
             <span
@@ -101,12 +111,12 @@
                 <FullStar />
                 <FullStar />
                 <EmptyStar />
-                <p
+                <span
                   class="text-sm font-medium text-gray-500"
                   style="margin: 0 0.5rem"
                 >
                   & up
-                </p>
+                </span>
               </button>
               <button
                 @click="this.star = 3"
@@ -117,12 +127,12 @@
                 <FullStar />
                 <EmptyStar />
                 <EmptyStar />
-                <p
+                <span
                   class="text-sm font-medium text-gray-500"
                   style="margin: 0 0.5rem"
                 >
                   & up
-                </p>
+                </span>
               </button>
               <button
                 @click="this.star = 2"
@@ -133,12 +143,12 @@
                 <EmptyStar />
                 <EmptyStar />
                 <EmptyStar />
-                <p
+                <span
                   class="text-sm font-medium text-gray-500"
                   style="margin: 0 0.5rem"
                 >
                   & up
-                </p>
+                </span>
               </button>
               <button
                 type="button"
@@ -150,12 +160,12 @@
                 <EmptyStar />
                 <EmptyStar />
                 <EmptyStar />
-                <p
+                <span
                   class="text-sm font-medium text-gray-500"
                   style="margin: 0 0.5rem"
                 >
                   & up
-                </p>
+                </span>
               </button>
               <button
                 @click="this.star = 0"
@@ -166,16 +176,15 @@
                 <EmptyStar />
                 <EmptyStar />
                 <EmptyStar />
-                <p
+                <span
                   class="text-sm font-medium text-gray-500"
                   style="margin: 0 0.5rem"
                 >
                   & up
-                </p>
+                </span>
               </button>
             </div>
           </div>
-         
         </aside>
       </div>
       <a-space class="flex-1" direction="vertical" style="margin: auto 8rem">
@@ -212,7 +221,7 @@
                   v-if="articles.rating_avg != null"
                   class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
                 >
-                  {{ articles.rating_avg}}
+                  {{ articles.rating_avg }}
                 </p>
                 <p
                   v-else
@@ -238,9 +247,7 @@
               <a-space>
                 <p class="text-gray-400 mt-2.5">Categories:</p>
                 <div v-if="articles.type_promote">
-                  <a-tag color="cyan" style="width: fit-content">
-                    Post
-                  </a-tag>
+                  <a-tag color="cyan" style="width: fit-content"> Post</a-tag>
                   <a-tag
                     :color="
                       articles.type_promote === 'Tour'
@@ -253,11 +260,17 @@
                     "
                     style="width: fit-content"
                   >
-                    {{ articles.type_promote === "Rest" ? "Hotel" : articles.type_promote }}
+                    {{
+                      articles.type_promote === "Rest"
+                        ? "Hotel"
+                        : articles.type_promote
+                    }}
                   </a-tag>
                 </div>
                 <div v-else>
-                  <a-tag color="green" style="width: fit-content"> Review</a-tag>
+                  <a-tag color="green" style="width: fit-content">
+                    Review
+                  </a-tag>
                   <a-tag
                     :color="
                       articles.category === 'Tour'
@@ -270,14 +283,15 @@
                     "
                     style="width: fit-content"
                   >
-                    {{ articles.category === "Rest" ? "Hotel" : articles.category }}
+                    {{
+                      articles.category === "Rest" ? "Hotel" : articles.category
+                    }}
                   </a-tag>
                 </div>
               </a-space>
             </div>
           </a>
         </div>
-        
       </a-space>
     </div>
   </div>
@@ -288,48 +302,52 @@ import axios from "@/plugins/axios";
 import FullStar from "@/components/shared/Filter/components/FullStar";
 import EmptyStar from "@/components/shared/Filter/components/EmptyStar";
 import { SearchOutlined } from "@ant-design/icons-vue";
-import { ref } from 'vue';
-// import JwPagination from 'jw-vue-pagination';
-// const 
+import { ref } from "vue";
+
 export default {
   name: "PreviewArticle",
   components: { EmptyStar, FullStar, SearchOutlined },
   data() {
     return {
       search: "",
-      pageOfItems:[],
+      pageOfItems: [],
       postList: [],
       Article: [],
-      FilterList:[],
-      star:0,
-      count:0,
-      starNormal: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700",
-      starActive: "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700"
+      FilterList: [],
+      star: 0,
+      count: 0,
+      starNormal:
+        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700",
+      starActive:
+        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700"
     };
   },
   created() {
     this.getArticle();
   },
   setup() {
-    const value = ref('');
+    const value = ref("");
     return {
-      value,
-    }},
+      value
+    };
+  },
   computed: {
     filteredList1() {
       // alert(e)
       return this.Article.filter((post) => {
-        return ( post.rating_avg >= this.star && post.type_article.includes(this.value)  
+        return (
+          post.rating_avg >= this.star && post.type_article.includes(this.value)
         );
       });
     },
-   
+
     filteredList() {
       return this.filteredList1.filter((post) => {
-        this.FilterList = post.title_promote
+        this.FilterList =
+          post.title_promote
             ?.toLowerCase()
             .includes(this.search?.toLowerCase()) ||
-          post.title_review?.toLowerCase().includes(this.search?.toLowerCase())
+          post.title_review?.toLowerCase().includes(this.search?.toLowerCase());
         return (
           post.title_promote
             ?.toLowerCase()
@@ -340,24 +358,21 @@ export default {
     }
   },
   methods: {
-    
     onChangePage(pageOfItems) {
-            // update page of items
-            this.pageOfItems = pageOfItems;
-        },
+      this.pageOfItems = pageOfItems;
+    },
     async getArticle() {
-      this.star = 0
+      this.star = 0;
       try {
         const response = await axios.get("http://localhost:4000/article");
         this.Article = response.data;
         this.count = response.data.length;
-
       } catch (err) {
         console.log(err);
       }
     },
     async FilterArticle(type) {
-      this.star = 0
+      this.star = 0;
       try {
         const response = await axios.get(
           `http://localhost:4000/article/filter/${type}`
@@ -370,9 +385,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-.dropdown:hover .dropdown-menu {
-  display: block;
-}
-</style>

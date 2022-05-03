@@ -52,9 +52,13 @@
       </div>
     </div>
     <div class="mt-4">
+      <div>
+        <p class="text-xl font-bold inline mr-3">Your rating</p>
+      </div>
+
       <span
         @click="giveStar(this.value)"
-        v-if="this.star == false && this.user"
+        v-if="this.star === false && this.user"
       >
         <a-rate v-model:value="value" allow-half />
       </span>
@@ -63,9 +67,13 @@
       </span>
       <p class="text-xl font-bold">Comments</p>
       <article
-        v-for="(comment,index) in comments"
+        v-for="(comment, index) in comments"
         v-bind:key="comment.article_id"
         class="md:gap-8 md:grid md:grid-cols-3"
+        v-bind:class="{
+          'block p-6 bg-white rounded-lg border border-gray-200 shadow-md':
+            editToggle !== -1 && comment.member_id === user.member_id,
+        }"
       >
         <div>
           <div class="flex items-center mb-1 space-x-4">
@@ -73,7 +81,14 @@
             <div class="space-y-1 mt-3 font-medium dark:text-white">
               <p>{{ comment.firstname + " " + comment.lastname }}</p>
             </div>
-            <p v-if="isCommentOwner(comment)"  @click="editToggle = index; editCommentMessage = comment.comment">
+            <p
+              v-if="isCommentOwner(comment)"
+              class="mt-2 cursor-pointer"
+              @click="
+                editToggle = index;
+                editCommentMessage = comment.comment;
+              "
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 class="h-6 w-6"
@@ -89,45 +104,43 @@
                 />
               </svg>
             </p>
-             <div v-if="index===editToggle" class="media-content">
-                  <div class="content">
-                    <input v-model="editCommentMessage" class="input" type="text" />
-                    <!-- <p class="is-size-7">{{ comment.comment_date }}</p> -->
-                  </div>
-                   <div class="level-item">
-                        <button
-                          @click="saveEditComment(comment.comment_id,index)"
-                          class="button is-primary"
-                        >
-                          <span>Save Comment</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-edit"></i>
-                          </span>
-                        </button>
-                    </div>
-                    <div class="level-item">
-                        <button @click="editToggle = -1" class="button is-info is-outlined">
-                          <span>Cancel</span>
-                          <span class="icon is-small">
-                            <i class="fas fa-times"></i>
-                          </span>
-                        </button>
-                      </div>
-             </div>
           </div>
         </div>
         <div class="col-span-2">
           <p class="text-bold text-black mb-2 dark:text-gray-400">
             {{ comment.comment }}
           </p>
-
+          <div v-if="index === editToggle" class="media-content">
+            <div class="content">
+              <textarea
+                rows="3"
+                v-model="editCommentMessage"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                type="text"
+              />
+            </div>
+            <div class="level-item flex justify-between my-3">
+              <button
+                @click="saveEditComment(comment.comment_id, index)"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
+              >
+                Save Comment
+              </button>
+              <button
+                @click="editToggle = -1"
+                class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mb-2"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
           <div class="flex items-start mb-5">
             <div class="pr-4">
               <footer>
                 <p class="mb-2 text-xs text-gray-500 dark:text-gray-400">
-                  <time datetime="2022-01-20 19:00">{{
-                    new Date(comment.time).toLocaleString("TH")
-                  }}</time>
+                  <time datetime="2022-01-20 19:00"
+                  >{{ new Date(comment.time).toLocaleString("TH") }}
+                  </time>
                 </p>
               </footer>
             </div>
@@ -182,34 +195,32 @@
           </div>
         </form>
         <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+          Remember, contributions to this topic should follow our
           <span class="text-blue-600 dark:text-blue-500 hover:underline"
-            >Polite and Consideration</span
+          >Polite and Consideration</span
           >.
         </p>
       </div>
     </div>
-    <!-- {{userId}}5555 -->
   </div>
 </template>
 
 <script>
 import axios from "axios";
 import { ref } from "vue";
-// const ;
+
 export default {
   name: "ShowArticleDetail",
   props: ["user"],
   data() {
     return {
-      editToggle:-1,
+      editToggle: -1,
       editCommentMessage: "",
       articles: [],
       comments: [],
       star: [],
-      // userId:this.user.member_id,
-      // nlBEFormatter : new Intl.DateTimeFormat('nl-BE'),
       commentInput: "",
-      articleid: this.$route.params.id,
+      article_id: this.$route.params.id
     };
   },
   created() {
@@ -219,15 +230,15 @@ export default {
   setup() {
     const value = ref(0);
     return {
-      value,
+      value
     };
   },
   methods: {
-     saveEditComment(commentId, index) {
-       console.log(this.comments[index].comment)
+    saveEditComment(commentId, index) {
+      console.log(this.comments[index].comment);
       axios
         .put(`http://localhost:4000/comments/${commentId}`, {
-          comment: this.editCommentMessage,
+          comment: this.editCommentMessage
         })
         .then((response) => {
           this.comments[index].comment = response.data.comment;
@@ -236,15 +247,14 @@ export default {
         .catch((error) => {
           this.error = error.message;
         });
-        console.log(this.comments[index].comment)
-    }
-    ,
+      console.log(this.comments[index].comment);
+    },
     async postComment() {
       axios
         .post(
           `http://localhost:4000/${this.articles[0].article_id}/comments/${this.user.member_id}`,
           {
-            comment: this.commentInput,
+            comment: this.commentInput
           }
         )
         .then((response) => {
@@ -258,19 +268,19 @@ export default {
     async getArticle() {
       try {
         const response = await axios.get(
-          `http://localhost:4000/article/${this.articleid}`
+          `http://localhost:4000/article/${this.article_id}`
         );
         this.articles = response.data;
         console.log(this.articles);
       } catch (err) {
         console.log(err);
       }
-      this.getStar();
+      await this.getStar();
     },
     async getStar() {
       try {
         const response = await axios.get(
-          `http://localhost:4000/star/${this.articleid}/${this.user.member_id}`
+          `http://localhost:4000/star/${this.article_id}/${this.user.member_id}`
         );
         this.star = response.data[0].rating;
         console.log(this.articles);
@@ -279,17 +289,19 @@ export default {
       }
     },
     async giveStar() {
-      axios.post(
-        `http://localhost:4000/star/${this.articleid}/${this.user.member_id}/${this.value}`
-      );
-      location.reload().catch((error) => {
+      try {
+        await axios.post(
+          `http://localhost:4000/star/${this.article_id}/${this.user.member_id}/${this.value}`
+        );
+        location.reload();
+      } catch (error) {
         this.error = error.response.data.message;
-      });
+      }
     },
     async getComment() {
       try {
         const comment = await axios.get(
-          `http://localhost:4000/article/comment/${this.articleid}`
+          `http://localhost:4000/article/comment/${this.article_id}`
         );
         this.comments = comment.data;
         console.log(this.articles);
@@ -297,11 +309,10 @@ export default {
         console.log(err);
       }
     },
-    isCommentOwner (comment) {
-       if (!this.user) return false
-      //  if(this.user.role == "admin") return true
-       return comment.member_id === this.user.member_id
-     }
-  },
+    isCommentOwner(comment) {
+      if (!this.user) return false;
+      return comment.member_id === this.user.member_id;
+    }
+  }
 };
 </script>
