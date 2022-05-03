@@ -54,7 +54,7 @@ router.put(
   async function (req, res, next) {
     try {
       const [rows1, fields1] = await db.query(
-        "UPDATE comment SET comment=? WHERE comment_id=?",
+        "UPDATE comment SET comment=? ,time=CURRENT_TIMESTAMP WHERE comment_id=?",
         [req.body.comment, req.params.commentId]
       );
       console.log(rows1);
