@@ -28,6 +28,9 @@
         >
           {{ article.title_review }}
         </h1>
+        <p>
+          {{article.view}}
+        </p>
         <a-space>
           <a-avatar>{{ article.firstname.substring(0, 1) }}</a-avatar>
           <p class="text-medium font-semibold mt-2.5">
@@ -130,7 +133,7 @@
       </div>
     </form>
     <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
-      {{user}}
+      <!-- {{user}} -->
       <span class="text-blue-600 dark:text-blue-500 hover:underline"
       >Polite and Consideration</span
       >.
@@ -138,7 +141,7 @@
     </p>
   </div>
     </div>
-     <p>{{ user }}</p>555555555555555555555555555555
+     <!-- <p>{{ user }}</p>555555555555555555555555555555 -->
   </div>
   
 </template>
@@ -165,9 +168,9 @@ export default {
   },
   methods: {
     async postComment(){
-      alert(this.user)
+      alert(this.user.member_id)
       axios
-        .post(`http://localhost:4000/${this.articles[0].article_id}/comments/5`, {
+        .post(`http://localhost:4000/${this.articles[0].article_id}/comments/${this.user.member_id}`, {
           comment: this.commentInput,
         })
         .then((response) => {
