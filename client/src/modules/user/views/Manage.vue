@@ -11,10 +11,10 @@
         @tabScroll="callback"
       >
         <a-tab-pane key="account" tab="Account">
-          <Account />
+          <Account :user="user" />
         </a-tab-pane>
         <a-tab-pane key="security" tab="Security">
-          <Security />
+          <Security :user="user" />
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -28,6 +28,7 @@ import { ref } from "vue";
 
 export default {
   name: "Manage",
+  props: ["user"],
   components: { Security, Account },
   data() {
     return {};

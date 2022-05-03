@@ -1,7 +1,6 @@
 <template>
   <div style="margin: 0 5rem">
     <p class="font-bold text-2xl">Profile update</p>
-    {{ user }}
     <FlexColCenter>
       <a-space :size="size / 2" direction="vertical">
         <a-space :size="size">
@@ -35,8 +34,7 @@
               <label
                 for="username"
                 class="block mb-2 text-sm font-medium text-gray-900"
-              >
-                {{ user.username }}
+              >Username
               </label>
               <div class="flex">
                 <span
@@ -48,7 +46,8 @@
                   type="text"
                   id="username"
                   class="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm border-gray-300 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Bonnie Green"
+                  :value="user.username"
+                  readonly
                 />
               </div>
             </div>
@@ -79,8 +78,9 @@
                 <input
                   type="text"
                   id="email-address-icon"
+                  v-model="email"
+                  v-bind:class="{ 'bg-blue-50 border border-blue-500 font-semibold text-blue-900': this.email !== user.email }"
                   class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="name@flowbite.com"
                 />
               </div>
             </div>
@@ -88,6 +88,7 @@
         </a-space>
         <button
           type="button"
+          @click="saveSetting"
           class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 focus:outline-none"
           style="margin: 3rem 0"
         >
@@ -120,19 +121,18 @@ export default {
   },
   data() {
     return {
-      user_log: []
+      email: this.user.email
     };
   },
-  created() {
-    this.getUser();
-  },
   methods: {
-    async getUser() {
+    async saveSetting() {
       try {
-        const user = await axios.get(
-          `http://localhost:4000/manage_account/${this.user.username}`
-        );
-        this.user_log = user.data;
+        await axios.put(`http://localhost:4000/manage_account/${this.user.member_id}`, {
+          member_id: this.user.member_id,
+          email: this.email
+        });
+        console.log("done");
+        await this.$router.push(`/${this.user.member_id}/manage_account/`);
       } catch (err) {
         console.log(err);
       }

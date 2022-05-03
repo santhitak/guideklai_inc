@@ -7,7 +7,7 @@ const moduleRoute = {
   component: Module,
   children: [
     {
-      path: "setting",
+      path: "manage_account",
       component: Manage,
       meta: {
         auth: true,
