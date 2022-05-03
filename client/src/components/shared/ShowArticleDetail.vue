@@ -113,6 +113,18 @@
                           </span>
                         </button>
                       </div>
+                      <div class="level-item">
+                        <button
+                          v-if="isCommentOwner(comment)"
+                          @click="deleteComment(comment.comment_id, index)"
+                          class="button is-danger is-outlined"
+                        >
+                          <span>Delete</span>
+                          <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                          </span>
+                        </button>
+                      </div>
              </div>
           </div>
         </div>
@@ -224,21 +236,23 @@ export default {
   },
   methods: {
      saveEditComment(commentId, index) {
-       console.log(this.comments[index].comment)
+       console.log(this.comments[index].time)
       axios
         .put(`http://localhost:4000/comments/${commentId}`, {
-          comment: this.editCommentMessage,
+          comment: this.editCommentMessage
         })
         .then((response) => {
           this.comments[index].comment = response.data.comment;
+          // this.comments[index].time = new Date(this.comments[index].time).toLocaleString("TH");
           this.editToggle = -1;
         })
         .catch((error) => {
           this.error = error.message;
         });
-        console.log(this.comments[index].comment)
+        console.log(this.comments[index].time)
     }
     ,
+    
     async postComment() {
       axios
         .post(
@@ -254,6 +268,20 @@ export default {
         .catch((error) => {
           this.error = error.response.data.message;
         });
+    },
+    deleteComment(commentId, index) {
+      const result = confirm(`Are you sure you want to delete this comment`);
+      if (result) {
+        axios
+          .delete(`http://localhost:4000/comments/${commentId}`)
+          .then((response) => {
+            console.log(response);
+            this.comments.splice(index, 1);
+          })
+          .catch((error) => {
+            this.error = error.message;
+          });
+      }
     },
     async getArticle() {
       try {
