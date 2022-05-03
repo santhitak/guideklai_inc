@@ -176,16 +176,16 @@
                   {{ articles.title_promote }}
                 </h5>
                 <p
-                  v-if="articles.rating_review != null"
+                  v-if="articles.rating_avg != null"
                   class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
                 >
-                  {{ articles.rating_review }}
+                  {{ articles.rating_avg}}
                 </p>
                 <p
                   v-else
                   class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
                 >
-                  {{ articles.rating_promote }}
+                  0
                 </p>
               </div>
               <p class="text-gray-600 font-semibold text-sm">
@@ -329,7 +329,7 @@ export default {
   computed: {
     filteredList1() {
       return this.Article.filter((post) => {
-        return ( post.rating_promote >= this.star || post.rating_review >= this.star         
+        return ( post.rating_avg >= this.star        
         );
       });
     },

@@ -5,7 +5,7 @@ const router = express.Router();
 router.get("/article", async function (req, res, next) {
   try {
     let sql =
-      "SELECT * FROM article join member using(member_id) left join promote using(article_id) left join review using(article_id) left join review_category using(article_id)";
+      "SELECT * FROM article join member using(member_id)  left join promote using(article_id) left join review using(article_id) left join review_category using(article_id)";
 
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
@@ -16,7 +16,7 @@ router.get("/article", async function (req, res, next) {
 
 router.get("/article/filter/:type", async function (req, res, next) {
   try {
-    let sql = `SELECT * FROM article left join promote using(article_id) left join review using(article_id) left join review_category using(article_id) where type_Promote = "${req.params.type}" or category = "${req.params.type}"`;
+    let sql = `SELECT * FROM article left join promote using(article_id)  left join review using(article_id) left join review_category using(article_id) where type_Promote = "${req.params.type}" or category = "${req.params.type}"`;
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
@@ -69,7 +69,7 @@ router.get("/article/show/review/all", async function (req, res, next) {
 
 router.get("/article/show/review/tour/rating", async function (req, res, next) {
   try {
-    let sql = `SELECT  * FROM article left join review using(article_id) left join review_category using(article_id) left join tour using(article_id) where category = 'Tour' AND view >= 100 order by rating_review DESC`;
+    let sql = `SELECT  * FROM article left join review using(article_id) left join review_category using(article_id) left join tour using(article_id)  where category = 'Tour' AND view >= 100 order by rating_avg DESC`;
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
@@ -79,7 +79,7 @@ router.get("/article/show/review/tour/rating", async function (req, res, next) {
 
 router.get("/article/show/review/rest/view", async function (req, res, next) {
   try {
-    let sql = `SELECT * FROM article left join review using(article_id) left join review_category using(article_id) left join rest using(article_id) where category = 'Rest' AND lower_price IS NOT null AND higher_price IS NOT null order by view DESC, rating_review DESC`;
+    let sql = `SELECT * FROM article left join review using(article_id) left join review_category using(article_id) left join rest using(article_id)  where category = 'Rest' AND lower_price IS NOT null AND higher_price IS NOT null order by view DESC, rating DESC`;
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
