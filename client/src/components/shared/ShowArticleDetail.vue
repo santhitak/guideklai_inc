@@ -29,7 +29,7 @@
           {{ article.title_review }}
         </h1>
         <p>
-          {{article.view}}
+          {{ article.view }}
         </p>
         <a-space>
           <a-avatar>{{ article.firstname.substring(0, 1) }}</a-avatar>
@@ -39,10 +39,7 @@
         </a-space>
       </div>
       <a-divider />
-      <div
-        style="display: flex; align-items: center; "
-        class="flex-col"
-      >
+      <div style="display: flex; align-items: center" class="flex-col">
         <img
           style="width: 50%"
           class="my-4 rounded-xl"
@@ -55,15 +52,18 @@
       </div>
     </div>
     <div class="mt-4">
-      <span @click="giveStar(this.value)" v-if="this.star == false && this.user">
+      <span
+        @click="giveStar(this.value)"
+        v-if="this.star == false && this.user"
+      >
         <a-rate v-model:value="value" allow-half />
       </span>
       <span v-else>
-        <a-rate :value="this.star" disabled allow-half/>
-      </span>   
+        <a-rate :value="this.star" disabled allow-half />
+      </span>
       <p class="text-xl font-bold">Comments</p>
       <article
-        v-for="comment in comments"
+        v-for="(comment,index) in comments"
         v-bind:key="comment.article_id"
         class="md:gap-8 md:grid md:grid-cols-3"
       >
@@ -73,17 +73,61 @@
             <div class="space-y-1 mt-3 font-medium dark:text-white">
               <p>{{ comment.firstname + " " + comment.lastname }}</p>
             </div>
+            <p v-if="isCommentOwner(comment)"  @click="editToggle = index; editCommentMessage = comment.comment">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                />
+              </svg>
+            </p>
+             <div v-if="index===editToggle" class="media-content">
+                  <div class="content">
+                    <input v-model="editCommentMessage" class="input" type="text" />
+                    <!-- <p class="is-size-7">{{ comment.comment_date }}</p> -->
+                  </div>
+                   <div class="level-item">
+                        <button
+                          @click="saveEditComment(comment.comment_id,index)"
+                          class="button is-primary"
+                        >
+                          <span>Save Comment</span>
+                          <span class="icon is-small">
+                            <i class="fas fa-edit"></i>
+                          </span>
+                        </button>
+                    </div>
+                    <div class="level-item">
+                        <button @click="editToggle = -1" class="button is-info is-outlined">
+                          <span>Cancel</span>
+                          <span class="icon is-small">
+                            <i class="fas fa-times"></i>
+                          </span>
+                        </button>
+                      </div>
+             </div>
           </div>
         </div>
         <div class="col-span-2">
           <p class="text-bold text-black mb-2 dark:text-gray-400">
             {{ comment.comment }}
           </p>
+
           <div class="flex items-start mb-5">
             <div class="pr-4">
               <footer>
                 <p class="mb-2 text-xs text-gray-500 dark:text-gray-400">
-                  <time datetime="2022-01-20 19:00">{{new Date(comment.time).toLocaleString('TH') }}</time>
+                  <time datetime="2022-01-20 19:00">{{
+                    new Date(comment.time).toLocaleString("TH")
+                  }}</time>
                 </p>
               </footer>
             </div>
@@ -91,98 +135,118 @@
         </div>
       </article>
       <div class="mt-4">
-    <form>
-      <div
-        class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
-      >
-        <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
-          <label for="comment" class="sr-only">Your comment</label>
-          <textarea
-            v-model="commentInput"
-            
-            id="comment"
-            rows="4"
-            class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
-            placeholder="Write a comment..."
-            required=""
-          ></textarea>
-        </div>
-        <div
-          class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600"
-        >
-          <div class="flex pl-0 space-x-1 sm:pl-2">
-            <button
-              type="button"
-              class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
-            >
-              <svg
-                class="w-5 h-5"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  fill-rule="evenodd"
-                  d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                  clip-rule="evenodd"
-                ></path>
-              </svg>
-            </button>
-          </div>
-          <button
-            @click="postComment"
-            class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+        <form>
+          <div
+            class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
           >
-            Post comment
-          </button>
-        </div>
+            <div class="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+              <label for="comment" class="sr-only">Your comment</label>
+              <textarea
+                v-model="commentInput"
+                id="comment"
+                rows="4"
+                class="w-full px-0 text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400"
+                placeholder="Write a comment..."
+                required=""
+              ></textarea>
+            </div>
+            <div
+              class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600"
+            >
+              <div class="flex pl-0 space-x-1 sm:pl-2">
+                <button
+                  type="button"
+                  class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
+                >
+                  <svg
+                    class="w-5 h-5"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </button>
+              </div>
+              <button
+                @click="postComment"
+                class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+              >
+                Post comment
+              </button>
+            </div>
+          </div>
+        </form>
+        <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+          <span class="text-blue-600 dark:text-blue-500 hover:underline"
+            >Polite and Consideration</span
+          >.
+        </p>
       </div>
-    </form>
-    <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
-      <span class="text-blue-600 dark:text-blue-500 hover:underline"
-      >Polite and Consideration</span
-      >.
-    </p>
-  </div>
     </div>
-    
+    <!-- {{userId}}5555 -->
   </div>
-  
 </template>
 
 <script>
 import axios from "axios";
-import { ref } from 'vue';
+import { ref } from "vue";
 // const ;
 export default {
   name: "ShowArticleDetail",
-  props: ['user'],
+  props: ["user"],
   data() {
     return {
+      editToggle:-1,
+      editCommentMessage: "",
       articles: [],
       comments: [],
       star: [],
+      // userId:this.user.member_id,
       // nlBEFormatter : new Intl.DateTimeFormat('nl-BE'),
-      commentInput:"",
-      articleid: this.$route.params.id
+      commentInput: "",
+      articleid: this.$route.params.id,
     };
   },
   created() {
     this.getArticle();
     this.getComment();
   },
- setup() {
+  setup() {
     const value = ref(0);
     return {
       value,
     };
   },
   methods: {
-    async postComment(){
+     saveEditComment(commentId, index) {
+       console.log(this.comments[index].comment)
       axios
-        .post(`http://localhost:4000/${this.articles[0].article_id}/comments/${this.user.member_id}`, {
-          comment: this.commentInput,
+        .put(`http://localhost:4000/comments/${commentId}`, {
+          comment: this.editCommentMessage,
         })
+        .then((response) => {
+          this.comments[index].comment = response.data.comment;
+          this.editToggle = -1;
+        })
+        .catch((error) => {
+          this.error = error.message;
+        });
+        console.log(this.comments[index].comment)
+    }
+    ,
+    async postComment() {
+      axios
+        .post(
+          `http://localhost:4000/${this.articles[0].article_id}/comments/${this.user.member_id}`,
+          {
+            comment: this.commentInput,
+          }
+        )
         .then((response) => {
           this.commentInput = "";
           this.comments.push(response.data);
@@ -201,7 +265,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-      this.getStar()
+      this.getStar();
     },
     async getStar() {
       try {
@@ -215,12 +279,12 @@ export default {
       }
     },
     async giveStar() {
-      axios
-        .post(`http://localhost:4000/star/${this.articleid}/${this.user.member_id}/${this.value}`)
-        location.reload()
-        .catch((error) => {
-          this.error = error.response.data.message;
-        });
+      axios.post(
+        `http://localhost:4000/star/${this.articleid}/${this.user.member_id}/${this.value}`
+      );
+      location.reload().catch((error) => {
+        this.error = error.response.data.message;
+      });
     },
     async getComment() {
       try {
@@ -232,7 +296,12 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
-  }
+    },
+    isCommentOwner (comment) {
+       if (!this.user) return false
+      //  if(this.user.role == "admin") return true
+       return comment.member_id === this.user.member_id
+     }
+  },
 };
 </script>

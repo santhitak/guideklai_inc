@@ -48,23 +48,22 @@ router.post(
   }
 );
 
-// router.put(
-//   "/comments/:commentId",
-//   isLoggedIn,
-//   commentOwner,
-//   async function (req, res, next) {
-//     try {
-//       const [rows1, fields1] = await pool.query(
-//         "UPDATE comments SET comment=? WHERE id=?",
-//         [req.body.comment, req.params.commentId]
-//       );
-//       console.log(rows1);
-//       res.json({ comment: req.body.comment });
-//     } catch (error) {
-//       res.status(500).json(error);
-//     }
-//   }
-// );
+router.put(
+  "/comments/:commentId",
+  // commentOwner,
+  async function (req, res, next) {
+    try {
+      const [rows1, fields1] = await db.query(
+        "UPDATE comment SET comment=? WHERE comment_id=?",
+        [req.body.comment, req.params.commentId]
+      );
+      console.log(rows1);
+      res.json({ comment: req.body.comment });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
 
 // Delete comment
 router.delete("/comments/:commentId", async function (req, res, next) {
