@@ -117,7 +117,7 @@ export default {
           if (res.data) {
             localStorage.setItem("token", res.data.token);
             this.$emit("auth-change");
-            this.$router.push({ path: "/" });
+            window.location.replace("/");
           }
         })
         .catch((error) => {

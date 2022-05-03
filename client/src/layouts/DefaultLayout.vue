@@ -145,7 +145,7 @@ export default {
     async logout() {
       try {
         localStorage.clear();
-        await this.$router.push("/");
+        window.location.replace("/");
       } catch (err) {
         console.log(err);
       }
