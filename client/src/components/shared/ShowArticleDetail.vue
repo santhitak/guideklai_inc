@@ -200,8 +200,9 @@
           </div>
         </form>
         <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
-          <span class="text-blue-600 dark:text-blue-500 hover:underline"
-          >Polite and Consideration</span
+          Remember, contributions to this topic should follow our
+          <span class="text-blue-600 dark:text-blue-500 hover:underline">
+            Polite and Consideration </span
           >.
         </p>
       </div>
@@ -224,7 +225,7 @@ export default {
       comments: [],
       star: [],
       commentInput: "",
-      articleid: this.$route.params.id
+      article_id: this.$route.params.id
     };
   },
   created() {
@@ -286,19 +287,19 @@ export default {
     async getArticle() {
       try {
         const response = await axios.get(
-          `http://localhost:4000/article/${this.articleid}`
+          `http://localhost:4000/article/${this.article_id}`
         );
         this.articles = response.data;
         console.log(this.articles);
       } catch (err) {
         console.log(err);
       }
-      this.getStar();
+      await this.getStar();
     },
     async getStar() {
       try {
         const response = await axios.get(
-          `http://localhost:4000/star/${this.articleid}/${this.user.member_id}`
+          `http://localhost:4000/star/${this.article_id}/${this.user.member_id}`
         );
         this.star = response.data[0].rating;
         console.log(this.articles);
@@ -309,7 +310,7 @@ export default {
     async giveStar() {
       try {
         await axios.post(
-          `http://localhost:4000/star/${this.articleid}/${this.user.member_id}/${this.value}`
+          `http://localhost:4000/star/${this.article_id}/${this.user.member_id}/${this.value}`
         );
         location.reload();
       } catch (error) {
@@ -320,7 +321,7 @@ export default {
     async getComment() {
       try {
         const comment = await axios.get(
-          `http://localhost:4000/article/comment/${this.articleid}`
+          `http://localhost:4000/article/comment/${this.article_id}`
         );
         this.comments = comment.data;
         console.log(this.articles);
@@ -330,7 +331,6 @@ export default {
     },
     isCommentOwner(comment) {
       if (!this.user) return false;
-      //  if(this.user.role == "admin") return true
       return comment.member_id === this.user.member_id;
     }
   }
