@@ -286,6 +286,7 @@ export default {
         this.error = error.response.data.message;
       });
     },
+    
     async getComment() {
       try {
         const comment = await axios.get(

@@ -48,7 +48,9 @@ router.post(
   }
 );
 
+
 router.put(
+  
   "/comments/:commentId",
   // commentOwner,
   async function (req, res, next) {
