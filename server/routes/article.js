@@ -123,4 +123,41 @@ router.get(
   }
 );
 
+router.get("/star/:article_id/:member_id", async function (req, res, next) {
+  try {
+    let sql = `SELECT * FROM rating where article_id = ${req.params.article_id} and member_id = ${req.params.member_id}`;
+
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+router.post(
+  "/star/:article_id/:member_id/:score",
+  async function (req, res, next) {
+    const comment = req.body.comment;
+    try {
+      const [rows1, fields1] = await db.query(
+        "INSERT INTO `rating` (`article_id`, `rating`, `member_id` ) VALUES (?, ?, ?)",
+        [req.params.article_id, req.params.score, req.params.member_id]
+      );
+      const [rows2, fields2] = await db.query(
+        "SELECT * FROM `comment` WHERE `comment_id` = ?",
+        [rows1.insertId]
+      );
+      await db.query(
+        `UPDATE article
+        SET rating_avg = (SELECT AVG(rating) from rating where rating.article_id = ${req.params.article_id} group by article_id)
+        WHERE article.article_id = ${req.params.article_id}`
+      );
+      await db.commit();
+      return res.json(rows2[0]);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+);
+
 exports.router = router;

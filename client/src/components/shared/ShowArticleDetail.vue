@@ -55,6 +55,12 @@
       </div>
     </div>
     <div class="mt-4">
+      <span @click="giveStar(this.value)" v-if="this.star == false && this.user">
+        <a-rate v-model:value="value" allow-half />
+      </span>
+      <span v-else>
+        <a-rate :value="this.star" disabled allow-half/>
+      </span>   
       <p class="text-xl font-bold">Comments</p>
       <article
         v-for="comment in comments"
@@ -133,22 +139,20 @@
       </div>
     </form>
     <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
-      <!-- {{user}} -->
       <span class="text-blue-600 dark:text-blue-500 hover:underline"
       >Polite and Consideration</span
       >.
-      <!-- {{user}} -->
     </p>
   </div>
     </div>
-     <!-- <p>{{ user }}</p>555555555555555555555555555555 -->
+    
   </div>
   
 </template>
 
 <script>
 import axios from "axios";
-
+import { ref } from 'vue';
 // const ;
 export default {
   name: "ShowArticleDetail",
@@ -157,6 +161,7 @@ export default {
     return {
       articles: [],
       comments: [],
+      star: [],
       // nlBEFormatter : new Intl.DateTimeFormat('nl-BE'),
       commentInput:"",
       articleid: this.$route.params.id
@@ -166,9 +171,14 @@ export default {
     this.getArticle();
     this.getComment();
   },
+ setup() {
+    const value = ref(0);
+    return {
+      value,
+    };
+  },
   methods: {
     async postComment(){
-      alert(this.user.member_id)
       axios
         .post(`http://localhost:4000/${this.articles[0].article_id}/comments/${this.user.member_id}`, {
           comment: this.commentInput,
@@ -191,6 +201,26 @@ export default {
       } catch (err) {
         console.log(err);
       }
+      this.getStar()
+    },
+    async getStar() {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/star/${this.articleid}/${this.user.member_id}`
+        );
+        this.star = response.data[0].rating;
+        console.log(this.articles);
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async giveStar() {
+      axios
+        .post(`http://localhost:4000/star/${this.articleid}/${this.user.member_id}/${this.value}`)
+        location.reload()
+        .catch((error) => {
+          this.error = error.response.data.message;
+        });
     },
     async getComment() {
       try {
