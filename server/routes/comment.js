@@ -40,7 +40,7 @@ router.post(
         "SELECT * FROM `comment` WHERE `comment_id` = ?",
         [rows1.insertId]
       );
-      await db.commit();
+
       return res.json(rows2[0]);
     } catch (err) {
       return res.status(500).json(err);
