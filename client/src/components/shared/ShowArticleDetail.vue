@@ -54,7 +54,7 @@
     <div class="mt-4">
       <div>
         <p class="text-xl font-bold inline mr-3">Your rating</p>
-        <span @click="giveStar(this.value)" v-if="!this.star && this.user">
+        <span @click="giveStar(this.value)" v-if="this.star.length === 0 && this.user">
           <a-rate v-model:value="value" allow-half />
         </span>
         <span v-else>
@@ -153,7 +153,7 @@
         </div>
       </article>
       <div class="mt-4">
-        <form>
+        <form v-if="this.user">
           <div
             class="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600"
           >
@@ -198,13 +198,13 @@
               </button>
             </div>
           </div>
-        </form>
-        <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
+          <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
           Remember, contributions to this topic should follow our
           <span class="text-blue-600 dark:text-blue-500 hover:underline">
             Polite and Consideration </span
           >.
         </p>
+        </form>
       </div>
     </div>
   </div>
@@ -310,9 +310,12 @@ export default {
     async giveStar() {
       try {
         await axios.post(
-          `http://localhost:4000/star/${this.article_id}/${this.user.member_id}/${this.value}`
+          `http://localhost:4000/star/${this.article_id}/${this.user.member_id}/give`,
+          {
+            star: this.value
+          }
         );
-        location.reload();
+        location.reload()
       } catch (error) {
         this.error = error.response.data.message;
       }

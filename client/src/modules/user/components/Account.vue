@@ -121,7 +121,7 @@ export default {
   },
   data() {
     return {
-      email: this.user.email
+      email: this.user?.email
     };
   },
   methods: {
