@@ -2,9 +2,13 @@
   <div>
     <div class="centered">
       <div class="banner" />
-      <div class="profile_avatar"><p>{{ user.username }}</p></div>
+      <div class="profile_avatar"><p class="font-semibold text-white text-4xl" style="margin: 0">
+        {{ user.username.substr(0, 1)
+        }}</p>
+      </div>
     </div>
-    <section></section>
+    <section>
+    </section>
   </div>
 </template>
 
@@ -28,12 +32,12 @@ export default {
 .profile_avatar {
   width: 150px;
   height: 150px;
-  background-color: #e1e2e7;
+  background-color: #ccc;
   border-radius: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 3px #f6f6f6 solid;
+  border: 3px white solid;
   margin-top: -5rem;
 }
 
