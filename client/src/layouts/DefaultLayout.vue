@@ -10,7 +10,7 @@
         <a href="/" class="flex items-center">
           <span
             class="self-center text-xl font-semibold whitespace-nowrap text-blue-600"
-            >Guide Klai</span
+          >Guide Klai</span
           >
         </a>
         <div class="flex md:order-2">
@@ -43,12 +43,16 @@
               <template #overlay>
                 <a-menu style="border-radius: 10px">
                   <a-menu-item key="0">
-                    <a :href="`/${user.username}/profile/`">Profile</a>
+                    <router-link :to="`/${user.username}/profile/`"
+                    >Profile
+                    </router-link
+                    >
                   </a-menu-item>
                   <a-menu-item key="1">
-                    <a :href="`/${user.username}/manage_account/`">
-                      Manage Account
-                    </a>
+                    <router-link :to="`/${user.username}/manage_account/`"
+                    >Manage Account
+                    </router-link
+                    >
                   </a-menu-item>
                   <a-menu-divider />
                   <a-menu-item key="3" @click="logout">Sign out</a-menu-item>
@@ -67,7 +71,7 @@
                   href="/"
                   class="block py-2 pr-4 pl-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0"
                   aria-current="page"
-                  >Home
+                >Home
                 </a></router-link
               >
             </li>
@@ -84,7 +88,7 @@
               <a
                 href="#"
                 class="block py-2 pr-4 pl-3 text-gray-700 border-b border-gray-100 hover:bg-gray-50 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0"
-                >Services</a
+              >Services</a
               >
             </li>
           </ul>
@@ -124,7 +128,7 @@
       >
         © 2022
         <a href="https://flowbite.com" class="hover:underline text-blue-600"
-          >Guide Klai™</a
+        >Guide Klai™</a
         >
         All Rights Reserved.
       </span>
@@ -148,7 +152,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
-  },
+    }
+  }
 };
 </script>
