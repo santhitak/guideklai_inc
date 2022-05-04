@@ -138,15 +138,18 @@ router.get("/article/show/review/all", async function (req, res, next) {
   }
 });
 
-router.get("/article/show/review/tour/rating/get", async function (req, res, next) {
-  try {
-    let sql = `SELECT  * FROM article left join review using(article_id) left join review_category using(article_id) left join tour using(article_id)  where category = 'Tour' AND view >= 100 order by rating_avg DESC`;
-    const [rows, fields] = await db.query(sql);
-    return res.json(rows);
-  } catch (err) {
-    return res.status(500).json(err);
+router.get(
+  "/article/show/review/tour/rating/get",
+  async function (req, res, next) {
+    try {
+      let sql = `SELECT  * FROM article left join review using(article_id) left join review_category using(article_id) left join tour using(article_id)  where category = 'Tour' AND view >= 100 order by rating_avg DESC`;
+      const [rows, fields] = await db.query(sql);
+      return res.json(rows);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
   }
-});
+);
 
 router.get("/article/show/review/rest/view", async function (req, res, next) {
   try {
@@ -197,7 +200,7 @@ router.get(
 router.get("/star/:article_id/:member_id", async function (req, res, next) {
   try {
     let sql = `SELECT * FROM rating where article_id = ${req.params.article_id} and member_id = ${req.params.member_id}`;
-
+    console.log(sql);
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
@@ -220,6 +223,39 @@ router.post(
       );
       // await db.commit();
       return res.json(rows2[0]);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+);
+
+router.post(
+  "/create/article/:type/:member_id",
+  async function (req, res, next) {
+    const type_article = req.body.type_article;
+    try {
+      const [rows1, fields1] = await db.query(
+        "INSERT INTO `article` (`member_id`, `information`, `type_article`, `image`) VALUES (?, ?, ?, ?)",
+        [
+          req.params.member_id,
+          req.body.information,
+          type_article,
+          req.body.image,
+        ]
+      );
+      if (type_article == "Review") {
+        const [rows2, fields2] = await db.query(
+          "INSERT INTO `review` (`article_id`, `title_review`) VALUES (?, ?)",
+          [rows1.insertId, req.body.title]
+        );
+        const category = await db.query(
+          "INSERT INTO `review_category` (`article_id`, `category_id`, category) VALUES (?, ?, ?)",
+          [rows1.insertId, 1, req.body.type]
+        );
+      }
+
+      // await db.commit();
+      return res.json(rows1[0]);
     } catch (err) {
       return res.status(500).json(err);
     }
