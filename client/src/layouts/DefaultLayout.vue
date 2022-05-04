@@ -33,11 +33,13 @@
               <button
                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2 mr-2"
               >
-                <a class="ant-dropdown-link" @click.prevent>
+                <a class="ant-dropdown-link flex align-center w-full" @click.prevent>
                   <a-avatar>{{ user.username.substring(0, 1) }}</a-avatar>
-                  <p class="text-gray-600 font-semibold inline mx-4">
+                  <p class="text-gray-600 font-semibold ml-4 mr-1 mt-1" style="margin-bottom: 0">
                     {{ user.username }}
                   </p>
+                  <VerifyGreen v-if="user.verify_status && user.type_member === 'Entrepreneur'" class="mt-1" />
+                  <VerifyBlue v-if="user.verify_status && user.type_member === 'Member'" class="mt-1" />
                 </a>
               </button>
               <template #overlay>
@@ -45,14 +47,12 @@
                   <a-menu-item key="0">
                     <router-link :to="`/${user.username}/profile/`"
                     >Profile
-                    </router-link
-                    >
+                    </router-link>
                   </a-menu-item>
                   <a-menu-item key="1">
                     <router-link :to="`/${user.username}/manage_account/`"
                     >Manage Account
-                    </router-link
-                    >
+                    </router-link>
                   </a-menu-item>
                   <a-menu-divider />
                   <a-menu-item key="3" @click="logout">Sign out</a-menu-item>
@@ -137,10 +137,13 @@
 </template>
 
 <script>
+import VerifyGreen from "@/components/shared/VerifyGreen";
+import VerifyBlue from "@/components/shared/VerifyBlue";
+
 export default {
   name: "DefaultLayout",
   props: ["user"],
-  components: {},
+  components: { VerifyBlue, VerifyGreen },
   data() {
     return {};
   },
