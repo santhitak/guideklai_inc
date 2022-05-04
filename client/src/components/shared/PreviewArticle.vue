@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <div style="margin-top: 3rem">
+    <div class="flex justify-end" style="width: 90%">
+      <a-space size="large">
+        <a-range-picker v-model="datepicker" :bordered="false" />
+        <CreatePost v-if="user.type_member === 'Entrepreneur'" />
+        <CreateReview v-else />
+      </a-space>
+    </div>
     <div class="flex justify-between mt-10">
       <div class="flex-none">
         <div class="mb-6 flex">
@@ -289,7 +296,7 @@
                   </a-tag>
                 </div>
               </a-space>
-              
+
               {{ new Date(articles.create_time).toLocaleString("TH") }}
             </div>
           </a>
@@ -305,10 +312,13 @@ import FullStar from "@/components/shared/Filter/components/FullStar";
 import EmptyStar from "@/components/shared/Filter/components/EmptyStar";
 import { SearchOutlined } from "@ant-design/icons-vue";
 import { ref } from "vue";
+import CreatePost from "@/modules/article/components/CreatePost";
+import CreateReview from "@/modules/article/components/CreateReview";
 
 export default {
   name: "PreviewArticle",
-  components: { EmptyStar, FullStar, SearchOutlined },
+  props: ["user"],
+  components: { CreateReview, CreatePost, EmptyStar, FullStar, SearchOutlined },
   data() {
     return {
       search: "",
@@ -321,7 +331,7 @@ export default {
       starNormal:
         "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700",
       starActive:
-        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700"
+        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700",
     };
   },
   created() {
@@ -330,19 +340,18 @@ export default {
   setup() {
     const value = ref("");
     return {
-      value
+      value,
+      datepicker: ref(),
     };
   },
   computed: {
     filteredList1() {
-      // alert(e)
       return this.Article.filter((post) => {
         return (
           post.rating_avg >= this.star && post.type_article.includes(this.value)
         );
       });
     },
-
     filteredList() {
       return this.filteredList1.filter((post) => {
         this.FilterList =
@@ -357,7 +366,7 @@ export default {
           post.title_review?.toLowerCase().includes(this.search?.toLowerCase())
         );
       });
-    }
+    },
   },
   methods: {
     onChangePage(pageOfItems) {
@@ -383,7 +392,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    }
-  }
+    },
+  },
 };
 </script>
