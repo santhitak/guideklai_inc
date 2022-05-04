@@ -289,6 +289,8 @@
                   </a-tag>
                 </div>
               </a-space>
+              
+              {{ new Date(articles.create_time).toLocaleString("TH") }}
             </div>
           </a>
         </div>
