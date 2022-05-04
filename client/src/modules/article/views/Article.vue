@@ -11,8 +11,10 @@ import PreviewArticle from "@/components/shared/PreviewArticle";
 
 export default {
   name: "Article",
-  props: ['user'],
-  components: { PreviewArticle },
+  props: ["user"],
+  components: {
+    PreviewArticle
+  },
   data() {
     return {};
   }
