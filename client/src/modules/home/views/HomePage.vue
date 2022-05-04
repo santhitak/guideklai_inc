@@ -28,7 +28,7 @@
                 </p>
                 <div style="display: flex" class="mt-3">
                   <p class="text-sm font-medium text-gray-400">
-                    {{ article.rating_avg }}
+                    {{ article?.rating_avg }}
                   </p>
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -119,7 +119,7 @@ export default {
     async tourRating() {
       try {
         const response = await axios.get(
-          "http://localhost:4000/article/show/review/tour/rating"
+          "http://localhost:4000/article/show/review/tour/rating/get"
         );
         this.topRating = response.data;
       } catch (err) {

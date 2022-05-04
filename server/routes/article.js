@@ -138,7 +138,7 @@ router.get("/article/show/review/all", async function (req, res, next) {
   }
 });
 
-router.get("/article/show/review/tour/rating", async function (req, res, next) {
+router.get("/article/show/review/tour/rating/get", async function (req, res, next) {
   try {
     let sql = `SELECT  * FROM article left join review using(article_id) left join review_category using(article_id) left join tour using(article_id)  where category = 'Tour' AND view >= 100 order by rating_avg DESC`;
     const [rows, fields] = await db.query(sql);
