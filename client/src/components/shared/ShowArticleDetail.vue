@@ -51,10 +51,60 @@
         </div>
       </div>
     </div>
+    <div class="my-12" style="width: 10%">
+      <p class="text-center">About</p>
+      {{ category }}
+      {{ type }}
+      <!-- {{ articles}} -->
+      <div v-if="articleType[0]?.category === 'Attraction' ||  articleType[0]?.type_promote === 'Attraction'">
+        <div class="">province_name : {{ articleType[0]?.province_name }}</div>
+        <div class="">office_hour : {{ articleType[0]?.office_hour }}</div>
+        <div class="">attraction_price : {{ articleType[0]?.attraction_price }}</div>
+        <div class="">image : {{ articleType[0]?.image }}</div>    
+        <div class="" v-if="articles[0]?.type_article === 'Promote'">
+          Phone:{{ articleType[0]?.phone_number }}
+          Email:{{articleType[0]?.email}}
+          </div>                           
+      </div>
+      <div v-if="articleType[0]?.category === 'Guide' ||  articleType[0]?.type_promote === 'Guide'">
+        <div class="">Guide Name : {{ articleType[0]?.firstname }} {{ articleType[0]?.lastname }}</div>
+        <div class="">Age : {{ articleType[0]?.age }}</div>
+        <div class="">Gender : {{ articleType[0]?.gender }}</div>
+        <div class="">image : {{ articleType[0]?.image }}</div>
+        <div class="">Language : {{language}}</div>      
+        <div class="" v-if="articles[0]?.type_article === 'Promote'">
+          Phone:{{ articleType[0]?.phone_number }}
+          Email:{{articleType[0]?.email}}
+          </div>                           
+      </div>
+       <div v-if="articleType[0]?.category === 'Rest' ||  articleType[0]?.type_promote === 'Rest'">
+        <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
+        <div class="">Price : {{ articleType[0]?.lower_price }} - {{ articleType[0]?.higher_price }}</div>        
+        <div class="">image : {{ articleType[0]?.image }}</div>
+        <div class="" v-if="articles[0]?.type_article === 'Promote'">
+          Phone:{{ articleType[0]?.phone_number }}
+          Email:{{articleType[0]?.email}}
+          </div>                           
+      </div>
+      <div v-if="articleType[0]?.category === 'Tour' ||  articleType[0]?.type_promote === 'Tour'">
+        <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
+        <div class="">Language : {{language}}</div>   
+        <div class="">province_name : {{ articleType[0]?.province_name }}</div>
+        <div class="">Price : {{ articleType[0]?.tour_price }}</div>        
+        <div class="">image : {{ articleType[0]?.image }}</div>
+        <div class="" v-if="articles[0]?.type_article === 'Promote'">
+          Phone:{{ articleType[0]?.phone_number }}
+          Email:{{articleType[0]?.email}}
+          </div>                           
+      </div>
+    </div>
     <div class="mt-4">
       <div>
         <p class="text-xl font-bold inline mr-3">Your rating</p>
-        <span @click="giveStar(this.value)" v-if="this.star.length === 0 && this.user">
+        <span
+          @click="giveStar(this.value)"
+          v-if="this.star.length === 0 && this.user"
+        >
           <a-rate v-model:value="value" allow-half />
         </span>
         <span v-else>
@@ -199,11 +249,11 @@
             </div>
           </div>
           <p class="ml-auto text-xs text-gray-500 dark:text-gray-400">
-          Remember, contributions to this topic should follow our
-          <span class="text-blue-600 dark:text-blue-500 hover:underline">
-            Polite and Consideration </span
-          >.
-        </p>
+            Remember, contributions to this topic should follow our
+            <span class="text-blue-600 dark:text-blue-500 hover:underline">
+              Polite and Consideration </span
+            >.
+          </p>
         </form>
       </div>
     </div>
@@ -223,9 +273,16 @@ export default {
       editCommentMessage: "",
       articles: [],
       comments: [],
+      articleTour: [],
+      articleType: [],
+      articleAttraction: [],
+      articleRest: [],
       star: [],
+      language:[],
+      type: "",
+      category: "",
       commentInput: "",
-      article_id: this.$route.params.id
+      article_id: this.$route.params.id,
     };
   },
   created() {
@@ -235,15 +292,16 @@ export default {
   setup() {
     const value = ref(0);
     return {
-      value
+      value,
     };
   },
   methods: {
+    
     saveEditComment(commentId, index) {
       console.log(this.comments[index].comment);
       axios
         .put(`http://localhost:4000/comments/${commentId}`, {
-          comment: this.editCommentMessage
+          comment: this.editCommentMessage,
         })
         .then((response) => {
           this.comments[index].comment = response.data.comment;
@@ -273,7 +331,7 @@ export default {
         .post(
           `http://localhost:4000/${this.articles[0].article_id}/comments/${this.user.member_id}`,
           {
-            comment: this.commentInput
+            comment: this.commentInput,
           }
         )
         .then((response) => {
@@ -290,12 +348,35 @@ export default {
           `http://localhost:4000/article/${this.article_id}`
         );
         this.articles = response.data;
-        console.log(this.articles);
+        this.type = this.articles[0].type_promote;
+        this.category = this.articles[0].category;
+        
+        this.type.toString();
+        this.category.toString();
+        console.log(this.category);
+      } catch (err) {
+        console.log(err);
+      }
+      await this.getArticleType();
+      await this.getStar();
+    },
+
+    async getArticleType() {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/article/show/${this.category}/${this.type}/${this.article_id}`
+        );
+        this.articleType = response.data;
+        for(let i = 0; i < this.articleType.length; i++) {
+          this.language.push(this.articleType[i].language_name)
+        }
+        console.log(this.articleType);
       } catch (err) {
         console.log(err);
       }
       await this.getStar();
     },
+
     async getStar() {
       try {
         const response = await axios.get(
@@ -312,10 +393,10 @@ export default {
         await axios.post(
           `http://localhost:4000/star/${this.article_id}/${this.user.member_id}/give`,
           {
-            star: this.value
+            star: this.value,
           }
         );
-        location.reload()
+        location.reload();
       } catch (error) {
         this.error = error.response.data.message;
       }
@@ -335,7 +416,7 @@ export default {
     isCommentOwner(comment) {
       if (!this.user) return false;
       return comment.member_id === this.user.member_id;
-    }
-  }
+    },
+  },
 };
 </script>

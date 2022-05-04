@@ -5,7 +5,7 @@ const router = express.Router();
 router.get("/article", async function (req, res, next) {
   try {
     let sql =
-      "SELECT * FROM article join member using(member_id)  left join promote using(article_id) left join review using(article_id) left join review_category using(article_id)";
+      "SELECT * FROM article a join member using(member_id)  left join promote using(article_id) left join review using(article_id) left join review_category using(article_id) order by create_time DESC";
 
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
@@ -16,7 +16,7 @@ router.get("/article", async function (req, res, next) {
 
 router.get("/article/filter/:type", async function (req, res, next) {
   try {
-    let sql = `SELECT * FROM article left join promote using(article_id)  left join review using(article_id) left join review_category using(article_id) where type_Promote = "${req.params.type}" or category = "${req.params.type}"`;
+    let sql = `SELECT * FROM article left join promote using(article_id)  left join review using(article_id) left join review_category using(article_id) where type_Promote = "${req.params.type}" or category = "${req.params.type}" order by create_time DESC`;
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
@@ -29,7 +29,7 @@ router.get("/article/:id", async function (req, res, next) {
     `update article set view = view + 1 where article_id = ${req.params.id}`
   );
   try {
-    let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review using(article_id) where article_id = ${req.params.id}`;
+    let sql = `SELECT * FROM article left join member using(member_id)  left join review_category using(article_id) left join promote using(article_id) left join review using(article_id) where article_id = ${req.params.id}`;
     const [rows, fields] = await db.query(sql);
     return res.json(rows);
   } catch (err) {
@@ -46,6 +46,77 @@ router.get("/article/comment/:id", async function (req, res, next) {
     return res.status(500).json(err);
   }
 });
+
+// router.get("/article/show/attraction", async function (req, res, next) {
+//   try {
+//     let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join attraction using(article_id)  left join province using(province_id) where category = "Attraction" OR type_promote = "Attraction" `;
+//     const [rows, fields] = await db.query(sql);
+//     return res.json(rows);
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// });
+
+router.get(
+  "/article/show/:category/:type_promote/:id",
+  async function (req, res, next) {
+    console.log(req.params.category);
+    console.log(req.params.type_promote);
+    try {
+      if (
+        req.params.category == "Guide" ||
+        req.params.type_promote == "Guide"
+      ) {
+        let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join guide using(article_id)  left join guide_language_skill using(article_id) left join language_skill using(language_id)  where article_id = ${req.params.id} AND (category = "Guide" OR type_promote = "Guide" ) `;
+        const [rows, fields] = await db.query(sql);
+        return res.json(rows);
+      } else if (
+        req.params.category == "Attraction" ||
+        req.params.type_promote == "Attraction"
+      ) {
+        let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join attraction using(article_id)  left join province using(province_id)  where article_id = ${req.params.id} AND (category = "Attraction"  OR type_promote = "Attraction" ) `;
+        const [rows, fields] = await db.query(sql);
+        return res.json(rows);
+      } else if (
+        req.params.category == "Rest" ||
+        req.params.type_promote == "Rest"
+      ) {
+        let sql = `SELECT * FROM article left join entrepreneur using(member_id) left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join rest using(article_id)  left join province using(province_id)  where article_id = ${req.params.id} AND (category = "Rest" OR type_promote = "Rest" ) `;
+        const [rows, fields] = await db.query(sql);
+        return res.json(rows);
+      } else if (
+        req.params.category == "Tour" ||
+        req.params.type_promote == "Tour"
+      ) {
+        let sql = `SELECT * FROM article left join entrepreneur using(member_id) left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join tour using(article_id) left join tour_language_skill using(article_id) left join language_skill using(language_id)  left join tour_province using(article_id) left join province using(province_id) where article_id = ${req.params.id} AND (category = "Tour"  OR type_promote = "Tour")  `;
+        const [rows, fields] = await db.query(sql);
+        return res.json(rows);
+      }
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+);
+
+// router.get("/article/show/rest", async function (req, res, next) {
+//   try {
+//     let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join rest using(article_id)  left join province using(province_id) where category = "Rest" OR type_promote = "Rest" `;
+//     const [rows, fields] = await db.query(sql);
+//     return res.json(rows);
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// });
+
+// router.get("/article/show/tour", async function (req, res, next) {
+//   try {
+//     let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join tour using(article_id) left join tour_language_skill using(article_id) left join language_skill using(language_id)  left join tour_province using(article_id) left join province using(province_id) where category = "Tour" OR type_promote = "Tour" `;
+//     const [rows, fields] = await db.query(sql);
+//     return res.json(rows);
+//   } catch (err) {
+//     return res.status(500).json(err);
+//   }
+// });
 
 router.get("/article/show/all", async function (req, res, next) {
   try {
