@@ -36,7 +36,12 @@
           </a-upload-dragger>
         </div>
         <div v-else>
-          <img :src="item.image" class="rounded-lg" alt="" style="width: 450px; height: auto" />
+          <img
+            :src="item.image"
+            class="rounded-lg"
+            alt=""
+            style="width: 450px; height: auto"
+          />
         </div>
       </div>
     </div>
@@ -82,7 +87,8 @@ export default {
       try {
         await axios
           .post(
-            `http://localhost:4000/manage_account/evidence/${this.user.member_id}`, { image: this.evi_img }
+            `http://localhost:4000/manage_account/evidence/${this.user.member_id}`,
+            { image: this.evi_img }
           )
           .then(() => {
             alert("Sent id validation");
