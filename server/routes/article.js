@@ -299,32 +299,39 @@ router.post(
   async function (req, res, next) {
     const type = req.body.type;
     const language = req.body.language;
+    const province = req.body.province;
+    const price = req.body.price;
+    console.log(province);
     try {
       const [rows1, fields1] = await db.query(
-        "INSERT INTO article (member_id, information, type_article, image) VALUES (?, ?, ?, ?)",
-        [req.params.member_id, req.body.information, "Promote", req.body.image]
+        "INSERT INTO article (member_id, information, type_article) VALUES (?, ?, ?)",
+        [req.params.member_id, req.body.information, "Promote"]
       );
       const [rows2, fields2] = await db.query(
         "INSERT INTO promote (article_id, title_promote, type_promote) VALUES (?, ?, ?)",
         [rows1.insertId, req.body.title, type]
       );
-
+      const image = await db.query(
+        "INSERT INTO images (article_id, image) VALUES (?, ?)",
+        [
+          rows1.insertId,
+          "https://funvizeo.com/media/memes/dd3c6164e3307911/wake-up-if-is-meme-3045e36b9603a120-9c12e2998efd2d16.jpg",
+        ]
+      );
       if (type == "Attraction") {
         const attraction = await db.query(
-          "INSERT INTO attraction (article_id, province_id, office_hour, attraction_price, image) VALUES (?, ?, ?, ?, ?)",
-          [
-            rows1.insertId,
-            req.body.province,
-            req.body.office_hour,
-            req.body.price,
-            req.body.image,
-          ]
+          "INSERT INTO attraction (article_id, province_id, office_hour, attraction_price) VALUES (?, ?, ?, ?)",
+          [rows1.insertId, province, req.body.office_hour, price]
         );
       }
       if (type == "Tour") {
         const tour = await db.query(
-          "INSERT INTO tour (article_id, tour_price, image) VALUES (?, ?, ?)",
-          [rows1.insertId, req.body.price, req.body.image]
+          "INSERT INTO tour (article_id, tour_price) VALUES (?, ?)",
+          [rows1.insertId, price]
+        );
+        const tourprovince = await db.query(
+          "INSERT INTO tour_province (article_id, province_id) VALUES (?, ?)",
+          [rows1.insertId, province]
         );
         for (let i = 0; i < language.length; i++) {
           const tourlanguageskill = await db.query(
@@ -332,22 +339,12 @@ router.post(
             [rows1.insertId, language[i]]
           );
         }
-        const tourprovince = await db.query(
-          "INSERT INTO tour_province (article_id, province_id) VALUES (?, ?)",
-          [rows1.insertId, req.body.province]
-        );
       }
 
       if (type == "Guide") {
         const guide = await db.query(
-          "INSERT INTO guide (article_id, age, gender, guide_price, image) VALUES (?, ?, ?, ?, ?)",
-          [
-            rows1.insertId,
-            req.body.age,
-            req.body.gender,
-            req.body.price,
-            req.body.image,
-          ]
+          "INSERT INTO guide (article_id, age, gender, guide_price) VALUES (?, ?, ?, ?, )",
+          [rows1.insertId, req.body.age, req.body.gender, price]
         );
         for (let i = 0; i < language.length; i++) {
           const guidelanguageskill = await db.query(
@@ -359,14 +356,8 @@ router.post(
 
       if (type == "Rest") {
         const guide = await db.query(
-          "INSERT INTO rest (article_id, province_id, lower_price, higher_price, image) VALUES (?, ?, ?, ?, ?)",
-          [
-            rows1.insertId,
-            req.body.province,
-            req.body.lowerprice,
-            req.body.higherprice,
-            req.body.image,
-          ]
+          "INSERT INTO rest (article_id, province_id, lower_price, higher_price) VALUES (?, ?, ?, ?)",
+          [rows1.insertId, province, req.body.lowerprice, req.body.higherprice]
         );
       }
 
@@ -377,5 +368,15 @@ router.post(
     }
   }
 );
+
+router.get("/province", async function (req, res, next) {
+  try {
+    let sql = "SELECT * FROM province";
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
 
 exports.router = router;
