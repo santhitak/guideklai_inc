@@ -20,7 +20,7 @@
           key="submit"
           type="primary"
           :loading="loading"
-          @click="postArticle"
+          @click="postArticle()"
         >
           Submit
         </button>
@@ -36,7 +36,8 @@
         </div>
         <div class="" v-if="typeArticle === 'Tour'">
           <!-- {{provinceList}} -->
-          <p>TitleTour</p>
+          <p>TitleTour {{user}}</p>
+          
           <a-input v-model:value="title" show-count :maxlength="60" />
           <p>Province</p> 
         <a-select style="width: 200px" placeholder="Select Province">
@@ -100,7 +101,6 @@
             </a-modal>
           </div>
           <div class="py-2 px-4 bg-white rounded-lg border">
-            <label for="editor" class="sr-only">Publish post</label>
             <textarea
               id="editor"
               rows="8"
@@ -181,7 +181,6 @@
             </a-modal>
           </div>
           <div class="py-2 px-4 bg-white rounded-lg border">
-            <label for="editor" class="sr-only">Publish post</label>
             <textarea
               id="editor"
               rows="8"
@@ -228,7 +227,6 @@
             </a-modal>
           </div>
           <div class="py-2 px-4 bg-white rounded-lg border">
-            <label for="editor" class="sr-only">Publish post</label>
             <textarea
               id="editor"
               rows="8"
@@ -275,7 +273,6 @@
             </a-modal>
           </div>
           <div class="py-2 px-4 bg-white rounded-lg border">
-            <label for="editor" class="sr-only">Publish post</label>
             <textarea
               id="editor"
               rows="8"
@@ -309,7 +306,7 @@ export default {
       price:0,
       indexProvince: 0,
       options: [],
-      province:"",
+      province:0,
       typeArticle: "",
       title: "",
       previewVisible: false,
@@ -381,7 +378,29 @@ export default {
     this.getProvince();
   },
   methods: {
-
+    async postArticle() {
+      try {
+        await axios.post(
+          `http://localhost:4000/create/article/Promote/105`,
+          {
+            type: this.typeArticle,
+            language: this.language_id,
+            province: parseInt(this.indexProvince),
+            price: parseInt(this.price),
+            information: this.information,
+            title: this.title,
+            office_hour: this.officeHour,
+            age: parseInt(this.age),
+            gender: this.gender,
+            lowerprice:  parseInt(this.lowerPrice),
+            higherprice: parseInt(this.higherPrice)
+          }
+        );
+        location.reload();
+      } catch (error) {
+        this.error = error.response.data.message;
+      }
+    },
     async getProvince() {
       try {
         const response = await axios.get(`http://localhost:4000/province`);
