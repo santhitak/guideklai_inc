@@ -230,7 +230,7 @@ router.post(
 );
 
 router.post(
-  "/create/article/:type/:member_id",
+  "/create/article/Review/:member_id",
   async function (req, res, next) {
     const type_article = req.body.type_article;
     try {
@@ -243,14 +243,95 @@ router.post(
           req.body.image,
         ]
       );
-      if (type_article == "Review") {
-        const [rows2, fields2] = await db.query(
-          "INSERT INTO `review` (`article_id`, `title_review`) VALUES (?, ?)",
-          [rows1.insertId, req.body.title]
+      const [rows2, fields2] = await db.query(
+        "INSERT INTO `review` (`article_id`, `title_review`) VALUES (?, ?)",
+        [rows1.insertId, req.body.title]
+      );
+      const category = await db.query(
+        "INSERT INTO `review_category` (`article_id`, `category_id`, category) VALUES (?, ?, ?)",
+        [rows1.insertId, 1, req.body.type]
+      );
+      // await db.commit();
+      return res.json(rows1[0]);
+    } catch (err) {
+      return res.status(500).json(err);
+    }
+  }
+);
+
+router.post(
+  "/create/article/Promote/:member_id",
+  async function (req, res, next) {
+    const type = req.body.type;
+    const language = req.body.language;
+    try {
+      const [rows1, fields1] = await db.query(
+        "INSERT INTO article (member_id, information, type_article, image) VALUES (?, ?, ?, ?)",
+        [req.params.member_id, req.body.information, "Promote", req.body.image]
+      );
+      const [rows2, fields2] = await db.query(
+        "INSERT INTO promote (article_id, title_promote, type_promote) VALUES (?, ?, ?)",
+        [rows1.insertId, req.body.title, type]
+      );
+
+      if (type == "Attraction") {
+        const attraction = await db.query(
+          "INSERT INTO attraction (article_id, province_id, office_hour, attraction_price, image) VALUES (?, ?, ?, ?, ?)",
+          [
+            rows1.insertId,
+            req.body.province,
+            req.body.office_hour,
+            req.body.price,
+            req.body.image,
+          ]
         );
-        const category = await db.query(
-          "INSERT INTO `review_category` (`article_id`, `category_id`, category) VALUES (?, ?, ?)",
-          [rows1.insertId, 1, req.body.type]
+      }
+      if (type == "Tour") {
+        const tour = await db.query(
+          "INSERT INTO tour (article_id, tour_price, image) VALUES (?, ?, ?)",
+          [rows1.insertId, req.body.price, req.body.image]
+        );
+        for (let i = 0; i < language.length; i++) {
+          const tourlanguageskill = await db.query(
+            "INSERT INTO tour_language_skill (article_id, language_id) VALUES (?, ?)",
+            [rows1.insertId, language[i]]
+          );
+        }
+        const tourprovince = await db.query(
+          "INSERT INTO tour_province (article_id, province_id) VALUES (?, ?)",
+          [rows1.insertId, req.body.province]
+        );
+      }
+
+      if (type == "Guide") {
+        const guide = await db.query(
+          "INSERT INTO guide (article_id, age, gender, guide_price, image) VALUES (?, ?, ?, ?, ?)",
+          [
+            rows1.insertId,
+            req.body.age,
+            req.body.gender,
+            req.body.price,
+            req.body.image,
+          ]
+        );
+        for (let i = 0; i < language.length; i++) {
+          const guidelanguageskill = await db.query(
+            "INSERT INTO guide_language_skill (article_id, language_id) VALUES (?, ?)",
+            [rows1.insertId, language[i]]
+          );
+        }
+      }
+
+      if (type == "Rest") {
+        const guide = await db.query(
+          "INSERT INTO rest (article_id, province_id, lower_price, higher_price, image) VALUES (?, ?, ?, ?, ?)",
+          [
+            rows1.insertId,
+            req.body.province,
+            req.body.lowerprice,
+            req.body.higherprice,
+            req.body.image,
+          ]
         );
       }
 
