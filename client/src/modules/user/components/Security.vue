@@ -95,6 +95,7 @@ export default {
       try {
         await axios.post(`/member/verify/${this.user.member_id}`, formData);
         console.log("uploaded");
+        location.reload();
       } catch (err) {
         console.log(err);
       }
@@ -108,7 +109,6 @@ export default {
           .then((res) => {
             this.evidences = res.data[0];
           });
-        //location.reload();
       } catch (err) {
         console.log(err);
       }
