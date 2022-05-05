@@ -52,15 +52,16 @@ router.post("/auth/register", async (req, res) => {
 
   const conn = await db.getConnection();
   await conn.beginTransaction();
-
-  const firstname = req.body.first_name;
-  const lastname = req.body.last_name;
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
   const email = req.body.email;
   const username = req.body.username;
   const password = await bcrypt.hash(req.body.password, 5);
   const phone_number = req.body.phone_number;
   const type_member = req.body.type_member;
-
+  console.log(req.body.firstname);
+  console.log(req.body.lastname);
+  console.log(req.body.email);
   try {
     await conn.query(
       "INSERT INTO member(firstname, lastname, username, password, email, phone_number, type_member) VALUES (?, ?, ?, ?, ?, ?, ?)",

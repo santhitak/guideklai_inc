@@ -183,7 +183,7 @@
                     </label>
                   </div>
                   <button
-                    type="submit"
+                    type=""
                     @click="register"
                     class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
@@ -250,26 +250,22 @@ export default {
   },
   methods: {
     async register() {
-      let data = {
-        firstname: this.first_name,
-        lastname: this.last_name,
-        username: this.username,
-        password: this.password,
-        email: this.emailAddress,
-        phone_number: this.phone,
-        type_member: this.role,
-        confirm_password: this.confirm_password
-      };
       try {
-        await axios
-          .post("http://localhost:4000/auth/register", data)
-          .then(() => {
-            alert("Sign up Success");
-          });
-      } catch (err) {
-        console.log(err);
-      } finally {
-        console.log("DONE!");
+        await axios.post(
+          `http://localhost:4000/auth/register`,
+          {
+            firstname: this.first_name,
+            lastname: this.last_name,
+            email: this.emailAddress,
+            username: this.username,
+            phone_number: this.phone,
+            password: this.password,
+            confirm_password: this.password_confirm,
+            type_member: this.role
+          }
+        );
+      } catch (error) {
+        this.error = error.response.data.message;
       }
     },
     validations: {
