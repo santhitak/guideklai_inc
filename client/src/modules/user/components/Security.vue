@@ -2,45 +2,51 @@
   <div>
     <div style="margin: 0 5rem">
       <InfoAlert
-        v-if="evidences === []"
+        v-if="user.verify_status !== 'verify'"
         message="Please verify your account to post or reviews"
       />
       <div class="flex">
         <p class="font-bold text-2xl">Verify Account</p>
-        <VerifyGreen v-if="!evidences" />
+        <div v-if="user.verify_status === 'verify'">
+          <VerifyGreen v-if="user.type_member === 'Entrepreneur'" />
+          <VerifyBlue v-else />
+        </div>
+      </div>
+      <div v-if="user.verify_status !== 'verify'">
+        <p class="font-medium text-gray-400">
+          Upload your identity card to verify.
+        </p>
+        <input
+          class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm mr-2 mb-2"
+          ref="file"
+          name="file"
+          @change="onSelect"
+          type="file"
+          style="padding-right: 1rem"
+        />
+        <button
+          @click="onSubmit"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2"
+        >
+          submit
+        </button>
+        <RedAlert v-if="msg !== ''" style="width: 50vw">
+          <p class="font-medium" style="margin: 0.5rem 0">{{ msg }}</p>
+        </RedAlert>
+        <img
+          class="rounded-lg"
+          style="width: 500px; height: auto"
+          :src="display"
+          alt=""
+        />
       </div>
       <div v-for="item in evidences" v-bind:key="item.evidence_id">
-        <div v-if="!item.image">
-          <p class="font-medium text-gray-400">
-            Upload your identity card to verify.
-          </p>
-          <a-upload-dragger
-            v-model:fileList="fileList"
-            name="file"
-            :multiple="false"
-            action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-            @change="handleChange"
-            @drop="handleDrop"
-            style="width: 500px; margin-top: 2rem"
-          >
-            <p class="ant-upload-drag-icon">
-              <inbox-outlined />
-            </p>
-            <p class="ant-upload-text">
-              Click or drag file to this area to upload
-            </p>
-            <p class="ant-upload-hint">
-              Support for a single upload. Strictly prohibit from uploading
-              company data or other band files
-            </p>
-          </a-upload-dragger>
-        </div>
-        <div v-else>
+        <div>
           <img
-            :src="item.image"
             class="rounded-lg"
+            style="width: 500px; height: auto"
+            :src="`http://localhost:4000/static/verify/${item.image}`"
             alt=""
-            style="width: 450px; height: auto"
           />
         </div>
       </div>
@@ -49,27 +55,50 @@
 </template>
 
 <script>
-import { ref } from "vue";
 import axios from "@/plugins/axios";
-import { message } from "ant-design-vue";
-import { InboxOutlined } from "@ant-design/icons-vue";
 import VerifyGreen from "@/components/shared/VerifyGreen";
 import InfoAlert from "@/components/shared/Alert/InfoAlert";
+import VerifyBlue from "@/components/shared/VerifyBlue";
+import RedAlert from "@/components/shared/Alert/RedAlert";
 
 export default {
   name: "Security",
   props: ["user"],
-  components: { VerifyGreen, InfoAlert, InboxOutlined },
+  components: { RedAlert, VerifyBlue, VerifyGreen, InfoAlert },
   data() {
     return {
       evidences: [],
-      evi_img: ""
+      file: "",
+      msg: "",
+      display: ""
     };
   },
   created() {
     this.getEvi();
   },
   methods: {
+    onSelect() {
+      const allowedTypes = ["image/jpeg", "image/jpg"];
+      this.file = this.$refs.file.files[0];
+      console.log(this.file);
+      if (!allowedTypes.includes(this.file.type)) {
+        this.msg = "Please insert only image file";
+      }
+      if (this.file.size > 500000) {
+        this.msg = "Too large, max size allowed is 500KB";
+      }
+      this.display = URL.createObjectURL(this.file);
+    },
+    async onSubmit() {
+      const formData = new FormData();
+      formData.append("file", this.file);
+      try {
+        await axios.post(`/member/verify/${this.user.member_id}`, formData);
+        console.log("uploaded");
+      } catch (err) {
+        console.log(err);
+      }
+    },
     async getEvi() {
       try {
         await axios
@@ -79,51 +108,11 @@ export default {
           .then((res) => {
             this.evidences = res.data[0];
           });
+        //location.reload();
       } catch (err) {
         console.log(err);
-      }
-    },
-    async postEvi() {
-      try {
-        await axios
-          .post(
-            `http://localhost:4000/manage_account/evidence/${this.user.member_id}`,
-            { image: this.evi_img }
-          )
-          .then(() => {
-            alert("Sent id validation");
-          });
-      } catch (err) {
-        console.log(err);
-      } finally {
-        console.log("DONE!");
       }
     }
-  },
-  setup() {
-    const handleChange = (info) => {
-      const status = info.file.status;
-
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    };
-
-    return {
-      handleChange,
-      fileList: ref([]),
-      handleDrop: (e) => {
-        console.log(e);
-      }
-    };
   }
 };
 </script>
-
-<style scoped></style>
