@@ -10,7 +10,7 @@
         {{ user.firstname + " " + user.lastname }}
       </h5>
       <p class="text-gray-400 font-semibold">
-        {{ user.verify_status === "TRUE" ? "Verified" : "Unverified" }}
+        {{ user.verify_status === "verify" ? "Verified" : "Unverified" }}
       </p>
       <a-divider />
       <div class="flex w-full justify-between">
