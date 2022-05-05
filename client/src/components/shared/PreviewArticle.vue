@@ -3,8 +3,8 @@
     <div class="flex justify-end" style="width: 90%">
       <a-range-picker v-model="datepicker" :bordered="false" />
       <a-space v-if="user" size="large">
-        <CreatePost v-if="user.type_member === 'Entrepreneur'" />
-        <CreateReview v-else />
+        <CreatePost v-if="user.type_member === 'Entrepreneur'" :user="user" />
+        <CreateReview v-else :user="user" />
       </a-space>
     </div>
     <div class="flex justify-between mt-10">
@@ -205,10 +205,10 @@
             style="min-height: 10rem; justify-content: space-evenly"
             class="min-w-full mb-3 flex justify-evenly items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100"
           >
-            <img  v-for="img in Images" v-bind:key="img.article_id" v-show="img.article_id == articles.article_id"
-              class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48"
-              :src="img.image"
-              alt=""
+            <img v-for="img in Images" v-bind:key="img.article_id" v-show="img.article_id === articles.article_id"
+                 class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48"
+                 :src="`http://localhost:4000/static/article/${img.image}`"
+                 alt=""
             />
             <div class="flex flex-col p-4 leading-normal">
               <div class="flex justify-between">
@@ -332,7 +332,7 @@ export default {
       starNormal:
         "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700",
       starActive:
-        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700",
+        "flex items-center p-2 text-base font-normal text-gray-900 rounded-lg dark:text-white bg-gray-200 dark:hover:bg-gray-700"
     };
   },
   created() {
@@ -343,7 +343,7 @@ export default {
     const value = ref("");
     return {
       value,
-      datepicker: ref(),
+      datepicker: ref()
     };
   },
   computed: {
@@ -368,7 +368,7 @@ export default {
           post.title_review?.toLowerCase().includes(this.search?.toLowerCase())
         );
       });
-    },
+    }
   },
   methods: {
     onChangePage(pageOfItems) {
@@ -403,7 +403,7 @@ export default {
       } catch (err) {
         console.log(err);
       }
-    },
-  },
+    }
+  }
 };
 </script>

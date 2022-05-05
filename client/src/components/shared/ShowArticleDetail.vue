@@ -1,5 +1,5 @@
 <template>
-  <div style="margin: 2rem 0">
+  <div style="margin: 5rem 0">
     <div
       v-for="article in articles"
       class="w-full"
@@ -40,12 +40,18 @@
       </div>
       <a-divider />
       <div style="display: flex; align-items: center" class="flex-col">
-        <img v-for="img in Images" v-bind:key="img.article_id"
-          style="width: 50%"
-          class="my-4 rounded-xl"
-          :src="img.image"
-          alt=""
-        />
+        <a-row type="flex" justify="space-evenly" align="middle" :gutter="[16,16]">
+          <a-col :span="8"
+                 v-for="img in Images"
+                 v-bind:key="img.article_id">
+            <img
+              style="width: 350px; height: auto"
+              class="my-4 rounded-xl"
+              :src="`http://localhost:4000/static/article/${img.image}`"
+              alt=""
+            />
+          </a-col>
+        </a-row>
         <div class="my-12" style="width: 60%">
           <p class="text-center">{{ article.information }}</p>
         </div>
@@ -55,47 +61,78 @@
       <p class="text-center">About</p>
       {{ category }}
       {{ type }}
-      <!-- {{ articles}} -->
-      <div v-if="articleType[0]?.category === 'Attraction' ||  articleType[0]?.type_promote === 'Attraction'">
+      <div
+        v-if="
+          articleType[0]?.category === 'Attraction' ||
+          articleType[0]?.type_promote === 'Attraction'
+        "
+      >
         <div class="">province_name : {{ articleType[0]?.province_name }}</div>
         <div class="">office_hour : {{ articleType[0]?.office_hour }}</div>
-        <div class="">attraction_price : {{ articleType[0]?.attraction_price }}</div>
-        <div class="">image : {{ articleType[0]?.image }}</div>    
+        <div class="">
+          attraction_price : {{ articleType[0]?.attraction_price }}
+        </div>
+        <div class="">image : {{ articleType[0]?.image }}</div>
         <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }}
-          Email:{{articleType[0]?.email}}
-          </div>                           
+          Phone:{{ articleType[0]?.phone_number }} Email:{{
+            articleType[0]?.email
+          }}
+        </div>
       </div>
-      <div v-if="articleType[0]?.category === 'Guide' ||  articleType[0]?.type_promote === 'Guide'">
-        <div class="">Guide Name : {{ articleType[0]?.firstname }} {{ articleType[0]?.lastname }}</div>
+      <div
+        v-if="
+          articleType[0]?.category === 'Guide' ||
+          articleType[0]?.type_promote === 'Guide'
+        "
+      >
+        <div class="">
+          Guide Name : {{ articleType[0]?.firstname }}
+          {{ articleType[0]?.lastname }}
+        </div>
         <div class="">Age : {{ articleType[0]?.age }}</div>
         <div class="">Gender : {{ articleType[0]?.gender }}</div>
         <div class="">image : {{ articleType[0]?.image }}</div>
-        <div class="">Language : {{language}}</div>      
+        <div class="">Language : {{ language }}</div>
         <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }}
-          Email:{{articleType[0]?.email}}
-          </div>                           
+          Phone:{{ articleType[0]?.phone_number }} Email:{{
+            articleType[0]?.email
+          }}
+        </div>
       </div>
-       <div v-if="articleType[0]?.category === 'Rest' ||  articleType[0]?.type_promote === 'Rest'">
+      <div
+        v-if="
+          articleType[0]?.category === 'Rest' ||
+          articleType[0]?.type_promote === 'Rest'
+        "
+      >
         <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
-        <div class="">Price : {{ articleType[0]?.lower_price }} - {{ articleType[0]?.higher_price }}</div>        
+        <div class="">
+          Price : {{ articleType[0]?.lower_price }} -
+          {{ articleType[0]?.higher_price }}
+        </div>
         <div class="">image : {{ articleType[0]?.image }}</div>
         <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }}
-          Email:{{articleType[0]?.email}}
-          </div>                           
+          Phone:{{ articleType[0]?.phone_number }} Email:{{
+            articleType[0]?.email
+          }}
+        </div>
       </div>
-      <div v-if="articleType[0]?.category === 'Tour' ||  articleType[0]?.type_promote === 'Tour'">
+      <div
+        v-if="
+          articleType[0]?.category === 'Tour' ||
+          articleType[0]?.type_promote === 'Tour'
+        "
+      >
         <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
-        <div class="">Language : {{language}}</div>   
+        <div class="">Language : {{ language }}</div>
         <div class="">province_name : {{ articleType[0]?.province_name }}</div>
-        <div class="">Price : {{ articleType[0]?.tour_price }}</div>        
+        <div class="">Price : {{ articleType[0]?.tour_price }}</div>
         <div class="">image : {{ articleType[0]?.image }}</div>
         <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }}
-          Email:{{articleType[0]?.email}}
-          </div>                           
+          Phone:{{ articleType[0]?.phone_number }} Email:{{
+            articleType[0]?.email
+          }}
+        </div>
       </div>
     </div>
     <div class="mt-4">
@@ -219,27 +256,8 @@
               ></textarea>
             </div>
             <div
-              class="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600"
+              class="flex items-center justify-end px-3 py-2 border-t dark:border-gray-600"
             >
-              <div class="flex pl-0 space-x-1 sm:pl-2">
-                <button
-                  type="button"
-                  class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
-                >
-                  <svg
-                    class="w-5 h-5"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </button>
-              </div>
               <button
                 @click="postComment"
                 class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
@@ -261,12 +279,13 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/plugins/axios";
 import { ref } from "vue";
-// const ;
+
 export default {
   name: "ShowArticleDetail",
   props: ["user"],
+  components: {},
   data() {
     return {
       editToggle: -1,
@@ -278,12 +297,12 @@ export default {
       articleAttraction: [],
       articleRest: [],
       star: [],
-      language:[],
+      language: [],
       Images: [],
       type: "",
       category: "",
       commentInput: "",
-      article_id: this.$route.params.id,
+      article_id: this.$route.params.id
     };
   },
   created() {
@@ -294,7 +313,7 @@ export default {
   setup() {
     const value = ref(0);
     return {
-      value,
+      value
     };
   },
   methods: {
@@ -302,7 +321,7 @@ export default {
       console.log(this.comments[index].comment);
       axios
         .put(`http://localhost:4000/comments/${commentId}`, {
-          comment: this.editCommentMessage,
+          comment: this.editCommentMessage
         })
         .then((response) => {
           this.comments[index].comment = response.data.comment;
@@ -332,7 +351,7 @@ export default {
         .post(
           `http://localhost:4000/${this.articles[0].article_id}/comments/${this.user.member_id}`,
           {
-            comment: this.commentInput,
+            comment: this.commentInput
           }
         )
         .then((response) => {
@@ -351,7 +370,7 @@ export default {
         this.articles = response.data;
         this.type = this.articles[0].type_promote;
         this.category = this.articles[0].category;
-        
+
         this.type.toString();
         this.category.toString();
         console.log(this.category);
@@ -366,7 +385,7 @@ export default {
         const response = await axios.get(
           `http://localhost:4000/images/${this.article_id}`
         );
-        this.Images = response.data;     
+        this.Images = response.data;
         this.type.toString();
         this.category.toString();
         console.log(this.category);
@@ -382,8 +401,8 @@ export default {
           `http://localhost:4000/article/show/${this.category}/${this.type}/${this.article_id}`
         );
         this.articleType = response.data;
-        for(let i = 0; i < this.articleType.length; i++) {
-          this.language.push(this.articleType[i].language_name)
+        for (let i = 0; i < this.articleType.length; i++) {
+          this.language.push(this.articleType[i].language_name);
         }
         console.log(this.articleType);
       } catch (err) {
@@ -408,7 +427,7 @@ export default {
         await axios.post(
           `http://localhost:4000/star/${this.article_id}/${this.user.member_id}/give`,
           {
-            star: this.value,
+            star: this.value
           }
         );
         location.reload();
@@ -431,7 +450,7 @@ export default {
     isCommentOwner(comment) {
       if (!this.user) return false;
       return comment.member_id === this.user.member_id;
-    },
-  },
+    }
+  }
 };
 </script>
