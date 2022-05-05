@@ -14,6 +14,41 @@ router.get("/article", async function (req, res, next) {
   }
 });
 
+router.get("/images", async function (req, res, next) {
+  try {
+    let sql =
+      "SELECT * FROM (select *, row_number() over (PARTITION BY  article_id ORDER BY image DESC) rn from images) x where x.rn = 1";
+
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+router.get("/images/:id", async function (req, res, next) {
+  try {
+    let sql = `SELECT image FROM images where article_id = ${req.params.id}`;
+
+    const [rows, fields] = await db.query(sql);
+    return res.json(rows);
+  } catch (err) {
+    return res.status(500).json(err);
+  }
+});
+
+router.delete("/article/delete/:id", async function (req, res, next) {
+  try {
+    const [rows1, fields1] = await db.query(
+      "DELETE FROM article WHERE comment_id=?",
+      [req.params.id]
+    );
+    res.json("success");
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
 router.get("/article/filter/:type", async function (req, res, next) {
   try {
     let sql = `SELECT * FROM article left join promote using(article_id)  left join review using(article_id) left join review_category using(article_id) where type_Promote = "${req.params.type}" or category = "${req.params.type}" order by create_time DESC`;
