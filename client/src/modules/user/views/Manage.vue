@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section style="height: auto">
     <div style="margin-top: 4rem">
       <p class="font-bold text-3xl" style="margin: 0 0 3rem 6rem">
         Manage Account
@@ -7,7 +7,7 @@
       <a-tabs
         v-model:activeKey="activeKey"
         tab-position="left"
-        :style="{ height: '50vh' }"
+        :style="{ height: '100vh' }"
         @tabScroll="callback"
       >
         <a-tab-pane key="account" tab="Account">
