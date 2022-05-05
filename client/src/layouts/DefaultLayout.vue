@@ -33,13 +33,31 @@
               <button
                 class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2 mr-2"
               >
-                <a class="ant-dropdown-link flex align-center w-full" @click.prevent>
+                <a
+                  class="ant-dropdown-link flex align-center w-full"
+                  @click.prevent
+                >
                   <a-avatar>{{ user.username.substring(0, 1) }}</a-avatar>
-                  <p class="text-gray-600 font-semibold ml-4 mr-1 mt-1" style="margin-bottom: 0">
+                  <p
+                    class="text-gray-600 font-semibold ml-4 mr-1 mt-1"
+                    style="margin-bottom: 0"
+                  >
                     {{ user.username }}
                   </p>
-                  <VerifyGreen v-if="user.verify_status && user.type_member === 'Entrepreneur'" class="mt-1" />
-                  <VerifyBlue v-if="user.verify_status && user.type_member === 'Member'" class="mt-1" />
+                  <VerifyGreen
+                    v-if="
+                      user.verify_status === 'verify' &&
+                      user.type_member === 'Entrepreneur'
+                    "
+                    class="mt-1"
+                  />
+                  <VerifyBlue
+                    v-if="
+                      user.verify_status === 'verify' &&
+                      user.type_member === 'Member'
+                    "
+                    class="mt-1"
+                  />
                 </a>
               </button>
               <template #overlay>
