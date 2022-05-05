@@ -40,10 +40,10 @@
       </div>
       <a-divider />
       <div style="display: flex; align-items: center" class="flex-col">
-        <img
+        <img v-for="img in Images" v-bind:key="img.article_id"
           style="width: 50%"
           class="my-4 rounded-xl"
-          :src="article.image"
+          :src="img.image"
           alt=""
         />
         <div class="my-12" style="width: 60%">
@@ -279,6 +279,7 @@ export default {
       articleRest: [],
       star: [],
       language:[],
+      Images: [],
       type: "",
       category: "",
       commentInput: "",
@@ -287,6 +288,7 @@ export default {
   },
   created() {
     this.getArticle();
+    this.getImages();
     this.getComment();
   },
   setup() {
@@ -296,7 +298,6 @@ export default {
     };
   },
   methods: {
-    
     saveEditComment(commentId, index) {
       console.log(this.comments[index].comment);
       axios
@@ -360,7 +361,21 @@ export default {
       await this.getArticleType();
       await this.getStar();
     },
-
+    async getImages() {
+      try {
+        const response = await axios.get(
+          `http://localhost:4000/images/${this.article_id}`
+        );
+        this.Images = response.data;     
+        this.type.toString();
+        this.category.toString();
+        console.log(this.category);
+      } catch (err) {
+        console.log(err);
+      }
+      await this.getArticleType();
+      await this.getStar();
+    },
     async getArticleType() {
       try {
         const response = await axios.get(

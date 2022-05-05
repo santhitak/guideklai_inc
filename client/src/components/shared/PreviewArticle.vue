@@ -1,8 +1,8 @@
 <template>
   <div style="margin-top: 3rem">
     <div class="flex justify-end" style="width: 90%">
-      <a-space size="large">
-        <a-range-picker v-model="datepicker" :bordered="false" />
+      <a-range-picker v-model="datepicker" :bordered="false" />
+      <a-space v-if="user" size="large">
         <CreatePost v-if="user.type_member === 'Entrepreneur'" />
         <CreateReview v-else />
       </a-space>
@@ -205,9 +205,9 @@
             style="min-height: 10rem; justify-content: space-evenly"
             class="min-w-full mb-3 flex justify-evenly items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100"
           >
-            <img
+            <img  v-for="img in Images" v-bind:key="img.article_id" v-show="img.article_id == articles.article_id"
               class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48"
-              :src="articles.image"
+              :src="img.image"
               alt=""
             />
             <div class="flex flex-col p-4 leading-normal">
@@ -326,6 +326,7 @@ export default {
       postList: [],
       Article: [],
       FilterList: [],
+      Images: [],
       star: 0,
       count: 0,
       starNormal:
@@ -336,6 +337,7 @@ export default {
   },
   created() {
     this.getArticle();
+    this.getImages();
   },
   setup() {
     const value = ref("");
@@ -371,6 +373,15 @@ export default {
   methods: {
     onChangePage(pageOfItems) {
       this.pageOfItems = pageOfItems;
+    },
+    async getImages() {
+      this.star = 0;
+      try {
+        const response = await axios.get("http://localhost:4000/images");
+        this.Images = response.data;
+      } catch (err) {
+        console.log(err);
+      }
     },
     async getArticle() {
       this.star = 0;
