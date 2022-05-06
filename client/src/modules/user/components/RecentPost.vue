@@ -24,7 +24,10 @@
                 class="text-2xl font-bold tracking-tight text-gray-900"
               >
                 {{ post.title_promote }}
+                
               </h5>
+              <a-button v-if="post.type_article === 'Review'" class="inline-flex items-center" type="primary" danger @click="deleteArticle(post.article_id,post.type_article,post.category)">Delete</a-button>
+              <a-button v-else class="inline-flex items-center" type="primary" danger @click="deleteArticle(post.article_id,post.type_article,post.type_promote)">Delete</a-button>
               <p
                 v-if="post.rating_avg != null"
                 class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
@@ -121,9 +124,36 @@ export default {
           `http://localhost:4000/article/recent/${this.user.member_id}`
         );
         this.articles = response.data;
+        // console.log(this.articles[0].article_id);
       } catch (err) {
         console.log(err);
       }
+    },
+    async deleteArticle(article,article_type,type) {
+      let comfirmDeleteArticle = confirm("Are you sure to delete this Article?");
+      if (comfirmDeleteArticle == true) {
+      try {
+        axios.delete(
+          "http://localhost:4000/article/delete/"+article+"/"+article_type+"/"+type
+        );
+        location.reload();
+        console.log("delete article successfully!! ");
+      } catch (err) {
+        console.log(err);
+      }
+      }
+      //  let comfirmDeleteImage = confirm("Are you sure to delete this image");
+      // if (comfirmDeleteImage == true) {
+      //   axios
+      //     .delete("http://localhost:3000/image/" + imageId)
+      //     .then((response) => {
+      //       console.log("delete image ", response);
+      //       this.$router.push({ path: "/" });
+      //     })
+      //     .catch((e) => {
+      //       console.log(e);
+      //     });
+      // }
     }
   }
 };

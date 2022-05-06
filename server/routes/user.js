@@ -48,6 +48,70 @@ router.get("/article/recent/:member_id", async function (req, res, next) {
   }
 });
 
+router.delete(
+  "/article/delete/:id/:article_type/:type",
+  async function (req, res, next) {
+    await db.query("DELETE FROM rating WHERE article_id=?", [req.params.id]);
+    await db.query("DELETE FROM comment WHERE article_id=?", [req.params.id]);
+    await db.query("DELETE FROM images WHERE article_id=?", [req.params.id]);
+    try {
+      if (req.params.article_type === "Review") {
+        await db.query("DELETE FROM review_category WHERE article_id=?", [
+          req.params.id,
+        ]);
+        await db.query("DELETE FROM review WHERE article_id=?", [
+          req.params.id,
+        ]);
+      } else {
+        await db.query("DELETE FROM tour_province WHERE article_id=?", [
+          req.params.id,
+        ]);
+        await db.query("DELETE FROM tour_province WHERE article_id=?", [
+          req.params.id,
+        ]);
+        if (req.params.type === "Tour") {
+          await db.query("DELETE FROM tour_province WHERE article_id=?", [
+            req.params.id,
+          ]);
+          await db.query("DELETE FROM tour_language_skill WHERE article_id=?", [
+            req.params.id,
+          ]);
+          await db.query("DELETE FROM tour WHERE article_id=?", [
+            req.params.id,
+          ]);
+        }
+        if (req.params.type === "Rest") {
+          await db.query("DELETE FROM rest WHERE article_id=?", [
+            req.params.id,
+          ]);
+        }
+        if (req.params.type === "Attraction") {
+          await db.query("DELETE FROM attraction WHERE article_id=?", [
+            req.params.id,
+          ]);
+        }
+        if (req.params.type === "Guide") {
+          await db.query("DELETE FROM guide WHERE article_id=?", [
+            req.params.id,
+          ]);
+          await db.query(
+            "DELETE FROM guide_language_skill WHERE article_id=?",
+            [req.params.id]
+          );
+        }
+        await db.query("DELETE FROM promote WHERE article_id=?", [
+          req.params.id,
+        ]);
+      }
+      await db.query("DELETE FROM article WHERE article_id=?", [req.params.id]);
+
+      res.json("success");
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  }
+);
+
 router.get("/article/total/:member_id", async function (req, res, next) {
   try {
     let sql = `SELECT COUNT(article_id) AS 'total' FROM article
