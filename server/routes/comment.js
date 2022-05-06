@@ -28,6 +28,7 @@ const router = express.Router();
 
 router.post(
   "/:article_id/comments/:member_id",
+  isLoggedIn,
   async function (req, res, next) {
     const comment = req.body.comment;
 
@@ -48,10 +49,9 @@ router.post(
   }
 );
 
-
 router.put(
-  
   "/comments/:commentId",
+  isLoggedIn,
   // commentOwner,
   async function (req, res, next) {
     try {
@@ -68,17 +68,21 @@ router.put(
 );
 
 // Delete comment
-router.delete("/comments/:commentId", async function (req, res, next) {
-  try {
-    const [rows1, fields1] = await db.query(
-      "DELETE FROM comment WHERE comment_id=?",
-      [req.params.commentId]
-    );
-    res.json("success");
-  } catch (error) {
-    res.status(500).json(error);
+router.delete(
+  "/comments/:commentId",
+  isLoggedIn,
+  async function (req, res, next) {
+    try {
+      const [rows1, fields1] = await db.query(
+        "DELETE FROM comment WHERE comment_id=?",
+        [req.params.commentId]
+      );
+      res.json("success");
+    } catch (error) {
+      res.status(500).json(error);
+    }
   }
-});
+);
 
 // Add Like comment
 // router.put("/comments/addlike/:commentId", async function (req, res, next) {
