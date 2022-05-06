@@ -265,36 +265,6 @@ router.post(
 );
 
 router.post(
-  "/create/article/Review/:member_id",
-  async function (req, res, next) {
-    const type_article = req.body.type_article;
-    try {
-      const [rows1, fields1] = await db.query(
-        "INSERT INTO `article` (`member_id`, `information`, `type_article`, `image`) VALUES (?, ?, ?, ?)",
-        [
-          req.params.member_id,
-          req.body.information,
-          type_article,
-          req.body.image,
-        ]
-      );
-      const [rows2, fields2] = await db.query(
-        "INSERT INTO `review` (`article_id`, `title_review`) VALUES (?, ?)",
-        [rows1.insertId, req.body.title]
-      );
-      const category = await db.query(
-        "INSERT INTO `review_category` (`article_id`, `category_id`, category) VALUES (?, ?, ?)",
-        [rows1.insertId, 1, req.body.type]
-      );
-      // await db.commit();
-      return res.json(rows1[0]);
-    } catch (err) {
-      return res.status(500).json(err);
-    }
-  }
-);
-
-router.post(
   "/create/article/Promote/:member_id",
   async function (req, res, next) {
     const type = req.body.type;

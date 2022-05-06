@@ -63,12 +63,6 @@ router.delete(
           req.params.id,
         ]);
       } else {
-        await db.query("DELETE FROM tour_province WHERE article_id=?", [
-          req.params.id,
-        ]);
-        await db.query("DELETE FROM tour_province WHERE article_id=?", [
-          req.params.id,
-        ]);
         if (req.params.type === "Tour") {
           await db.query("DELETE FROM tour_province WHERE article_id=?", [
             req.params.id,
@@ -91,13 +85,13 @@ router.delete(
           ]);
         }
         if (req.params.type === "Guide") {
-          await db.query("DELETE FROM guide WHERE article_id=?", [
-            req.params.id,
-          ]);
           await db.query(
             "DELETE FROM guide_language_skill WHERE article_id=?",
             [req.params.id]
           );
+          await db.query("DELETE FROM guide WHERE article_id=?", [
+            req.params.id,
+          ]);
         }
         await db.query("DELETE FROM promote WHERE article_id=?", [
           req.params.id,
