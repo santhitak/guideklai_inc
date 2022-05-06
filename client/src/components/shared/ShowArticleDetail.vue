@@ -56,82 +56,120 @@
           <p class="text-center">{{ article.information }}</p>
         </div>
       </div>
-    </div>
-    <div class="my-12" style="width: 10%">
-      <p class="text-center">About</p>
-      {{ category }}
-      {{ type }}
-      <div
-        v-if="
+      <div class="my-12 flex justify-center" style="width: 100%">
+        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" class="px-6 py-3">
+                About
+              </th>
+              <th scope="col" class="px-6 py-3">
+
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                Type
+              </th>
+              <td class="px-6 py-4">
+                {{ category }}
+                {{ type }}
+              </td>
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                Author
+              </th>
+              <td class="px-6 py-4">
+                {{ user.firstname + " " + user.lastname }}
+              </td>
+            </tr>
+            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+                Created on
+              </th>
+              <td class="px-6 py-4">
+                {{ new Date(article.create_time).toLocaleDateString("TH") }}
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+        <div
+          v-if="
           articleType[0]?.category === 'Attraction' ||
           articleType[0]?.type_promote === 'Attraction'
         "
-      >
-        <div class="">province_name : {{ articleType[0]?.province_name }}</div>
-        <div class="">office_hour : {{ articleType[0]?.office_hour }}</div>
-        <div class="">
-          attraction_price : {{ articleType[0]?.attraction_price }}
+        >
+          <div class="">province_name : {{ articleType[0]?.province_name }}</div>
+          <div class="">office_hour : {{ articleType[0]?.office_hour }}</div>
+          <div class="">
+            attraction_price : {{ articleType[0]?.attraction_price }}
+          </div>
+          <div class="">image : {{ articleType[0]?.image }}</div>
+          <div class="" v-if="articles[0]?.type_article === 'Promote'">
+            Phone:{{ articleType[0]?.phone_number }} Email:{{
+              articleType[0]?.email
+            }}
+          </div>
         </div>
-        <div class="">image : {{ articleType[0]?.image }}</div>
-        <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }} Email:{{
-            articleType[0]?.email
-          }}
-        </div>
-      </div>
-      <div
-        v-if="
+        <div
+          v-if="
           articleType[0]?.category === 'Guide' ||
           articleType[0]?.type_promote === 'Guide'
         "
-      >
-        <div class="">
-          Guide Name : {{ articleType[0]?.firstname }}
-          {{ articleType[0]?.lastname }}
+        >
+          <div class="">
+            Guide Name : {{ articleType[0]?.firstname }}
+            {{ articleType[0]?.lastname }}
+          </div>
+          <div class="">Age : {{ articleType[0]?.age }}</div>
+          <div class="">Gender : {{ articleType[0]?.gender }}</div>
+          <div class="">image : {{ articleType[0]?.image }}</div>
+          <div class="">Language : {{ language }}</div>
+          <div class="" v-if="articles[0]?.type_article === 'Promote'">
+            Phone:{{ articleType[0]?.phone_number }} Email:{{
+              articleType[0]?.email
+            }}
+          </div>
         </div>
-        <div class="">Age : {{ articleType[0]?.age }}</div>
-        <div class="">Gender : {{ articleType[0]?.gender }}</div>
-        <div class="">image : {{ articleType[0]?.image }}</div>
-        <div class="">Language : {{ language }}</div>
-        <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }} Email:{{
-            articleType[0]?.email
-          }}
-        </div>
-      </div>
-      <div
-        v-if="
+        <div
+          v-if="
           articleType[0]?.category === 'Rest' ||
           articleType[0]?.type_promote === 'Rest'
         "
-      >
-        <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
-        <div class="">
-          Price : {{ articleType[0]?.lower_price }} -
-          {{ articleType[0]?.higher_price }}
+        >
+          <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
+          <div class="">
+            Price : {{ articleType[0]?.lower_price }} -
+            {{ articleType[0]?.higher_price }}
+          </div>
+          <div class="">image : {{ articleType[0]?.image }}</div>
+          <div class="" v-if="articles[0]?.type_article === 'Promote'">
+            Phone:{{ articleType[0]?.phone_number }} Email:{{
+              articleType[0]?.email
+            }}
+          </div>
         </div>
-        <div class="">image : {{ articleType[0]?.image }}</div>
-        <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }} Email:{{
-            articleType[0]?.email
-          }}
-        </div>
-      </div>
-      <div
-        v-if="
+        <div
+          v-if="
           articleType[0]?.category === 'Tour' ||
           articleType[0]?.type_promote === 'Tour'
         "
-      >
-        <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
-        <div class="">Language : {{ language }}</div>
-        <div class="">province_name : {{ articleType[0]?.province_name }}</div>
-        <div class="">Price : {{ articleType[0]?.tour_price }}</div>
-        <div class="">image : {{ articleType[0]?.image }}</div>
-        <div class="" v-if="articles[0]?.type_article === 'Promote'">
-          Phone:{{ articleType[0]?.phone_number }} Email:{{
-            articleType[0]?.email
-          }}
+        >
+          <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
+          <div class="">Language : {{ language }}</div>
+          <div class="">province_name : {{ articleType[0]?.province_name }}</div>
+          <div class="">Price : {{ articleType[0]?.tour_price }}</div>
+          <div class="">image : {{ articleType[0]?.image }}</div>
+          <div class="" v-if="articles[0]?.type_article === 'Promote'">
+            Phone:{{ articleType[0]?.phone_number }} Email:{{
+              articleType[0]?.email
+            }}
+          </div>
         </div>
       </div>
     </div>

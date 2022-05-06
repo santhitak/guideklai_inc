@@ -1,12 +1,16 @@
 <template>
-  <a-space class="flex-1" direction="vertical" style="margin: auto 8rem;">
+  <a-space class="flex-1" direction="vertical" style="margin: auto 8rem">
     <div v-for="post in articles" class="w-full" v-bind:key="post.article_id">
       <router-link :to="`/article/${post.article_id}/`">
         <a
           style="min-height: 10rem; justify-content: space-evenly"
           class="min-w-full mb-3 flex justify-evenly items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100"
         >
-          <div v-for="img in images" v-bind:key="img.article_id" v-show="img.article_id === post.article_id">
+          <div
+            v-for="img in images"
+            v-bind:key="img.article_id"
+            v-show="img.article_id === post.article_id"
+          >
             <img
               class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48"
               :src="`http://localhost:4000/static/article/${img.image}`"
@@ -27,6 +31,34 @@
               >
                 {{ post.title_promote }}
               </h5>
+              <a-button
+                v-if="post.type_article === 'Review'"
+                class="inline-flex items-center"
+                type="primary"
+                danger
+                @click="
+                  deleteArticle(
+                    post.article_id,
+                    post.type_article,
+                    post.category
+                  )
+                "
+                >Delete</a-button
+              >
+              <a-button
+                v-else
+                class="inline-flex items-center"
+                type="primary"
+                danger
+                @click="
+                  deleteArticle(
+                    post.article_id,
+                    post.type_article,
+                    post.type_promote
+                  )
+                "
+                >Delete</a-button
+              >
               <p
                 v-if="post.rating_avg != null"
                 class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
@@ -93,7 +125,9 @@
                 </a-tag>
               </div>
             </a-space>
-            <p class="text-gray-400 text-sm">{{ new Date(post.create_time).toLocaleString("TH") }}</p>
+            <p class="text-gray-400 text-sm">
+              {{ new Date(post.create_time).toLocaleString("TH") }}
+            </p>
           </div>
         </a>
       </router-link>
@@ -110,12 +144,10 @@ export default {
   data() {
     return {
       articles: [],
-      images: []
     };
   },
   created() {
     this.getArticle();
-    this.getImages();
   },
   methods: {
     async getArticle() {
@@ -128,15 +160,28 @@ export default {
         console.log(err);
       }
     },
-    async getImages() {
-      try {
-        const response = await axios.get("http://localhost:4000/images");
-        this.images = response.data;
-      } catch (err) {
-        console.log(err);
+    async deleteArticle(article, article_type, type) {
+      let confirmDeleteArticle = confirm(
+        "Are you sure to delete this Article?"
+      );
+      if (confirmDeleteArticle === true) {
+        try {
+          await axios.delete(
+            "http://localhost:4000/article/delete/" +
+              article +
+              "/" +
+              article_type +
+              "/" +
+              type
+          );
+          location.reload();
+          console.log("delete article successfully!! ");
+        } catch (err) {
+          console.log(err);
+        }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
