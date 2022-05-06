@@ -1,6 +1,7 @@
 const db = require("../config/db.server");
 const express = require("express");
 const router = express.Router();
+const { isLoggedIn } = require("../middleware");
 
 router.get("/article", async function (req, res, next) {
   try {
@@ -82,16 +83,6 @@ router.get("/article/comment/:id", async function (req, res, next) {
   }
 });
 
-// router.get("/article/show/attraction", async function (req, res, next) {
-//   try {
-//     let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join attraction using(article_id)  left join province using(province_id) where category = "Attraction" OR type_promote = "Attraction" `;
-//     const [rows, fields] = await db.query(sql);
-//     return res.json(rows);
-//   } catch (err) {
-//     return res.status(500).json(err);
-//   }
-// });
-
 router.get(
   "/article/show/:category/:type_promote/:id",
   async function (req, res, next) {
@@ -132,26 +123,6 @@ router.get(
     }
   }
 );
-
-// router.get("/article/show/rest", async function (req, res, next) {
-//   try {
-//     let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join rest using(article_id)  left join province using(province_id) where category = "Rest" OR type_promote = "Rest" `;
-//     const [rows, fields] = await db.query(sql);
-//     return res.json(rows);
-//   } catch (err) {
-//     return res.status(500).json(err);
-//   }
-// });
-
-// router.get("/article/show/tour", async function (req, res, next) {
-//   try {
-//     let sql = `SELECT * FROM article left join member using(member_id) left join promote using(article_id) left join review_category using(article_id) left join tour using(article_id) left join tour_language_skill using(article_id) left join language_skill using(language_id)  left join tour_province using(article_id) left join province using(province_id) where category = "Tour" OR type_promote = "Tour" `;
-//     const [rows, fields] = await db.query(sql);
-//     return res.json(rows);
-//   } catch (err) {
-//     return res.status(500).json(err);
-//   }
-// });
 
 router.get("/article/show/all", async function (req, res, next) {
   try {
@@ -245,6 +216,7 @@ router.get("/star/:article_id/:member_id", async function (req, res, next) {
 
 router.post(
   "/star/:article_id/:member_id/give",
+  isLoggedIn,
   async function (req, res, next) {
     try {
       const [rows1, fields1] = await db.query(
@@ -256,7 +228,6 @@ router.post(
         SET rating_avg = (SELECT AVG(rating) from rating where rating.article_id = ${req.params.article_id} group by article_id)
         WHERE article.article_id = ${req.params.article_id}`
       );
-      // await db.commit();
       return res.json(rows2[0]);
     } catch (err) {
       return res.status(500).json(err);
