@@ -125,6 +125,8 @@ router.post(
     const language = req.body.language;
     const province = req.body.province;
     const price = req.body.price;
+    const information = req.body.information;
+    const title = req.body.title;
     const file = req.files;
 
     let pathArray = [];
@@ -132,11 +134,11 @@ router.post(
     try {
       const [rows1, fields1] = await conn.query(
         "INSERT INTO article (member_id, information, type_article) VALUES (?, ?, ?)",
-        [req.params.member_id, req.body.information, "Promote"]
+        [req.params.member_id, information, "Promote"]
       );
       const [rows2, fields2] = await conn.query(
         "INSERT INTO promote (article_id, title_promote, type_promote) VALUES (?, ?, ?)",
-        [rows1.insertId, req.body.title, type]
+        [rows1.insertId, title, type]
       );
 
       file.forEach((file) => {
