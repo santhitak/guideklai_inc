@@ -1,16 +1,18 @@
 <template>
-  <a-space class="flex-1" direction="vertical" style="margin: auto 8rem">
+  <a-space class="flex-1" direction="vertical" style="margin: auto 8rem;">
     <div v-for="post in articles" class="w-full" v-bind:key="post.article_id">
       <router-link :to="`/article/${post.article_id}/`">
         <a
           style="min-height: 10rem; justify-content: space-evenly"
           class="min-w-full mb-3 flex justify-evenly items-center bg-white rounded-lg border shadow-md md:flex-row md:max-w-xl hover:bg-gray-100"
         >
-          <img
-            class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48"
-            :src="post.image"
-            alt=""
-          />
+          <div v-for="img in images" v-bind:key="img.article_id" v-show="img.article_id === post.article_id">
+            <img
+              class="object-cover mx-4 h-96 rounded-lg md:h-auto md:w-48"
+              :src="`http://localhost:4000/static/article/${img.image}`"
+              alt=""
+            />
+          </div>
           <div class="flex flex-col p-4 leading-normal">
             <div class="flex justify-between">
               <h5
@@ -91,8 +93,7 @@
                 </a-tag>
               </div>
             </a-space>
-
-            {{ new Date(post.create_time).toLocaleString("TH") }}
+            <p class="text-gray-400 text-sm">{{ new Date(post.create_time).toLocaleString("TH") }}</p>
           </div>
         </a>
       </router-link>
@@ -108,11 +109,13 @@ export default {
   props: ["user"],
   data() {
     return {
-      articles: []
+      articles: [],
+      images: []
     };
   },
   created() {
     this.getArticle();
+    this.getImages();
   },
   methods: {
     async getArticle() {
@@ -121,6 +124,14 @@ export default {
           `http://localhost:4000/article/recent/${this.user.member_id}`
         );
         this.articles = response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    async getImages() {
+      try {
+        const response = await axios.get("http://localhost:4000/images");
+        this.images = response.data;
       } catch (err) {
         console.log(err);
       }

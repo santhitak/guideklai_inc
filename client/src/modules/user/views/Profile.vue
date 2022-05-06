@@ -27,7 +27,7 @@
         @{{ user.username }}
       </p>
     </div>
-    <section>
+    <section style="height: auto">
       <div class="flex justify-between mt-10">
         <BriefInfo :user="user" />
         <RecentPost :user="user" />

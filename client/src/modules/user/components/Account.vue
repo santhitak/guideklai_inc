@@ -4,31 +4,6 @@
     <FlexColCenter>
       <a-space :size="size / 2" direction="vertical">
         <a-space :size="size">
-          <FlexColCenter>
-            <a-space direction="vertical" align="center" :size="size - 15">
-              <a-avatar
-                :size="{ xs: 24, sm: 32, md: 40, lg: 64, xl: 80, xxl: 100 }"
-              >
-                <template #icon>
-                  <img
-                    src="https://pbs.twimg.com/media/FOuHWvdWUAUmuY7.jpg"
-                    alt=""
-                  />
-                </template>
-              </a-avatar>
-              <a-upload
-                v-model:file-list="fileList"
-                list-type="picture"
-                :max-count="1"
-                action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
-              >
-                <a-button>
-                  <upload-outlined></upload-outlined>
-                  Upload new profile picture
-                </a-button>
-              </a-upload>
-            </a-space>
-          </FlexColCenter>
           <div class="space-y-6" style="width: 25vw">
             <div class="">
               <label
@@ -101,7 +76,6 @@
 
 <script>
 import FlexColCenter from "@/components/containers/FlexColCenter";
-import { UploadOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
 import { ref } from "vue";
 import axios from "@/plugins/axios";
@@ -116,8 +90,7 @@ export default {
   name: "Account",
   props: ["user"],
   components: {
-    FlexColCenter,
-    UploadOutlined
+    FlexColCenter
   },
   data() {
     return {
@@ -132,7 +105,7 @@ export default {
           email: this.email
         });
         console.log("done");
-        await this.$router.push(`/${this.user.member_id}/manage_account/`);
+        await location.reload();
       } catch (err) {
         console.log(err);
       }
