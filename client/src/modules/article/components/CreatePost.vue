@@ -332,7 +332,7 @@
 </template>
 
 <script>
-import axios from "axios";
+import axios from "@/plugins/axios";
 
 export default {
   name: "CreatePost",
@@ -377,22 +377,25 @@ export default {
       this.images.splice(index, 1);
     },
     async postArticle() {
+      let formData = new FormData();
+      formData.append("type", this.typeArticle);
+      formData.append("language", this.language_id);
+      formData.append("province", parseInt(this.indexProvince));
+      formData.append("price", parseInt(this.price));
+      formData.append("information", this.information);
+      formData.append("title", this.title);
+      formData.append("office_hour", this.officeHour);
+      formData.append("age", parseInt(this.age));
+      formData.append("gender", this.gender);
+      formData.append("lowerprice", parseInt(this.lowerPrice));
+      formData.append("higherprice", parseInt(this.higherPrice));
+      for (const item of this.images) {
+        formData.append("file", item);
+      }
       try {
         await axios.post(
           `http://localhost:4000/create/article/promote/${this.user.member_id}`,
-          {
-            type: this.typeArticle,
-            language: this.language_id,
-            province: parseInt(this.indexProvince),
-            price: parseInt(this.price),
-            information: this.information,
-            title: this.title,
-            office_hour: this.officeHour,
-            age: parseInt(this.age),
-            gender: this.gender,
-            lowerprice: parseInt(this.lowerPrice),
-            higherprice: parseInt(this.higherPrice)
-          }
+          formData
         );
         location.reload();
       } catch (error) {

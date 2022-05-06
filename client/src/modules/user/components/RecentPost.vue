@@ -31,46 +31,51 @@
               >
                 {{ post.title_promote }}
               </h5>
-              <a-button
-                v-if="post.type_article === 'Review'"
-                class="inline-flex items-center"
-                type="primary"
-                danger
-                @click="
+              <div>
+                <p
+                  v-if="post.rating_avg != null"
+                  class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
+                >
+                  {{ post.rating_avg }}
+                </p>
+                <p
+                  v-else
+                  class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
+                >
+                  0
+                </p>
+
+                <a-button
+                  v-if="post.type_article === 'Review'"
+                  class="inline-flex items-center"
+                  type="primary"
+                  danger
+                  @click="
                   deleteArticle(
                     post.article_id,
                     post.type_article,
                     post.category
                   )
                 "
-                >Delete</a-button
-              >
-              <a-button
-                v-else
-                class="inline-flex items-center"
-                type="primary"
-                danger
-                @click="
+                >Delete
+                </a-button
+                >
+                <a-button
+                  v-else
+                  class="inline-flex items-center"
+                  type="primary"
+                  danger
+                  @click="
                   deleteArticle(
                     post.article_id,
                     post.type_article,
                     post.type_promote
                   )
                 "
-                >Delete</a-button
-              >
-              <p
-                v-if="post.rating_avg != null"
-                class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
-              >
-                {{ post.rating_avg }}
-              </p>
-              <p
-                v-else
-                class="h-6 mt-2 bg-blue-700 text-white text-sm font-semibold inline-flex items-center p-1.5 rounded"
-              >
-                0
-              </p>
+                >Delete
+                </a-button
+                >
+              </div>
             </div>
             <p class="text-gray-600 font-semibold text-sm">
               created by {{ post.username }}
@@ -143,7 +148,7 @@ export default {
   props: ["user"],
   data() {
     return {
-      articles: [],
+      articles: []
     };
   },
   created() {
@@ -168,11 +173,11 @@ export default {
         try {
           await axios.delete(
             "http://localhost:4000/article/delete/" +
-              article +
-              "/" +
-              article_type +
-              "/" +
-              type
+            article +
+            "/" +
+            article_type +
+            "/" +
+            type
           );
           location.reload();
           console.log("delete article successfully!! ");
@@ -180,8 +185,8 @@ export default {
           console.log(err);
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

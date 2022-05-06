@@ -40,10 +40,13 @@
       </div>
       <a-divider />
       <div style="display: flex; align-items: center" class="flex-col">
-        <a-row type="flex" justify="space-evenly" align="middle" :gutter="[16,16]">
-          <a-col :span="8"
-                 v-for="img in Images"
-                 v-bind:key="img.article_id">
+        <a-row
+          type="flex"
+          justify="space-evenly"
+          align="middle"
+          :gutter="[16, 16]"
+        >
+          <a-col :span="8" v-for="img in Images" v-bind:key="img.article_id">
             <img
               style="width: 350px; height: auto"
               class="my-4 rounded-xl"
@@ -57,21 +60,29 @@
         </div>
       </div>
       <div class="my-12 flex justify-center" style="width: 100%">
-        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-          <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div
+          style="margin-right: 2rem"
+          class="relative overflow-x-auto shadow-md sm:rounded-lg"
+        >
+          <table
+            class="w-full text-sm text-left text-gray-500 dark:text-gray-400"
+          >
+            <thead
+              class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400"
+            >
             <tr>
-              <th scope="col" class="px-6 py-3">
-                About
-              </th>
-              <th scope="col" class="px-6 py-3">
-
-              </th>
+              <th scope="col" class="px-6 py-3">About</th>
+              <th scope="col" class="px-6 py-3"></th>
             </tr>
             </thead>
             <tbody>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+            <tr
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+              >
                 Type
               </th>
               <td class="px-6 py-4">
@@ -79,16 +90,26 @@
                 {{ type }}
               </td>
             </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+            <tr
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+              >
                 Author
               </th>
               <td class="px-6 py-4">
                 {{ user.firstname + " " + user.lastname }}
               </td>
             </tr>
-            <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-              <th scope="row" class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap">
+            <tr
+              class="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+            >
+              <th
+                scope="row"
+                class="px-6 py-4 font-medium text-gray-900 dark:text-white whitespace-nowrap"
+              >
                 Created on
               </th>
               <td class="px-6 py-4">
@@ -97,78 +118,120 @@
             </tr>
             </tbody>
           </table>
-        </div>
-        <div
-          v-if="
-          articleType[0]?.category === 'Attraction' ||
-          articleType[0]?.type_promote === 'Attraction'
-        "
-        >
-          <div class="">province_name : {{ articleType[0]?.province_name }}</div>
-          <div class="">office_hour : {{ articleType[0]?.office_hour }}</div>
-          <div class="">
-            attraction_price : {{ articleType[0]?.attraction_price }}
-          </div>
-          <div class="">image : {{ articleType[0]?.image }}</div>
-          <div class="" v-if="articles[0]?.type_article === 'Promote'">
-            Phone:{{ articleType[0]?.phone_number }} Email:{{
-              articleType[0]?.email
-            }}
-          </div>
-        </div>
-        <div
-          v-if="
-          articleType[0]?.category === 'Guide' ||
-          articleType[0]?.type_promote === 'Guide'
-        "
-        >
-          <div class="">
-            Guide Name : {{ articleType[0]?.firstname }}
-            {{ articleType[0]?.lastname }}
-          </div>
-          <div class="">Age : {{ articleType[0]?.age }}</div>
-          <div class="">Gender : {{ articleType[0]?.gender }}</div>
-          <div class="">image : {{ articleType[0]?.image }}</div>
-          <div class="">Language : {{ language }}</div>
-          <div class="" v-if="articles[0]?.type_article === 'Promote'">
-            Phone:{{ articleType[0]?.phone_number }} Email:{{
-              articleType[0]?.email
-            }}
-          </div>
-        </div>
-        <div
-          v-if="
-          articleType[0]?.category === 'Rest' ||
-          articleType[0]?.type_promote === 'Rest'
-        "
-        >
-          <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
-          <div class="">
-            Price : {{ articleType[0]?.lower_price }} -
-            {{ articleType[0]?.higher_price }}
-          </div>
-          <div class="">image : {{ articleType[0]?.image }}</div>
-          <div class="" v-if="articles[0]?.type_article === 'Promote'">
-            Phone:{{ articleType[0]?.phone_number }} Email:{{
-              articleType[0]?.email
-            }}
-          </div>
-        </div>
-        <div
-          v-if="
-          articleType[0]?.category === 'Tour' ||
-          articleType[0]?.type_promote === 'Tour'
-        "
-        >
-          <div class="">Company Name : {{ articleType[0]?.company_name }}</div>
-          <div class="">Language : {{ language }}</div>
-          <div class="">province_name : {{ articleType[0]?.province_name }}</div>
-          <div class="">Price : {{ articleType[0]?.tour_price }}</div>
-          <div class="">image : {{ articleType[0]?.image }}</div>
-          <div class="" v-if="articles[0]?.type_article === 'Promote'">
-            Phone:{{ articleType[0]?.phone_number }} Email:{{
-              articleType[0]?.email
-            }}
+          <div
+            class="block p-6 max-w-md bg-white rounded-lg border border-gray-200 shadow-sm"
+            v-if="article.type_article === 'Promote'"
+            style="margin-top: 1rem"
+          >
+            <div
+              v-if="
+              articleType[0]?.category === 'Attraction' ||
+              articleType[0]?.type_promote === 'Attraction'
+            "
+            >
+              <div class="font-semibold">
+                province_name : {{ articleType[0]?.province_name }}
+              </div>
+              <div class="font-semibold">
+                office_hour : {{ articleType[0]?.office_hour }}
+              </div>
+              <div class="font-semibold">
+                attraction_price : {{ articleType[0]?.attraction_price }}
+              </div>
+              <div class="font-semibold">image : {{ articleType[0]?.image }}</div>
+              <div
+                class="font-semibold"
+                v-if="articles[0]?.type_article === 'Promote'"
+              >
+                Phone:{{ articleType[0]?.phone_number }} Email:{{
+                  articleType[0]?.email
+                }}
+              </div>
+            </div>
+            <div
+              v-if="
+              articleType[0]?.category === 'Guide' ||
+              articleType[0]?.type_promote === 'Guide'
+            "
+            >
+              <div class="font-semibold">
+                Guide Name : {{ articleType[0]?.firstname }}
+                {{ articleType[0]?.lastname }}
+              </div>
+              <div class="font-semibold">Age : {{ articleType[0]?.age }}</div>
+              <div class="font-semibold">
+                Gender : {{ articleType[0]?.gender }}
+              </div>
+              <div class="font-semibold">
+                Language :
+                <span v-for="lang in language" v-bind:key="lang"
+                >{{ lang }},
+              </span>
+              </div>
+              <div
+                class="font-semibold"
+                v-if="articles[0]?.type_article === 'Promote'"
+              >
+                <p style="margin: 0">Phone : {{ articleType[0]?.phone_number }}</p>
+                <p>Email : {{ articleType[0]?.email }}</p>
+              </div>
+            </div>
+            <div
+              v-if="
+              articleType[0]?.category === 'Rest' ||
+              articleType[0]?.type_promote === 'Rest'
+            "
+            >
+              <div class="font-semibold">
+                Company Name : {{ articleType[0]?.company_name }}
+              </div>
+              <div class="font-semibold">
+                Price : {{ articleType[0]?.lower_price }} -
+                {{ articleType[0]?.higher_price }}
+              </div>
+              <div
+                class="font-semibold"
+                v-if="articles[0]?.type_article === 'Promote'"
+              >
+                <p style="margin: 0">Phone : {{ articleType[0]?.phone_number }}</p>
+                <p>Email : {{ articleType[0]?.email }}</p>
+              </div>
+            </div>
+            <div
+              v-if="
+              articleType[0]?.category === 'Tour' ||
+              articleType[0]?.type_promote === 'Tour'
+            "
+            >
+              <div class="font-semibold">
+                Company Name : {{ articleType[0]?.company_name }}
+              </div>
+              <div class="font-semibold">
+                Language :
+                <span v-for="lang in language" v-bind:key="lang"
+                >{{ lang }},
+              </span>
+              </div>
+              <div class="font-semibold">
+                Province :
+                {{
+                  articleType[0]?.province_name.substring(
+                    0,
+                    articleType[0]?.province_name.length - 9
+                  )
+                }}
+              </div>
+              <div class="font-semibold">
+                Price : {{ articleType[0]?.tour_price }}
+              </div>
+              <div
+                class="font-semibold"
+                v-if="articles[0]?.type_article === 'Promote'"
+              >
+                <p style="margin: 0">Phone : {{ articleType[0]?.phone_number }}</p>
+                <p>Email : {{ articleType[0]?.email }}</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
